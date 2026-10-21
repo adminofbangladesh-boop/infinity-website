@@ -3,21 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INFINITY Admin Panel</title>
+  <title>INFINITY</title>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
       background: #080d18;
-      color: #f1f5f9;
+      color: #f8fafc;
       font-family: Arial, sans-serif;
     }
 
-    button, input { font: inherit; }
-    button { cursor: pointer; }
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
 
     .wrap {
       width: 100%;
@@ -29,46 +36,79 @@
     .card {
       background: #111827;
       border: 1px solid #30394a;
-      border-radius: 15px;
-      padding: 22px;
+      border-radius: 16px;
+      padding: 28px;
       margin-bottom: 18px;
     }
 
-    h1, h2, h3 { margin-top: 0; }
-    h1 { color: #60a5fa; }
-    .muted { color: #aab4c5; line-height: 1.7; }
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+
+    h1 {
+      color: #60a5fa;
+    }
+
+    .muted {
+      color: #aab4c5;
+      line-height: 1.7;
+    }
 
     label {
       display: block;
-      margin: 14px 0 7px;
+      margin: 17px 0 8px;
     }
 
     input {
       width: 100%;
-      padding: 12px;
+      padding: 13px;
       border: 1px solid #414c60;
       border-radius: 8px;
       background: #080d18;
       color: white;
+      font-size: 16px;
     }
 
     button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 14px;
       border: 0;
       border-radius: 8px;
       background: #2563eb;
       color: white;
-      padding: 12px 15px;
-      margin-top: 12px;
+      font-weight: bold;
     }
 
-    button:disabled { opacity: .6; }
-    .secondary { background: #263449; }
-    .danger { background: #b91c1c; }
-    .hidden { display: none !important; }
-    .message { overflow-wrap: anywhere; line-height: 1.6; }
-    .email { color: #93c5fd; overflow-wrap: anywhere; }
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
 
-    /* লগইন বক্স মোবাইল স্ক্রিনের মাঝখানে */
+    .secondary {
+      background: #263449;
+    }
+
+    .danger {
+      background: #b91c1c;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .message {
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .email {
+      color: #93c5fd;
+      overflow-wrap: anywhere;
+    }
+
+    /* LOGIN BOX: স্ক্রিনের মাঝখানে */
     #loginCard {
       position: fixed;
       top: 50%;
@@ -79,7 +119,27 @@
       max-height: calc(100vh - 32px);
       overflow-y: auto;
       margin: 0;
+      padding: 28px;
+      background: #111827;
+      border: 1px solid #30394a;
+      border-radius: 16px;
       z-index: 10;
+    }
+
+    #loginCard h1 {
+      text-align: center;
+      margin: 0 0 8px;
+    }
+
+    #loginCard .subtitle {
+      text-align: center;
+      color: #aab4c5;
+      margin-bottom: 25px;
+    }
+
+    #loginCard button {
+      display: block;
+      width: 100%;
     }
 
     .topbar {
@@ -91,12 +151,14 @@
       margin-bottom: 20px;
     }
 
-    .topbar h1 { margin: 0; }
+    .topbar h1 {
+      margin: 0;
+    }
 
     .badge {
       display: inline-block;
       border-radius: 20px;
-      padding: 6px 11px;
+      padding: 7px 12px;
       background: #123b2a;
       color: #86efac;
       font-size: 13px;
@@ -129,16 +191,36 @@
       margin-bottom: 18px;
     }
 
-    .nav button { margin: 0; }
-    .nav button.active { background: #2563eb; }
-    .panel { min-width: 0; }
+    .nav button {
+      width: auto;
+      flex: 1 1 100px;
+      margin: 0;
+    }
+
+    .nav button.active {
+      background: #2563eb;
+    }
+
+    .panel {
+      min-width: 0;
+    }
 
     @media (max-width: 520px) {
-      .wrap { padding: 12px; }
-      .card { padding: 17px; }
-      .grid { grid-template-columns: 1fr; }
-      .topbar button { width: 100%; }
-      .nav button { flex: 1 1 40%; }
+      .wrap {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      #loginCard {
+        padding: 26px 22px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -149,15 +231,15 @@
     <!-- LOGIN -->
     <section id="loginCard" class="card">
       <h1>INFINITY</h1>
-      <p class="muted">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+      <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
 
       <form id="authForm">
         <label for="email">ইমেইল ঠিকানা</label>
         <input
           id="email"
           type="email"
-          autocomplete="email"
           placeholder="আপনার ইমেইল লিখুন"
+          autocomplete="email"
           required
         >
 
@@ -165,8 +247,8 @@
         <input
           id="password"
           type="password"
+          placeholder="আপনার পাসওয়ার্ড লিখুন"
           autocomplete="current-password"
-          placeholder="আপনার পাসওয়ার্ড"
           required
         >
 
@@ -182,19 +264,20 @@
       <p id="loginMessage" class="message" role="status"></p>
     </section>
 
-    <!-- NON-ADMIN USER -->
+    <!-- LOGGED-IN USER WITHOUT ADMIN ACCESS -->
     <section id="userCard" class="card hidden">
       <h1>INFINITY</h1>
       <h2>আপনি লগইন করেছেন</h2>
       <p id="userEmail" class="email"></p>
       <p id="userMessage" class="muted">
-        Admin অনুমতি যাচাই করা হচ্ছে...
+        Admin অনুমতি যাচাই হচ্ছে...
       </p>
       <button id="userLogout" class="danger">Sign Out</button>
     </section>
 
     <!-- ADMIN PANEL -->
     <section id="adminPanel" class="hidden">
+
       <header class="topbar">
         <div>
           <h1>INFINITY</h1>
@@ -210,6 +293,7 @@
         <button data-page="profile">প্রোফাইল</button>
       </nav>
 
+      <!-- DASHBOARD -->
       <section id="page-dashboard" class="panel">
         <div class="card">
           <h2>স্বাগতম, Admin!</h2>
@@ -220,8 +304,9 @@
           <div class="grid">
             <div class="stat">
               <strong>সক্রিয়</strong>
-              Admin যাচাই
+              Admin অনুমতি
             </div>
+
             <div class="stat">
               <strong>Supabase</strong>
               Authentication
@@ -231,21 +316,22 @@
 
         <div class="card">
           <h3>সিস্টেমের অবস্থা</h3>
-          <p id="systemStatus" class="muted">
-            Admin অনুমতি যাচাই করা হয়েছে।
+          <p class="muted">
+            আপনার Admin অনুমতি ডেটাবেস থেকে যাচাই করা হয়েছে।
           </p>
           <p class="muted">
-            ব্যবহারকারীর প্রকৃত সংখ্যা এখনো সংযুক্ত করা হয়নি।
+            প্রকৃত ব্যবহারকারীর সংখ্যা এখনো সংযুক্ত করা হয়নি।
           </p>
         </div>
       </section>
 
+      <!-- USERS -->
       <section id="page-users" class="panel hidden">
         <div class="card">
           <h2>ব্যবহারকারী ব্যবস্থাপনা</h2>
           <p class="muted">
-            ব্যবহারকারীদের তালিকা ও অ্যাকাউন্ট পরিচালনার সুবিধা
-            এখনো সংযুক্ত করা হয়নি।
+            ব্যবহারকারীদের তালিকা, অ্যাকাউন্ট পরিবর্তন ও মুছে ফেলার
+            সুবিধা এখনো তৈরি করা হয়নি।
           </p>
           <p class="muted">
             এই সুবিধার জন্য নিরাপদ ডেটাবেস ও সার্ভার ব্যবস্থা
@@ -254,18 +340,20 @@
         </div>
       </section>
 
+      <!-- SETTINGS -->
       <section id="page-settings" class="panel hidden">
         <div class="card">
           <h2>ওয়েবসাইট সেটিংস</h2>
           <p class="muted">ওয়েবসাইট: INFINITY</p>
           <p class="muted">হোস্টিং: GitHub Pages</p>
-          <p class="muted">লগইন: Supabase</p>
+          <p class="muted">Authentication: Supabase</p>
           <p class="muted">
-            সেটিংস পরিবর্তন ও সংরক্ষণের সুবিধা এখনো তৈরি করা হয়নি।
+            সেটিংস পরিবর্তন ও সংরক্ষণের সুবিধা এখনো যোগ করা হয়নি।
           </p>
         </div>
       </section>
 
+      <!-- ADMIN PROFILE -->
       <section id="page-profile" class="panel hidden">
         <div class="card">
           <h2>Admin প্রোফাইল</h2>
@@ -280,8 +368,8 @@
         <button id="adminLogout" class="danger">Logout</button>
         <p id="adminMessage" class="message" role="status"></p>
       </div>
-    </section>
 
+    </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -301,11 +389,14 @@
     const loginCard = document.getElementById("loginCard");
     const userCard = document.getElementById("userCard");
     const adminPanel = document.getElementById("adminPanel");
+
     const authForm = document.getElementById("authForm");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
+
     const loginBtn = document.getElementById("loginBtn");
     const signupBtn = document.getElementById("signupBtn");
+
     const loginMessage = document.getElementById("loginMessage");
     const userMessage = document.getElementById("userMessage");
     const adminMessage = document.getElementById("adminMessage");
@@ -316,6 +407,7 @@
       loginCard.classList.add("hidden");
       userCard.classList.add("hidden");
       adminPanel.classList.add("hidden");
+
       section.classList.remove("hidden");
     }
 
@@ -331,12 +423,17 @@
         return;
       }
 
-      if (checkingUserId === user.id) return;
+      if (checkingUserId === user.id) {
+        return;
+      }
+
       checkingUserId = user.id;
 
       showOnly(userCard);
+
       document.getElementById("userEmail").textContent =
         user.email || "";
+
       userMessage.textContent = "Admin অনুমতি যাচাই হচ্ছে...";
 
       try {
@@ -346,24 +443,32 @@
           .eq("user_id", user.id)
           .maybeSingle();
 
-        if (error) throw error;
+        if (error) {
+          throw error;
+        }
 
         if (data && data.role === "admin") {
           showOnly(adminPanel);
 
           document.getElementById("adminEmail").textContent =
             user.email || "";
-          document.getElementById("adminUid").textContent = user.id;
+
+          document.getElementById("adminUid").textContent =
+            user.id;
+
           adminMessage.textContent = "";
         } else {
           showOnly(userCard);
+
           userMessage.textContent =
-            "এই অ্যাকাউন্টে Admin অনুমতি নেই।";
+            "এই অ্যাকাউন্টে Admin অনুমতি পাওয়া যায়নি।";
         }
       } catch (error) {
         showOnly(userCard);
+
         userMessage.textContent =
           "Admin যাচাই করা যায়নি। ইন্টারনেট ও Supabase সেটিংস পরীক্ষা করুন।";
+
         console.error("Admin verification error:", error);
       } finally {
         if (checkingUserId === user.id) {
@@ -372,6 +477,7 @@
       }
     }
 
+    // SIGN IN
     authForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
@@ -385,18 +491,21 @@
           password: passwordInput.value
         });
 
-        if (error) throw error;
+        if (error) {
+          throw error;
+        }
 
         await showSignedIn(data.user);
       } catch (error) {
         loginMessage.textContent =
-          "লগইন ব্যর্থ: " + error.message;
+          "লগইন করা যায়নি: " + error.message;
       } finally {
         loginBtn.disabled = false;
         signupBtn.disabled = false;
       }
     });
 
+    // CREATE ACCOUNT
     signupBtn.addEventListener("click", async () => {
       const email = emailInput.value.trim();
       const password = passwordInput.value;
@@ -426,13 +535,15 @@
           }
         });
 
-        if (error) throw error;
+        if (error) {
+          throw error;
+        }
 
         if (data.session && data.user) {
           await showSignedIn(data.user);
         } else {
           loginMessage.textContent =
-            "অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
+            "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
         }
       } catch (error) {
         loginMessage.textContent =
@@ -442,12 +553,13 @@
       }
     });
 
+    // LOG OUT
     async function logout() {
       const { error } = await client.auth.signOut();
 
       if (error) {
         adminMessage.textContent =
-          "Logout ব্যর্থ: " + error.message;
+          "Logout করা যায়নি: " + error.message;
         return;
       }
 
@@ -460,6 +572,7 @@
     document.getElementById("userLogout")
       .addEventListener("click", logout);
 
+    // ADMIN MENU
     document.querySelectorAll("[data-page]").forEach((button) => {
       button.addEventListener("click", () => {
         const page = button.dataset.page;
@@ -477,6 +590,7 @@
       });
     });
 
+    // CHECK EXISTING SESSION
     async function initialize() {
       const { data, error } = await client.auth.getSession();
 
