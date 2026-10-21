@@ -4,33 +4,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Infinity Login</title>
+  <title>Infinity Account</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
       display: grid;
       place-items: center;
       padding: 20px;
-      font-family: Arial, sans-serif;
       background: #080d18;
       color: #f8fafc;
+      font-family: Arial, sans-serif;
     }
-    .login {
+
+    .card {
       width: 100%;
-      max-width: 360px;
+      max-width: 380px;
       padding: 28px;
       background: #111827;
       border: 1px solid #30394a;
       border-radius: 16px;
     }
-    h1 { margin: 0 0 10px; font-size: 28px; }
-    p { color: #aab4c5; line-height: 1.6; }
+
+    h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      color: #60a5fa;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #aab4c5;
+      margin-bottom: 25px;
+    }
+
     label {
       display: block;
-      margin: 18px 0 8px;
+      margin: 17px 0 8px;
     }
+
     input {
       width: 100%;
       padding: 13px;
@@ -40,51 +54,233 @@
       color: white;
       font-size: 16px;
     }
+
     button {
       width: 100%;
-      padding: 14px;
-      margin-top: 22px;
+      padding: 13px;
+      margin-top: 14px;
       border: 0;
       border-radius: 8px;
       background: #2563eb;
       color: white;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
     }
-    .note { font-size: 12px; }
+
+    .secondary {
+      background: #263449;
+    }
+
+    #message {
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .hidden { display: none; }
+
+    .email-text {
+      overflow-wrap: anywhere;
+      color: #93c5fd;
+    }
   </style>
 </head>
 <body>
-  <main class="login">
-    <h1>Infinity</h1>
-    <p>আপনার অ্যাকাউন্টে সাইন ইন করুন</p>
+  <main class="card">
+    <h1>INFINITY</h1>
+    <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
 
-    <form id="loginForm">
+    <form id="authForm">
       <label for="email">ইমেইল ঠিকানা</label>
-      <input id="email" type="email"
-        placeholder="আপনার ইমেইল লিখুন" required>
+      <input
+        id="email"
+        type="email"
+        placeholder="আপনার ইমেইল লিখুন"
+        autocomplete="email"
+        required
+      >
 
       <label for="password">পাসওয়ার্ড</label>
-      <input id="password" type="password"
-        placeholder="পাসওয়ার্ড লিখুন" required>
+      <input
+        id="password"
+        type="password"
+        placeholder="কমপক্ষে ৬ অক্ষর"
+        autocomplete="current-password"
+        minlength="6"
+        required
+      >
 
-      <button type="submit">Sign In</button>
+      <button id="loginBtn" type="submit">
+        Sign In
+      </button>
+
+      <button
+        id="signupBtn"
+        class="secondary"
+        type="button"
+      >
+        Create Account
+      </button>
     </form>
 
-    <p class="note">
-      এটি একটি ডেমো লগইন পেজ।
-      এখনো আসল অ্যাকাউন্ট সিস্টেম যুক্ত করা হয়নি।
-    </p>
-    <p id="message" role="status"></p>
+    <section id="account" class="hidden">
+      <p>আপনি লগইন করেছেন:</p>
+      <p id="userEmail" class="email-text"></p>
+      <button id="logoutBtn" type="button">
+        Sign Out
+      </button>
+    </section>
+
+    <p id="message" role="status" aria-live="polite"></p>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    document.getElementById("loginForm")
-      .addEventListener("submit", function(event) {
-        event.preventDefault();
-        document.getElementById("message").textContent =
-          "ডেমো পেজ: এখনো লগইন সিস্টেম চালু করা হয়নি।";
-      });
+    const SUPABASE_URL =
+      "https://ozjmdxufgugemtggkuvp.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+    const client = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const form = document.getElementById("authForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const account = document.getElementById("account");
+    const userEmail = document.getElementById("userEmail");
+    const message = document.getElementById("message");
+
+    function showMessage(text) {
+      message.textContent = text;
+    }
+
+    function setBusy(busy) {
+      loginBtn.disabled = busy;
+      signupBtn.disabled = busy;
+      loginBtn.textContent = busy ? "অপেক্ষা করুন..." : "Sign In";
+    }
+
+    function showSignedIn(user) {
+      form.classList.add("hidden");
+      account.classList.remove("hidden");
+      userEmail.textContent = user.email || "";
+    }
+
+    function showSignedOut() {
+      form.classList.remove("hidden");
+      account.classList.add("hidden");
+      userEmail.textContent = "";
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      setBusy(true);
+      showMessage("");
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      try {
+        const { data, error } =
+          await client.auth.signInWithPassword({
+            email,
+            password
+          });
+
+        if (error) throw error;
+
+        showSignedIn(data.user);
+        showMessage("লগইন সফল হয়েছে!");
+      } catch (error) {
+        showMessage("লগইন করা যায়নি: " + error.message);
+      } finally {
+        setBusy(false);
+      }
+    });
+
+    signupBtn.addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showMessage("আগে ইমেইল ও পাসওয়ার্ড লিখুন।");
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।");
+        return;
+      }
+
+      setBusy(true);
+      showMessage("");
+
+      try {
+        const { data, error } = await client.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin +
+              window.location.pathname
+          }
+        });
+
+        if (error) throw error;
+
+        if (data.session && data.user) {
+          showSignedIn(data.user);
+          showMessage("অ্যাকাউন্ট তৈরি হয়েছে!");
+        } else {
+          showMessage(
+            "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাইয়ের বার্তা পেলে সেটি খুলুন।"
+          );
+        }
+      } catch (error) {
+        showMessage("অ্যাকাউন্ট তৈরি হয়নি: " + error.message);
+      } finally {
+        setBusy(false);
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      logoutBtn.disabled = true;
+      try {
+        const { error } = await client.auth.signOut();
+        if (error) throw error;
+        showSignedOut();
+        showMessage("আপনি লগআউট করেছেন।");
+      } catch (error) {
+        showMessage("লগআউট করা যায়নি: " + error.message);
+      } finally {
+        logoutBtn.disabled = false;
+      }
+    });
+
+    client.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        showSignedIn(session.user);
+      } else {
+        showSignedOut();
+      }
+    });
+
+    client.auth.getSession().then(({ data, error }) => {
+      if (error) {
+        showMessage("সেশন যাচাই করা যায়নি।");
+        return;
+      }
+      if (data.session?.user) {
+        showSignedIn(data.session.user);
+      }
+    });
   </script>
 </body>
 </html>
