@@ -1,14 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INFINITY</title>
+  <title>Account Not Found</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -18,13 +17,8 @@
       font-family: Arial, sans-serif;
     }
 
-    button, input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
 
     .wrap {
       width: 100%;
@@ -41,13 +35,8 @@
       margin-bottom: 18px;
     }
 
-    h1, h2, h3 {
-      margin-top: 0;
-    }
-
-    h1 {
-      color: #60a5fa;
-    }
+    h1, h2, h3 { margin-top: 0; }
+    h1 { color: #60a5fa; }
 
     .muted {
       color: #aab4c5;
@@ -80,22 +69,10 @@
       font-weight: bold;
     }
 
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    .secondary {
-      background: #263449;
-    }
-
-    .danger {
-      background: #b91c1c;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    button:disabled { opacity: .6; cursor: wait; }
+    .secondary { background: #263449; }
+    .danger { background: #b91c1c; }
+    .hidden { display: none !important; }
 
     .message {
       font-size: 14px;
@@ -108,7 +85,7 @@
       overflow-wrap: anywhere;
     }
 
-    /* LOGIN BOX: স্ক্রিনের মাঝখানে */
+    /* LOGIN: আগের ডিজাইন অপরিবর্তিত */
     #loginCard {
       position: fixed;
       top: 50%;
@@ -137,12 +114,10 @@
       margin-bottom: 25px;
     }
 
-    #loginCard button {
-      display: block;
-      width: 100%;
-    }
+    #loginCard button { display: block; width: 100%; }
 
-    .topbar {
+    /* USER DASHBOARD */
+    #userDashboard .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -151,470 +126,571 @@
       margin-bottom: 20px;
     }
 
-    .topbar h1 {
+    #userDashboard .topbar h1 { margin: 0; }
+
+    #userDashboard .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    #userDashboard .actions button {
+      width: auto;
       margin: 0;
     }
 
-    .badge {
-      display: inline-block;
-      border-radius: 20px;
-      padding: 7px 12px;
-      background: #123b2a;
-      color: #86efac;
-      font-size: 13px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 15px;
-    }
-
-    .stat {
-      background: #0b1424;
+    #userDashboard .welcome {
+      background: #111827;
       border: 1px solid #30394a;
-      border-radius: 12px;
-      padding: 17px;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
     }
 
-    .stat strong {
-      display: block;
+    #userDashboard .welcome h2 {
       color: #60a5fa;
-      font-size: 19px;
       margin-bottom: 8px;
     }
 
-    .nav {
+    #userDashboard .welcome p { margin-bottom: 0; }
+
+    #userDashboard .nav {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       margin-bottom: 18px;
     }
 
-    .nav button {
+    #userDashboard .nav button {
       width: auto;
       flex: 1 1 100px;
       margin: 0;
+      background: #263449;
     }
 
-    .nav button.active {
-      background: #2563eb;
+    #userDashboard .nav button.active { background: #2563eb; }
+
+    #userDashboard .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    .panel {
+    #userDashboard .service-card {
+      position: relative;
       min-width: 0;
+      padding: 17px 10px;
+      text-align: center;
+      background: #0b1424;
+      border: 1px solid #30394a;
+      border-radius: 13px;
+      cursor: pointer;
     }
 
-    @media (max-width: 520px) {
-      .wrap {
-        padding: 12px;
+    #userDashboard .service-card:hover { border-color: #60a5fa; }
+
+    #userDashboard .service-icon {
+      display: block;
+      font-size: 29px;
+      margin-bottom: 10px;
+    }
+
+    #userDashboard .service-name {
+      display: block;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    #userDashboard .service-category {
+      display: block;
+      margin-top: 6px;
+      color: #93c5fd;
+      font-size: 12px;
+    }
+
+    #userDashboard .favorite-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      margin: 0;
+      border-radius: 50%;
+      background: #263449;
+      color: #93c5fd;
+      font-size: 19px;
+    }
+
+    #userDashboard .favorite-btn.is-favorite { color: #f87171; }
+
+    #userDashboard .section-heading {
+      margin-bottom: 16px;
+      color: #60a5fa;
+    }
+
+    #userDashboard .history-item {
+      padding: 13px 0;
+      border-bottom: 1px solid #30394a;
+      overflow-wrap: anywhere;
+    }
+
+    #userDashboard .history-item a { color: #93c5fd; }
+
+    #userDashboard .empty {
+      color: #aab4c5;
+      line-height: 1.7;
+    }
+
+    #userDashboard footer {
+      text-align: center;
+      padding: 20px 0 30px;
+      color: #aab4c5;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 12px; }
+      .card { padding: 18px; }
+      #loginCard { padding: 26px 22px; }
+
+      #userDashboard .service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
       }
 
-      .card {
-        padding: 18px;
-      }
-
-      #loginCard {
-        padding: 26px 22px;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      #userDashboard .welcome { padding: 18px; }
     }
   </style>
 </head>
 
 <body>
-  <main class="wrap">
+<main class="wrap">
 
-    <!-- LOGIN -->
-    <section id="loginCard" class="card">
-      <h1>INFINITY</h1>
-      <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+  <!-- LOGIN PAGE -->
+  <section id="loginCard" class="card">
+    <h1>INFINITY</h1>
+    <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
 
-      <form id="authForm">
-        <label for="email">ইমেইল ঠিকানা</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="আপনার ইমেইল লিখুন"
-          autocomplete="email"
-          required
-        >
+    <form id="authForm">
+      <label for="email">ইমেইল ঠিকানা</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="আপনার ইমেইল লিখুন"
+        autocomplete="email"
+        required
+      >
 
-        <label for="password">পাসওয়ার্ড</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="আপনার পাসওয়ার্ড লিখুন"
-          autocomplete="current-password"
-          required
-        >
+      <label for="password">পাসওয়ার্ড</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="আপনার পাসওয়ার্ড লিখুন"
+        autocomplete="current-password"
+        required
+      >
 
-        <button id="loginBtn" type="submit">Sign In</button>
+      <button id="loginBtn" type="submit">Sign In</button>
+      <button id="signupBtn" class="secondary" type="button">Create Account</button>
+    </form>
 
-        <button
-          id="signupBtn"
-          class="secondary"
-          type="button"
-        >Create Account</button>
-      </form>
+    <p id="loginMessage" class="message" role="status"></p>
+  </section>
 
-      <p id="loginMessage" class="message" role="status"></p>
-    </section>
+  <!-- USER DASHBOARD -->
+  <section id="userDashboard" class="hidden">
 
-    <!-- LOGGED-IN USER WITHOUT ADMIN ACCESS -->
-    <section id="userCard" class="card hidden">
-      <h1>INFINITY</h1>
-      <h2>আপনি লগইন করেছেন</h2>
-      <p id="userEmail" class="email"></p>
-      <p id="userMessage" class="muted">
-        Admin অনুমতি যাচাই হচ্ছে...
-      </p>
-      <button id="userLogout" class="danger">Sign Out</button>
-    </section>
-
-    <!-- ADMIN PANEL -->
-    <section id="adminPanel" class="hidden">
-
-      <header class="topbar">
-        <div>
-          <h1>INFINITY</h1>
-          <p class="muted">Administration Panel</p>
-        </div>
-        <span class="badge">ADMIN VERIFIED</span>
-      </header>
-
-      <nav class="nav">
-        <button class="active" data-page="dashboard">Dashboard</button>
-        <button data-page="users">ব্যবহারকারী</button>
-        <button data-page="settings">সেটিংস</button>
-        <button data-page="profile">প্রোফাইল</button>
-      </nav>
-
-      <!-- DASHBOARD -->
-      <section id="page-dashboard" class="panel">
-        <div class="card">
-          <h2>স্বাগতম, Admin!</h2>
-          <p class="muted">
-            আপনার INFINITY Admin Panel-এ স্বাগতম।
-          </p>
-
-          <div class="grid">
-            <div class="stat">
-              <strong>সক্রিয়</strong>
-              Admin অনুমতি
-            </div>
-
-            <div class="stat">
-              <strong>Supabase</strong>
-              Authentication
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>সিস্টেমের অবস্থা</h3>
-          <p class="muted">
-            আপনার Admin অনুমতি ডেটাবেস থেকে যাচাই করা হয়েছে।
-          </p>
-          <p class="muted">
-            প্রকৃত ব্যবহারকারীর সংখ্যা এখনো সংযুক্ত করা হয়নি।
-          </p>
-        </div>
-      </section>
-
-      <!-- USERS -->
-      <section id="page-users" class="panel hidden">
-        <div class="card">
-          <h2>ব্যবহারকারী ব্যবস্থাপনা</h2>
-          <p class="muted">
-            ব্যবহারকারীদের তালিকা, অ্যাকাউন্ট পরিবর্তন ও মুছে ফেলার
-            সুবিধা এখনো তৈরি করা হয়নি।
-          </p>
-          <p class="muted">
-            এই সুবিধার জন্য নিরাপদ ডেটাবেস ও সার্ভার ব্যবস্থা
-            তৈরি করতে হবে।
-          </p>
-        </div>
-      </section>
-
-      <!-- SETTINGS -->
-      <section id="page-settings" class="panel hidden">
-        <div class="card">
-          <h2>ওয়েবসাইট সেটিংস</h2>
-          <p class="muted">ওয়েবসাইট: INFINITY</p>
-          <p class="muted">হোস্টিং: GitHub Pages</p>
-          <p class="muted">Authentication: Supabase</p>
-          <p class="muted">
-            সেটিংস পরিবর্তন ও সংরক্ষণের সুবিধা এখনো যোগ করা হয়নি।
-          </p>
-        </div>
-      </section>
-
-      <!-- ADMIN PROFILE -->
-      <section id="page-profile" class="panel hidden">
-        <div class="card">
-          <h2>Admin প্রোফাইল</h2>
-          <p>ইমেইল:</p>
-          <p id="adminEmail" class="email"></p>
-          <p>Admin UID:</p>
-          <p id="adminUid" class="muted"></p>
-        </div>
-      </section>
-
-      <div class="card">
-        <button id="adminLogout" class="danger">Logout</button>
-        <p id="adminMessage" class="message" role="status"></p>
+    <header class="topbar">
+      <div>
+        <h1>INFINITY</h1>
+        <p class="muted">আপনার ডিজিটাল সেবা কেন্দ্র</p>
       </div>
 
+      <div class="actions">
+        <button id="profileBtn" class="secondary">প্রোফাইল</button>
+        <button id="logoutBtn" class="danger">Logout</button>
+      </div>
+    </header>
+
+    <section class="welcome">
+      <h2>স্বাগতম!</h2>
+      <p class="muted">
+        প্রয়োজনীয় সেবা বেছে নিন। সেবার কার্ডে চাপ দিলে সংশ্লিষ্ট ওয়েবসাইট খুলবে।
+      </p>
+      <p id="signedInEmail" class="email"></p>
     </section>
-  </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <nav class="nav">
+      <button class="active" data-page="home">🏠 হোম</button>
+      <button data-page="favorites">⭐ পছন্দের সেবা</button>
+      <button data-page="history">🕘 ইতিহাস</button>
+      <button data-page="support">💬 সহায়তা</button>
+    </nav>
 
-  <script>
-    const SUPABASE_URL =
-      "https://ozjmdxufgugemtggkuvp.supabase.co";
+    <!-- HOME -->
+    <section id="page-home">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="🔎 সেবার নাম লিখে খুঁজুন..."
+        aria-label="সেবা খুঁজুন"
+      >
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
+      <div class="card" style="margin-top:16px">
+        <h2 class="section-heading">সরকারি ও নাগরিক সেবা</h2>
+        <div id="serviceGrid" class="service-grid"></div>
+        <p id="noResults" class="empty hidden">কোনো সেবা পাওয়া যায়নি।</p>
+      </div>
+    </section>
 
-    const client = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
+    <!-- FAVORITES -->
+    <section id="page-favorites" class="hidden card">
+      <h2 class="section-heading">⭐ পছন্দের সেবা</h2>
+      <div id="favoriteList" class="service-grid"></div>
+      <p id="noFavorites" class="empty">এখনো কোনো সেবা পছন্দের তালিকায় যোগ করা হয়নি।</p>
+    </section>
 
-    const loginCard = document.getElementById("loginCard");
-    const userCard = document.getElementById("userCard");
-    const adminPanel = document.getElementById("adminPanel");
+    <!-- HISTORY -->
+    <section id="page-history" class="hidden card">
+      <h2 class="section-heading">🕘 সাম্প্রতিক ইতিহাস</h2>
+      <div id="historyList"></div>
+      <button id="clearHistory" class="secondary">ইতিহাস মুছুন</button>
+    </section>
 
-    const authForm = document.getElementById("authForm");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
+    <!-- SUPPORT -->
+    <section id="page-support" class="hidden card">
+      <h2 class="section-heading">💬 সহায়তা কেন্দ্র</h2>
+      <p class="muted">
+        সরকারি সেবা ব্যবহারে সমস্যা হলে সংশ্লিষ্ট সরকারি ওয়েবসাইটের সহায়তা বিভাগ ব্যবহার করুন।
+      </p>
+    </section>
 
-    const loginBtn = document.getElementById("loginBtn");
-    const signupBtn = document.getElementById("signupBtn");
+    <!-- PROFILE -->
+    <section id="page-profile" class="hidden card">
+      <h2 class="section-heading">👤 প্রোফাইল</h2>
+      <p class="muted">লগইন ইমেইল</p>
+      <p id="profileEmail" class="email"></p>
+      <p class="muted">অ্যাকাউন্ট UID</p>
+      <p id="profileUid" class="email"></p>
+      <button id="backHome" class="secondary">ড্যাশবোর্ডে ফিরুন</button>
+    </section>
 
-    const loginMessage = document.getElementById("loginMessage");
-    const userMessage = document.getElementById("userMessage");
-    const adminMessage = document.getElementById("adminMessage");
+    <footer>INFINITY · ডিজিটাল সেবা কেন্দ্র</footer>
+  </section>
+</main>
 
-    let checkingUserId = null;
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    function showOnly(section) {
-      loginCard.classList.add("hidden");
-      userCard.classList.add("hidden");
-      adminPanel.classList.add("hidden");
+<script>
+const SUPABASE_URL = "https://ozjmdxufgugemtggkuvp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
 
-      section.classList.remove("hidden");
-    }
+const client = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
-    function showSignedOut(message = "") {
-      checkingUserId = null;
-      showOnly(loginCard);
-      loginMessage.textContent = message;
-    }
+const $ = id => document.getElementById(id);
+let currentUser = null;
 
-    async function showSignedIn(user) {
-      if (!user) {
-        showSignedOut();
-        return;
-      }
+const services = [
+  {id:"nid",name:"জাতীয় পরিচয়পত্র (NID)",icon:"🪪",category:"পরিচয়",url:"https://services.nidw.gov.bd/nid-pub/"},
+  {id:"birth",name:"জন্ম ও মৃত্যু নিবন্ধন",icon:"👶",category:"নিবন্ধন",url:"https://www.bdris.gov.bd/"},
+  {id:"mygov",name:"মাইগভ সেবা",icon:"🇧🇩",category:"নাগরিক",url:"https://www.mygov.bd/"},
+  {id:"citizen",name:"বাংলাদেশ সরকারি পোর্টাল",icon:"🏛️",category:"নাগরিক",url:"https://bangladesh.gov.bd/"},
+  {id:"etin",name:"ই-টিন নিবন্ধন",icon:"📄",category:"কর",url:"https://secure.incometax.gov.bd/TINHome"},
+  {id:"return",name:"আয়কর ই-রিটার্ন",icon:"🧾",category:"কর",url:"https://etaxnbr.gov.bd/"},
+  {id:"challan",name:"ই-চালান",icon:"💳",category:"কর",url:"https://ibas.finance.gov.bd/acs"},
+  {id:"education",name:"শিক্ষার ফলাফল",icon:"🎓",category:"শিক্ষা",url:"https://educationboardresults.gov.bd/"},
+  {id:"allowance",name:"সরকারি ভাতা",icon:"🤝",category:"ভাতা",url:"https://dss.gov.bd/"},
+  {id:"passport",name:"ই-পাসপোর্ট",icon:"🛂",category:"পরিচয়",url:"https://www.epassport.gov.bd/"},
+  {id:"police",name:"পুলিশ ক্লিয়ারেন্স",icon:"👮",category:"নাগরিক",url:"https://pcc.police.gov.bd/"},
+  {id:"land",name:"ভূমি মন্ত্রণালয়",icon:"🌾",category:"ভূমি",url:"https://land.gov.bd/"},
+  {id:"mutation",name:"নামজারি",icon:"📑",category:"ভূমি",url:"https://mutation.land.gov.bd/"},
+  {id:"porcha",name:"ই-পর্চা",icon:"📜",category:"ভূমি",url:"https://eporcha.gov.bd/"},
+  {id:"brta",name:"বিআরটিএ সেবা",icon:"🚗",category:"পরিবহন",url:"https://bsp.brta.gov.bd/"},
+  {id:"bpsc",name:"সরকারি চাকরি ও পরীক্ষা",icon:"💼",category:"চাকরি",url:"https://bpsc.gov.bd/"}
+];
 
-      if (checkingUserId === user.id) {
-        return;
-      }
+function storageKey(type) {
+  return "infinity_" + type + "_" + (currentUser ? currentUser.id : "guest");
+}
 
-      checkingUserId = user.id;
+function getList(type) {
+  try {
+    return JSON.parse(localStorage.getItem(storageKey(type)) || "[]");
+  } catch {
+    return [];
+  }
+}
 
-      showOnly(userCard);
+function saveList(type, list) {
+  localStorage.setItem(storageKey(type), JSON.stringify(list));
+}
 
-      document.getElementById("userEmail").textContent =
-        user.email || "";
+function showLogin(message = "") {
+  currentUser = null;
+  $("loginCard").classList.remove("hidden");
+  $("userDashboard").classList.add("hidden");
+  $("loginMessage").textContent = message;
+}
 
-      userMessage.textContent = "Admin অনুমতি যাচাই হচ্ছে...";
+function showDashboard(user) {
+  currentUser = user;
+  $("loginCard").classList.add("hidden");
+  $("userDashboard").classList.remove("hidden");
 
-      try {
-        const { data, error } = await client
-          .from("admin_users")
-          .select("role")
-          .eq("user_id", user.id)
-          .maybeSingle();
+  $("signedInEmail").textContent = user.email || "";
+  $("profileEmail").textContent = user.email || "";
+  $("profileUid").textContent = user.id;
 
-        if (error) {
-          throw error;
-        }
+  renderServices();
+  renderFavorites();
+  renderHistory();
+  setPage("home");
+}
 
-        if (data && data.role === "admin") {
-          showOnly(adminPanel);
+function setPage(page) {
+  ["home", "favorites", "history", "support", "profile"].forEach(name => {
+    $("page-" + name).classList.toggle("hidden", name !== page);
+  });
 
-          document.getElementById("adminEmail").textContent =
-            user.email || "";
+  document.querySelectorAll("#userDashboard [data-page]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.page === page);
+  });
+}
 
-          document.getElementById("adminUid").textContent =
-            user.id;
+function openService(service) {
+  const history = getList("history").filter(id => id !== service.id);
+  history.unshift(service.id);
+  saveList("history", history.slice(0, 20));
+  renderHistory();
+  window.open(service.url, "_blank", "noopener,noreferrer");
+}
 
-          adminMessage.textContent = "";
-        } else {
-          showOnly(userCard);
+function createServiceCard(service) {
+  const card = document.createElement("div");
+  card.className = "service-card";
 
-          userMessage.textContent =
-            "এই অ্যাকাউন্টে Admin অনুমতি পাওয়া যায়নি।";
-        }
-      } catch (error) {
-        showOnly(userCard);
+  const fav = document.createElement("button");
+  fav.className = "favorite-btn";
+  fav.type = "button";
 
-        userMessage.textContent =
-          "Admin যাচাই করা যায়নি। ইন্টারনেট ও Supabase সেটিংস পরীক্ষা করুন।";
+  function updateFavoriteButton() {
+    const active = getList("favorites").includes(service.id);
+    fav.textContent = active ? "♥" : "♡";
+    fav.classList.toggle("is-favorite", active);
+    fav.setAttribute("aria-label", active ? "পছন্দ থেকে বাদ দিন" : "পছন্দে যোগ করুন");
+  }
 
-        console.error("Admin verification error:", error);
-      } finally {
-        if (checkingUserId === user.id) {
-          checkingUserId = null;
-        }
-      }
-    }
+  updateFavoriteButton();
 
-    // SIGN IN
-    authForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
+  fav.addEventListener("click", event => {
+    event.stopPropagation();
 
-      loginBtn.disabled = true;
-      signupBtn.disabled = true;
-      loginMessage.textContent = "লগইন হচ্ছে...";
+    let list = getList("favorites");
+    list = list.includes(service.id)
+      ? list.filter(id => id !== service.id)
+      : [service.id, ...list];
 
-      try {
-        const { data, error } = await client.auth.signInWithPassword({
-          email: emailInput.value.trim(),
-          password: passwordInput.value
-        });
+    saveList("favorites", list);
+    renderServices();
+    renderFavorites();
+  });
 
-        if (error) {
-          throw error;
-        }
+  const icon = document.createElement("span");
+  icon.className = "service-icon";
+  icon.textContent = service.icon;
 
-        await showSignedIn(data.user);
-      } catch (error) {
-        loginMessage.textContent =
-          "লগইন করা যায়নি: " + error.message;
-      } finally {
-        loginBtn.disabled = false;
-        signupBtn.disabled = false;
+  const name = document.createElement("strong");
+  name.className = "service-name";
+  name.textContent = service.name;
+
+  const category = document.createElement("small");
+  category.className = "service-category";
+  category.textContent = service.category + " · খুলুন ↗";
+
+  card.append(fav, icon, name, category);
+  card.addEventListener("click", () => openService(service));
+
+  return card;
+}
+
+function renderServices() {
+  const grid = $("serviceGrid");
+  grid.replaceChildren();
+
+  const query = $("searchInput").value.trim().toLowerCase();
+  const results = services.filter(service =>
+    (service.name + " " + service.category).toLowerCase().includes(query)
+  );
+
+  results.forEach(service => grid.appendChild(createServiceCard(service)));
+  $("noResults").classList.toggle("hidden", results.length > 0);
+}
+
+function renderFavorites() {
+  const grid = $("favoriteList");
+  grid.replaceChildren();
+
+  const ids = getList("favorites");
+  const results = services.filter(service => ids.includes(service.id));
+
+  results.forEach(service => grid.appendChild(createServiceCard(service)));
+  $("noFavorites").classList.toggle("hidden", results.length > 0);
+}
+
+function renderHistory() {
+  const list = $("historyList");
+  list.replaceChildren();
+
+  const results = getList("history")
+    .map(id => services.find(service => service.id === id))
+    .filter(Boolean);
+
+  if (!results.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "এখনো কোনো সেবা খোলা হয়নি।";
+    list.appendChild(empty);
+    return;
+  }
+
+  results.forEach(service => {
+    const row = document.createElement("div");
+    row.className = "history-item";
+
+    const link = document.createElement("a");
+    link.href = service.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = service.icon + " " + service.name + " ↗";
+
+    row.appendChild(link);
+    list.appendChild(row);
+  });
+}
+
+document.querySelectorAll("#userDashboard [data-page]").forEach(button => {
+  button.addEventListener("click", () => setPage(button.dataset.page));
+});
+
+$("searchInput").addEventListener("input", renderServices);
+
+$("profileBtn").addEventListener("click", () => setPage("profile"));
+$("backHome").addEventListener("click", () => setPage("home"));
+
+$("clearHistory").addEventListener("click", () => {
+  if (confirm("সাম্প্রতিক ইতিহাস মুছে ফেলবেন?")) {
+    saveList("history", []);
+    renderHistory();
+  }
+});
+
+/* SIGN IN */
+$("authForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  $("loginBtn").disabled = true;
+  $("signupBtn").disabled = true;
+  $("loginMessage").textContent = "লগইন হচ্ছে...";
+
+  try {
+    const { data, error } = await client.auth.signInWithPassword({
+      email: $("email").value.trim(),
+      password: $("password").value
+    });
+
+    if (error) throw error;
+    showDashboard(data.user);
+  } catch (error) {
+    $("loginMessage").textContent = "লগইন করা যায়নি: " + error.message;
+  } finally {
+    $("loginBtn").disabled = false;
+    $("signupBtn").disabled = false;
+  }
+});
+
+/* CREATE ACCOUNT */
+$("signupBtn").addEventListener("click", async () => {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!email || !password) {
+    $("loginMessage").textContent = "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
+    return;
+  }
+
+  if (password.length < 6) {
+    $("loginMessage").textContent = "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
+    return;
+  }
+
+  $("signupBtn").disabled = true;
+  $("loginMessage").textContent = "অ্যাকাউন্ট তৈরি হচ্ছে...";
+
+  try {
+    const { data, error } = await client.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin + window.location.pathname
       }
     });
 
-    // CREATE ACCOUNT
-    signupBtn.addEventListener("click", async () => {
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
+    if (error) throw error;
 
-      if (!email || !password) {
-        loginMessage.textContent =
-          "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
-        return;
-      }
-
-      if (password.length < 6) {
-        loginMessage.textContent =
-          "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
-        return;
-      }
-
-      signupBtn.disabled = true;
-      loginMessage.textContent = "অ্যাকাউন্ট তৈরি হচ্ছে...";
-
-      try {
-        const { data, error } = await client.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo:
-              window.location.origin + window.location.pathname
-          }
-        });
-
-        if (error) {
-          throw error;
-        }
-
-        if (data.session && data.user) {
-          await showSignedIn(data.user);
-        } else {
-          loginMessage.textContent =
-            "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
-        }
-      } catch (error) {
-        loginMessage.textContent =
-          "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
-      } finally {
-        signupBtn.disabled = false;
-      }
-    });
-
-    // LOG OUT
-    async function logout() {
-      const { error } = await client.auth.signOut();
-
-      if (error) {
-        adminMessage.textContent =
-          "Logout করা যায়নি: " + error.message;
-        return;
-      }
-
-      showSignedOut("আপনি সফলভাবে Logout করেছেন।");
+    if (data.session && data.user) {
+      showDashboard(data.user);
+    } else {
+      $("loginMessage").textContent =
+        "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
     }
+  } catch (error) {
+    $("loginMessage").textContent = "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
+  } finally {
+    $("signupBtn").disabled = false;
+  }
+});
 
-    document.getElementById("adminLogout")
-      .addEventListener("click", logout);
+/* LOGOUT */
+$("logoutBtn").addEventListener("click", async () => {
+  const { error } = await client.auth.signOut();
 
-    document.getElementById("userLogout")
-      .addEventListener("click", logout);
+  if (error) {
+    alert("লগআউট করা যায়নি: " + error.message);
+    return;
+  }
 
-    // ADMIN MENU
-    document.querySelectorAll("[data-page]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const page = button.dataset.page;
+  showLogin("আপনি সফলভাবে Logout করেছেন।");
+});
 
-        document.querySelectorAll(".panel").forEach((section) => {
-          section.classList.add("hidden");
-        });
+/* EXISTING SESSION */
+async function initialize() {
+  const { data, error } = await client.auth.getSession();
 
-        document.getElementById("page-" + page)
-          .classList.remove("hidden");
+  if (error) {
+    showLogin("সেশন যাচাই করা যায়নি। আবার লগইন করুন।");
+    return;
+  }
 
-        document.querySelectorAll("[data-page]").forEach((item) => {
-          item.classList.toggle("active", item === button);
-        });
-      });
-    });
+  if (data.session && data.session.user) {
+    showDashboard(data.session.user);
+  } else {
+    showLogin();
+  }
+}
 
-    // CHECK EXISTING SESSION
-    async function initialize() {
-      const { data, error } = await client.auth.getSession();
+client.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT") {
+    showLogin();
+  } else if (event === "SIGNED_IN" && session && session.user) {
+    showDashboard(session.user);
+  }
+});
 
-      if (error) {
-        showSignedOut("সেশন যাচাই করা যায়নি। আবার লগইন করুন।");
-        return;
-      }
-
-      if (data.session && data.session.user) {
-        await showSignedIn(data.session.user);
-      } else {
-        showSignedOut();
-      }
-    }
-
-    client.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT") {
-        showSignedOut();
-      } else if (event === "SIGNED_IN" && session?.user) {
-        showSignedIn(session.user);
-      }
-    });
-
-    initialize();
-  </script>
+initialize();
+</script>
 </body>
 </html>
