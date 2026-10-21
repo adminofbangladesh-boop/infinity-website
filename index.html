@@ -10,6 +10,7 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
       background: #080d18;
       color: #f1f5f9;
       font-family: Arial, sans-serif;
@@ -61,11 +62,25 @@
     }
 
     button:disabled { opacity: .6; }
-
     .secondary { background: #263449; }
     .danger { background: #b91c1c; }
     .hidden { display: none !important; }
     .message { overflow-wrap: anywhere; line-height: 1.6; }
+    .email { color: #93c5fd; overflow-wrap: anywhere; }
+
+    /* লগইন বক্স মোবাইল স্ক্রিনের মাঝখানে */
+    #loginCard {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% - 32px);
+      max-width: 380px;
+      max-height: calc(100vh - 32px);
+      overflow-y: auto;
+      margin: 0;
+      z-index: 10;
+    }
 
     .topbar {
       display: flex;
@@ -116,9 +131,7 @@
 
     .nav button { margin: 0; }
     .nav button.active { background: #2563eb; }
-
     .panel { min-width: 0; }
-    .email { color: #93c5fd; overflow-wrap: anywhere; }
 
     @media (max-width: 520px) {
       .wrap { padding: 12px; }
@@ -158,21 +171,24 @@
         >
 
         <button id="loginBtn" type="submit">Sign In</button>
-        <button id="signupBtn" class="secondary" type="button">
-          Create Account
-        </button>
+
+        <button
+          id="signupBtn"
+          class="secondary"
+          type="button"
+        >Create Account</button>
       </form>
 
       <p id="loginMessage" class="message" role="status"></p>
     </section>
 
-    <!-- SIGNED-IN NON-ADMIN -->
+    <!-- NON-ADMIN USER -->
     <section id="userCard" class="card hidden">
       <h1>INFINITY</h1>
       <h2>আপনি লগইন করেছেন</h2>
       <p id="userEmail" class="email"></p>
       <p id="userMessage" class="muted">
-        এই অ্যাকাউন্টে Admin অনুমতি পাওয়া যায়নি।
+        Admin অনুমতি যাচাই করা হচ্ছে...
       </p>
       <button id="userLogout" class="danger">Sign Out</button>
     </section>
@@ -198,7 +214,7 @@
         <div class="card">
           <h2>স্বাগতম, Admin!</h2>
           <p class="muted">
-            আপনার INFINITY Admin Panel-এ প্রবেশ সফল হয়েছে।
+            আপনার INFINITY Admin Panel-এ স্বাগতম।
           </p>
 
           <div class="grid">
@@ -220,7 +236,6 @@
           </p>
           <p class="muted">
             ব্যবহারকারীর প্রকৃত সংখ্যা এখনো সংযুক্ত করা হয়নি।
-            অনুমানভিত্তিক সংখ্যা দেখানো হচ্ছে না।
           </p>
         </div>
       </section>
@@ -229,12 +244,12 @@
         <div class="card">
           <h2>ব্যবহারকারী ব্যবস্থাপনা</h2>
           <p class="muted">
-            এই সংস্করণে ব্যবহারকারীদের তালিকা, অ্যাকাউন্ট পরিবর্তন
-            বা মুছে ফেলার সুবিধা এখনো সংযুক্ত করা হয়নি।
+            ব্যবহারকারীদের তালিকা ও অ্যাকাউন্ট পরিচালনার সুবিধা
+            এখনো সংযুক্ত করা হয়নি।
           </p>
           <p class="muted">
-            এসব সুবিধা নিরাপদভাবে চালু করতে আলাদা profiles table
-            এবং প্রয়োজন অনুযায়ী server-side ব্যবস্থা তৈরি করতে হবে।
+            এই সুবিধার জন্য নিরাপদ ডেটাবেস ও সার্ভার ব্যবস্থা
+            তৈরি করতে হবে।
           </p>
         </div>
       </section>
@@ -242,17 +257,11 @@
       <section id="page-settings" class="panel hidden">
         <div class="card">
           <h2>ওয়েবসাইট সেটিংস</h2>
+          <p class="muted">ওয়েবসাইট: INFINITY</p>
+          <p class="muted">হোস্টিং: GitHub Pages</p>
+          <p class="muted">লগইন: Supabase</p>
           <p class="muted">
-            ওয়েবসাইট: INFINITY
-          </p>
-          <p class="muted">
-            হোস্টিং: GitHub Pages
-          </p>
-          <p class="muted">
-            লগইন ও Admin অনুমতি: Supabase
-          </p>
-          <p class="muted">
-            এই পেজে এখনো সংরক্ষণযোগ্য সেটিংস যোগ করা হয়নি।
+            সেটিংস পরিবর্তন ও সংরক্ষণের সুবিধা এখনো তৈরি করা হয়নি।
           </p>
         </div>
       </section>
@@ -264,9 +273,6 @@
           <p id="adminEmail" class="email"></p>
           <p>Admin UID:</p>
           <p id="adminUid" class="muted"></p>
-          <p class="muted">
-            আপনার Admin অনুমতি Supabase ডেটাবেস থেকে যাচাই করা হয়েছে।
-          </p>
         </div>
       </section>
 
@@ -304,7 +310,7 @@
     const userMessage = document.getElementById("userMessage");
     const adminMessage = document.getElementById("adminMessage");
 
-    let checkingSession = false;
+    let checkingUserId = null;
 
     function showOnly(section) {
       loginCard.classList.add("hidden");
@@ -314,16 +320,23 @@
     }
 
     function showSignedOut(message = "") {
+      checkingUserId = null;
       showOnly(loginCard);
       loginMessage.textContent = message;
     }
 
     async function showSignedIn(user) {
-      if (!user || checkingSession) return;
+      if (!user) {
+        showSignedOut();
+        return;
+      }
 
-      checkingSession = true;
+      if (checkingUserId === user.id) return;
+      checkingUserId = user.id;
+
       showOnly(userCard);
-      document.getElementById("userEmail").textContent = user.email || "";
+      document.getElementById("userEmail").textContent =
+        user.email || "";
       userMessage.textContent = "Admin অনুমতি যাচাই হচ্ছে...";
 
       try {
@@ -337,6 +350,7 @@
 
         if (data && data.role === "admin") {
           showOnly(adminPanel);
+
           document.getElementById("adminEmail").textContent =
             user.email || "";
           document.getElementById("adminUid").textContent = user.id;
@@ -349,15 +363,18 @@
       } catch (error) {
         showOnly(userCard);
         userMessage.textContent =
-          "Admin যাচাই করা যায়নি। Supabase নীতি ও সংযোগ পরীক্ষা করুন।";
-        console.error("Admin verification error:", error.message);
+          "Admin যাচাই করা যায়নি। ইন্টারনেট ও Supabase সেটিংস পরীক্ষা করুন।";
+        console.error("Admin verification error:", error);
       } finally {
-        checkingSession = false;
+        if (checkingUserId === user.id) {
+          checkingUserId = null;
+        }
       }
     }
 
     authForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+
       loginBtn.disabled = true;
       signupBtn.disabled = true;
       loginMessage.textContent = "লগইন হচ্ছে...";
@@ -372,7 +389,8 @@
 
         await showSignedIn(data.user);
       } catch (error) {
-        loginMessage.textContent = "লগইন ব্যর্থ: " + error.message;
+        loginMessage.textContent =
+          "লগইন ব্যর্থ: " + error.message;
       } finally {
         loginBtn.disabled = false;
         signupBtn.disabled = false;
@@ -384,13 +402,14 @@
       const password = passwordInput.value;
 
       if (!email || !password) {
-        loginMessage.textContent = "ইমেইল ও পাসওয়ার্ড লিখুন।";
+        loginMessage.textContent =
+          "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
         return;
       }
 
       if (password.length < 6) {
         loginMessage.textContent =
-          "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।";
+          "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
         return;
       }
 
@@ -402,8 +421,8 @@
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin +
-              window.location.pathname
+            emailRedirectTo:
+              window.location.origin + window.location.pathname
           }
         });
 
@@ -413,7 +432,7 @@
           await showSignedIn(data.user);
         } else {
           loginMessage.textContent =
-            "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
+            "অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
         }
       } catch (error) {
         loginMessage.textContent =
@@ -427,11 +446,11 @@
       const { error } = await client.auth.signOut();
 
       if (error) {
-        adminMessage.textContent = "Logout ব্যর্থ: " + error.message;
+        adminMessage.textContent =
+          "Logout ব্যর্থ: " + error.message;
         return;
       }
 
-      checkingSession = false;
       showSignedOut("আপনি সফলভাবে Logout করেছেন।");
     }
 
@@ -475,13 +494,8 @@
 
     client.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT") {
-        checkingSession = false;
         showSignedOut();
-      } else if (
-        session &&
-        session.user &&
-        event === "SIGNED_IN"
-      ) {
+      } else if (event === "SIGNED_IN" && session?.user) {
         showSignedIn(session.user);
       }
     });
