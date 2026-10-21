@@ -2,288 +2,695 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>INFINITY Portal</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#f2f5fb;color:#19243a;font-family:Arial,sans-serif}
-header{background:#111d39;color:white;padding:17px;display:flex;justify-content:space-between;align-items:center}
-header h2{margin:0}
-button{border:0;border-radius:9px;padding:12px 15px;background:#2463eb;color:white;cursor:pointer;font-weight:600}
-input,select{width:100%;padding:12px;border:1px solid #d8deea;border-radius:9px;margin:7px 0 15px}
-.wrap{max-width:1050px;margin:auto;padding:16px}
-.card{background:white;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 3px 15px #162b4d0c}
-nav{display:flex;gap:8px;overflow:auto;background:white;padding:12px}
-nav button{white-space:nowrap}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
-.tile{background:white;border:1px solid #e4e9f2;border-radius:12px;padding:16px}
-.hero{padding:25px;border-radius:15px;background:linear-gradient(120deg,#172c59,#2874f0);color:white}
-.small{color:#718096;font-size:13px}
-.notice{padding:12px;background:#edf4ff;border-radius:9px;white-space:pre-wrap;margin:10px 0}
-.hidden{display:none!important}
-.danger{background:#c83343}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INFINITY</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #080d18;
+      color: #f8fafc;
+      font-family: Arial, sans-serif;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .wrap {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #30394a;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 { margin-top: 0; }
+    h1 { color: #60a5fa; }
+
+    .muted {
+      color: #aab4c5;
+      line-height: 1.7;
+    }
+
+    label {
+      display: block;
+      margin: 17px 0 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #414c60;
+      border-radius: 8px;
+      background: #080d18;
+      color: white;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+    }
+
+    button:disabled { opacity: .6; cursor: wait; }
+    .secondary { background: #263449; }
+    .danger { background: #b91c1c; }
+    .hidden { display: none !important; }
+
+    .message {
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .email {
+      color: #93c5fd;
+      overflow-wrap: anywhere;
+    }
+
+    /* LOGIN: আগের ডিজাইন অপরিবর্তিত */
+    #loginCard {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(100% - 32px);
+      max-width: 380px;
+      max-height: calc(100vh - 32px);
+      overflow-y: auto;
+      margin: 0;
+      padding: 28px;
+      background: #111827;
+      border: 1px solid #30394a;
+      border-radius: 16px;
+      z-index: 10;
+    }
+
+    #loginCard h1 {
+      text-align: center;
+      margin: 0 0 8px;
+    }
+
+    #loginCard .subtitle {
+      text-align: center;
+      color: #aab4c5;
+      margin-bottom: 25px;
+    }
+
+    #loginCard button { display: block; width: 100%; }
+
+    /* USER DASHBOARD */
+    #userDashboard .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    #userDashboard .topbar h1 { margin: 0; }
+
+    #userDashboard .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    #userDashboard .actions button {
+      width: auto;
+      margin: 0;
+    }
+
+    #userDashboard .welcome {
+      background: #111827;
+      border: 1px solid #30394a;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    #userDashboard .welcome h2 {
+      color: #60a5fa;
+      margin-bottom: 8px;
+    }
+
+    #userDashboard .welcome p { margin-bottom: 0; }
+
+    #userDashboard .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    #userDashboard .nav button {
+      width: auto;
+      flex: 1 1 100px;
+      margin: 0;
+      background: #263449;
+    }
+
+    #userDashboard .nav button.active { background: #2563eb; }
+
+    #userDashboard .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    #userDashboard .service-card {
+      position: relative;
+      min-width: 0;
+      padding: 17px 10px;
+      text-align: center;
+      background: #0b1424;
+      border: 1px solid #30394a;
+      border-radius: 13px;
+      cursor: pointer;
+    }
+
+    #userDashboard .service-card:hover { border-color: #60a5fa; }
+
+    #userDashboard .service-icon {
+      display: block;
+      font-size: 29px;
+      margin-bottom: 10px;
+    }
+
+    #userDashboard .service-name {
+      display: block;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    #userDashboard .service-category {
+      display: block;
+      margin-top: 6px;
+      color: #93c5fd;
+      font-size: 12px;
+    }
+
+    #userDashboard .favorite-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      margin: 0;
+      border-radius: 50%;
+      background: #263449;
+      color: #93c5fd;
+      font-size: 19px;
+    }
+
+    #userDashboard .favorite-btn.is-favorite { color: #f87171; }
+
+    #userDashboard .section-heading {
+      margin-bottom: 16px;
+      color: #60a5fa;
+    }
+
+    #userDashboard .history-item {
+      padding: 13px 0;
+      border-bottom: 1px solid #30394a;
+      overflow-wrap: anywhere;
+    }
+
+    #userDashboard .history-item a { color: #93c5fd; }
+
+    #userDashboard .empty {
+      color: #aab4c5;
+      line-height: 1.7;
+    }
+
+    #userDashboard footer {
+      text-align: center;
+      padding: 20px 0 30px;
+      color: #aab4c5;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 12px; }
+      .card { padding: 18px; }
+      #loginCard { padding: 26px 22px; }
+
+      #userDashboard .service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      #userDashboard .welcome { padding: 18px; }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <h2>♾ INFINITY</h2>
-  <button id="logoutBtn" class="hidden" onclick="logout()">লগআউট</button>
-</header>
+<main class="wrap">
 
-<div class="wrap">
-  <section id="login">
-    <div class="card">
-      <h2>Welcome Back</h2>
-      <p class="small">INFINITY অ্যাকাউন্টে লগইন করুন</p>
-      <label>ইমেইল</label>
-      <input id="email" type="email" placeholder="Email address">
-      <label>পাসওয়ার্ড</label>
-      <input id="password" type="password" placeholder="Password">
-      <button onclick="signIn()">লগইন</button>
-      <button onclick="signUp()">নতুন অ্যাকাউন্ট</button>
-      <div id="authMsg" class="notice hidden"></div>
-    </div>
+  <!-- LOGIN PAGE -->
+  <section id="loginCard" class="card">
+    <h1>INFINITY</h1>
+    <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+
+    <form id="authForm">
+      <label for="email">ইমেইল ঠিকানা</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="আপনার ইমেইল লিখুন"
+        autocomplete="email"
+        required
+      >
+
+      <label for="password">পাসওয়ার্ড</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="আপনার পাসওয়ার্ড লিখুন"
+        autocomplete="current-password"
+        required
+      >
+
+      <button id="loginBtn" type="submit">Sign In</button>
+      <button id="signupBtn" class="secondary" type="button">Create Account</button>
+    </form>
+
+    <p id="loginMessage" class="message" role="status"></p>
   </section>
 
-  <section id="portal" class="hidden">
-    <nav>
-      <button onclick="page('home')">ড্যাশবোর্ড</button>
-      <button onclick="page('services')">সার্ভিস</button>
-      <button onclick="page('wallet')">ওয়ালেট</button>
-      <button onclick="page('history')">পেমেন্ট হিস্ট্রি</button>
-      <button id="adminBtn" class="hidden" onclick="page('admin')">অ্যাডমিন</button>
+  <!-- USER DASHBOARD -->
+  <section id="userDashboard" class="hidden">
+
+    <header class="topbar">
+      <div>
+        <h1>INFINITY</h1>
+        <p class="muted">আপনার ডিজিটাল সেবা কেন্দ্র</p>
+      </div>
+
+      <div class="actions">
+        <button id="profileBtn" class="secondary">প্রোফাইল</button>
+        <button id="logoutBtn" class="danger">Logout</button>
+      </div>
+    </header>
+
+    <section class="welcome">
+      <h2>স্বাগতম!</h2>
+      <p class="muted">
+        প্রয়োজনীয় সেবা বেছে নিন। সেবার কার্ডে চাপ দিলে সংশ্লিষ্ট ওয়েবসাইট খুলবে।
+      </p>
+      <p id="signedInEmail" class="email"></p>
+    </section>
+
+    <nav class="nav">
+      <button class="active" data-page="home">🏠 হোম</button>
+      <button data-page="favorites">⭐ পছন্দের সেবা</button>
+      <button data-page="history">🕘 ইতিহাস</button>
+      <button data-page="support">💬 সহায়তা</button>
     </nav>
-    <main id="view"></main>
+
+    <!-- HOME -->
+    <section id="page-home">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="🔎 সেবার নাম লিখে খুঁজুন..."
+        aria-label="সেবা খুঁজুন"
+      >
+
+      <div class="card" style="margin-top:16px">
+        <h2 class="section-heading">সরকারি ও নাগরিক সেবা</h2>
+        <div id="serviceGrid" class="service-grid"></div>
+        <p id="noResults" class="empty hidden">কোনো সেবা পাওয়া যায়নি।</p>
+      </div>
+    </section>
+
+    <!-- FAVORITES -->
+    <section id="page-favorites" class="hidden card">
+      <h2 class="section-heading">⭐ পছন্দের সেবা</h2>
+      <div id="favoriteList" class="service-grid"></div>
+      <p id="noFavorites" class="empty">এখনো কোনো সেবা পছন্দের তালিকায় যোগ করা হয়নি।</p>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="page-history" class="hidden card">
+      <h2 class="section-heading">🕘 সাম্প্রতিক ইতিহাস</h2>
+      <div id="historyList"></div>
+      <button id="clearHistory" class="secondary">ইতিহাস মুছুন</button>
+    </section>
+
+    <!-- SUPPORT -->
+    <section id="page-support" class="hidden card">
+      <h2 class="section-heading">💬 সহায়তা কেন্দ্র</h2>
+      <p class="muted">
+        সরকারি সেবা ব্যবহারে সমস্যা হলে সংশ্লিষ্ট সরকারি ওয়েবসাইটের সহায়তা বিভাগ ব্যবহার করুন।
+      </p>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="page-profile" class="hidden card">
+      <h2 class="section-heading">👤 প্রোফাইল</h2>
+      <p class="muted">লগইন ইমেইল</p>
+      <p id="profileEmail" class="email"></p>
+      <p class="muted">অ্যাকাউন্ট UID</p>
+      <p id="profileUid" class="email"></p>
+      <button id="backHome" class="secondary">ড্যাশবোর্ডে ফিরুন</button>
+    </section>
+
+    <footer>INFINITY · ডিজিটাল সেবা কেন্দ্র</footer>
   </section>
-</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const DB_URL="https://ozjmdxufgugemtggkuvp.supabase.co";
-const DB_KEY="sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
-const db=window.supabase.createClient(DB_URL,DB_KEY);
+const SUPABASE_URL = "https://ozjmdxufgugemtggkuvp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
 
-let user=null;
-let admin=false;
+const client = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
-/* আপনার আসল পেমেন্ট নম্বর এখানে বসাবেন */
-const RECEIVERS={
-  bKash:"এখানে আপনার bKash নম্বর দিন",
-  Nagad:"এখানে আপনার Nagad নম্বর দিন",
-  Rocket:"এখানে আপনার Rocket নম্বর দিন"
-};
+const $ = id => document.getElementById(id);
+let currentUser = null;
 
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-}[c]));
+const services = [
+  {id:"nid",name:"জাতীয় পরিচয়পত্র (NID)",icon:"🪪",category:"পরিচয়",url:"https://services.nidw.gov.bd/nid-pub/"},
+  {id:"birth",name:"জন্ম ও মৃত্যু নিবন্ধন",icon:"👶",category:"নিবন্ধন",url:"https://www.bdris.gov.bd/"},
+  {id:"mygov",name:"মাইগভ সেবা",icon:"🇧🇩",category:"নাগরিক",url:"https://www.mygov.bd/"},
+  {id:"citizen",name:"বাংলাদেশ সরকারি পোর্টাল",icon:"🏛️",category:"নাগরিক",url:"https://bangladesh.gov.bd/"},
+  {id:"etin",name:"ই-টিন নিবন্ধন",icon:"📄",category:"কর",url:"https://secure.incometax.gov.bd/TINHome"},
+  {id:"return",name:"আয়কর ই-রিটার্ন",icon:"🧾",category:"কর",url:"https://etaxnbr.gov.bd/"},
+  {id:"challan",name:"ই-চালান",icon:"💳",category:"কর",url:"https://ibas.finance.gov.bd/acs"},
+  {id:"education",name:"শিক্ষার ফলাফল",icon:"🎓",category:"শিক্ষা",url:"https://educationboardresults.gov.bd/"},
+  {id:"allowance",name:"সরকারি ভাতা",icon:"🤝",category:"ভাতা",url:"https://dss.gov.bd/"},
+  {id:"passport",name:"ই-পাসপোর্ট",icon:"🛂",category:"পরিচয়",url:"https://www.epassport.gov.bd/"},
+  {id:"police",name:"পুলিশ ক্লিয়ারেন্স",icon:"👮",category:"নাগরিক",url:"https://pcc.police.gov.bd/"},
+  {id:"land",name:"ভূমি মন্ত্রণালয়",icon:"🌾",category:"ভূমি",url:"https://land.gov.bd/"},
+  {id:"mutation",name:"নামজারি",icon:"📑",category:"ভূমি",url:"https://mutation.land.gov.bd/"},
+  {id:"porcha",name:"ই-পর্চা",icon:"📜",category:"ভূমি",url:"https://eporcha.gov.bd/"},
+  {id:"brta",name:"বিআরটিএ সেবা",icon:"🚗",category:"পরিবহন",url:"https://bsp.brta.gov.bd/"},
+  {id:"bpsc",name:"সরকারি চাকরি ও পরীক্ষা",icon:"💼",category:"চাকরি",url:"https://bpsc.gov.bd/"}
+];
 
-function msg(id,text){
-  $(id).textContent=text;
-  $(id).classList.remove("hidden");
+function storageKey(type) {
+  return "infinity_" + type + "_" + (currentUser ? currentUser.id : "guest");
 }
 
-async function signIn(){
-  const {error}=await db.auth.signInWithPassword({
-    email:$("email").value.trim(),
-    password:$("password").value
+function getList(type) {
+  try {
+    return JSON.parse(localStorage.getItem(storageKey(type)) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveList(type, list) {
+  localStorage.setItem(storageKey(type), JSON.stringify(list));
+}
+
+function showLogin(message = "") {
+  currentUser = null;
+  $("loginCard").classList.remove("hidden");
+  $("userDashboard").classList.add("hidden");
+  $("loginMessage").textContent = message;
+}
+
+function showDashboard(user) {
+  currentUser = user;
+  $("loginCard").classList.add("hidden");
+  $("userDashboard").classList.remove("hidden");
+
+  $("signedInEmail").textContent = user.email || "";
+  $("profileEmail").textContent = user.email || "";
+  $("profileUid").textContent = user.id;
+
+  renderServices();
+  renderFavorites();
+  renderHistory();
+  setPage("home");
+}
+
+function setPage(page) {
+  ["home", "favorites", "history", "support", "profile"].forEach(name => {
+    $("page-" + name).classList.toggle("hidden", name !== page);
   });
-  if(error)msg("authMsg",error.message);
+
+  document.querySelectorAll("#userDashboard [data-page]").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.page === page);
+  });
 }
 
-async function signUp(){
-  const email=$("email").value.trim();
-  const password=$("password").value;
-  if(password.length<6){
-    msg("authMsg","পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
-    return;
-  }
-  const {data,error}=await db.auth.signUp({email,password});
-  if(error){msg("authMsg",error.message);return}
-  if(!data.session){
-    msg("authMsg","অ্যাকাউন্ট তৈরি হয়েছে। প্রয়োজন হলে ইমেইল ভেরিফাই করুন।");
-  }
+function openService(service) {
+  const history = getList("history").filter(id => id !== service.id);
+  history.unshift(service.id);
+  saveList("history", history.slice(0, 20));
+  renderHistory();
+  window.open(service.url, "_blank", "noopener,noreferrer");
 }
 
-async function logout(){await db.auth.signOut()}
+function createServiceCard(service) {
+  const card = document.createElement("div");
+  card.className = "service-card";
 
-async function initialize(session){
-  user=session?.user||null;
-  $("login").classList.toggle("hidden",!!user);
-  $("portal").classList.toggle("hidden",!user);
-  $("logoutBtn").classList.toggle("hidden",!user);
+  const fav = document.createElement("button");
+  fav.className = "favorite-btn";
+  fav.type = "button";
 
-  if(!user){admin=false;return}
+  function updateFavoriteButton() {
+    const active = getList("favorites").includes(service.id);
+    fav.textContent = active ? "♥" : "♡";
+    fav.classList.toggle("is-favorite", active);
+    fav.setAttribute("aria-label", active ? "পছন্দ থেকে বাদ দিন" : "পছন্দে যোগ করুন");
+  }
 
-  const {data}=await db.from("infinity_admins")
-    .select("user_id").eq("user_id",user.id).maybeSingle();
+  updateFavoriteButton();
 
-  admin=!!data;
-  $("adminBtn").classList.toggle("hidden",!admin);
-  await page("home");
+  fav.addEventListener("click", event => {
+    event.stopPropagation();
+
+    let list = getList("favorites");
+    list = list.includes(service.id)
+      ? list.filter(id => id !== service.id)
+      : [service.id, ...list];
+
+    saveList("favorites", list);
+    renderServices();
+    renderFavorites();
+  });
+
+  const icon = document.createElement("span");
+  icon.className = "service-icon";
+  icon.textContent = service.icon;
+
+  const name = document.createElement("strong");
+  name.className = "service-name";
+  name.textContent = service.name;
+
+  const category = document.createElement("small");
+  category.className = "service-category";
+  category.textContent = service.category + " · খুলুন ↗";
+
+  card.append(fav, icon, name, category);
+  card.addEventListener("click", () => openService(service));
+
+  return card;
 }
 
-async function page(name){
-  const v=$("view");
-  v.innerHTML='<div class="card">লোড হচ্ছে...</div>';
+function renderServices() {
+  const grid = $("serviceGrid");
+  grid.replaceChildren();
 
-  if(name==="home"){
-    const {data,error}=await db.from("wallet_accounts")
-      .select("balance").eq("user_id",user.id).maybeSingle();
+  const query = $("searchInput").value.trim().toLowerCase();
+  const results = services.filter(service =>
+    (service.name + " " + service.category).toLowerCase().includes(query)
+  );
 
-    v.innerHTML=`
-      <div class="hero">
-        <h2>স্বাগতম, INFINITY</h2>
-        <p>${esc(user.email)}</p>
-        <p>আপনার সার্ভিস ড্যাশবোর্ড</p>
-      </div>
-      <div class="grid">
-        <div class="tile"><h3>ওয়ালেট ব্যালেন্স</h3>
-          <h2>৳ ${Number(data?.balance||0).toFixed(2)}</h2>
-        </div>
-        <div class="tile"><h3>পেমেন্ট</h3>
-          <p>TrxID দিয়ে পেমেন্ট জমা দিন।</p>
-        </div>
-      </div>
-      <div class="card">
-        <h3>দ্রুত অ্যাক্সেস</h3>
-        <button onclick="page('services')">সার্ভিস দেখুন</button>
-        <button onclick="page('wallet')">টাকা যোগ করুন</button>
-      </div>`;
-    if(error) v.insertAdjacentHTML("beforeend",
-      '<div class="notice">ওয়ালেট টেবিল সেটআপ করা হয়নি। নিচের SQL চালান।</div>');
-  }
-
-  else if(name==="services"){
-    const items=[
-      ["জন্ম নিবন্ধন","জন্ম নিবন্ধন-সংক্রান্ত সেবা"],
-      ["NID সেবা","NID-সংক্রান্ত সহায়তা"],
-      ["TIN সেবা","TIN-সংক্রান্ত সহায়তা"],
-      ["অন্যান্য সেবা","অনলাইন সার্ভিস সহায়তা"]
-    ];
-    v.innerHTML=`<div class="card"><h2>সার্ভিসসমূহ</h2>
-      <div class="grid">${items.map(x=>`
-        <div class="tile"><h3>${esc(x[0])}</h3>
-          <p>${esc(x[1])}</p>
-          <button onclick="alert('এই সার্ভিসের জন্য অ্যাডমিনের সঙ্গে যোগাযোগ করুন।')">বিস্তারিত</button>
-        </div>`).join("")}
-      </div></div>`;
-  }
-
-  else if(name==="wallet"){
-    v.innerHTML=`<div class="card">
-      <h2>ওয়ালেটে টাকা যোগ করুন</h2>
-      <p class="small">টাকা পাঠানোর পর TrxID জমা দিন। অ্যাডমিন যাচাই না করা পর্যন্ত ব্যালেন্স যোগ হবে না।</p>
-      <label>পেমেন্ট মাধ্যম</label>
-      <select id="method" onchange="receiver()">
-        <option>bKash</option><option>Nagad</option><option>Rocket</option>
-      </select>
-      <div id="receiverText" class="notice">${esc(RECEIVERS.bKash)}</div>
-      <label>যে নম্বর থেকে পাঠিয়েছেন</label>
-      <input id="sender" inputmode="tel" placeholder="মোবাইল নম্বর">
-      <label>পরিমাণ (টাকা)</label>
-      <input id="amount" type="number" min="1" max="100000" placeholder="500">
-      <label>Transaction ID (TrxID)</label>
-      <input id="trxid" maxlength="100" placeholder="TrxID">
-      <button onclick="submitPayment()">পেমেন্ট জমা দিন</button>
-      <div id="paymentMsg" class="notice hidden"></div>
-    </div>`;
-  }
-
-  else if(name==="history"){
-    const {data,error}=await db.from("payment_requests")
-      .select("id,method,amount,trxid,status,created_at")
-      .eq("user_id",user.id).order("created_at",{ascending:false}).limit(50);
-
-    if(error){
-      v.innerHTML=`<div class="card">তথ্য পাওয়া যায়নি: ${esc(error.message)}</div>`;
-      return;
-    }
-    v.innerHTML=`<div class="card"><h2>পেমেন্ট হিস্ট্রি</h2>
-      ${!data?.length?"<p>কোনো পেমেন্ট নেই।":data.map(p=>`
-        <div class="tile">
-          <b>৳ ${Number(p.amount).toFixed(2)}</b>
-          <p>মাধ্যম: ${esc(p.method)}</p>
-          <p>TrxID: ${esc(p.trxid)}</p>
-          <p>অবস্থা: ${esc(p.status)}</p>
-          <p class="small">${esc(p.created_at)}</p>
-        </div><br>`).join("")}
-    </div>`;
-  }
-
-  else if(name==="admin"){
-    if(!admin){v.innerHTML='<div class="card">অনুমতি নেই।</div>';return}
-
-    const {data,error}=await db.from("payment_requests")
-      .select("id,user_id,method,sender,amount,trxid,created_at")
-      .eq("status","pending").order("created_at").limit(100);
-
-    if(error){
-      v.innerHTML=`<div class="card">ত্রুটি: ${esc(error.message)}</div>`;
-      return;
-    }
-    v.innerHTML=`<div class="card"><h2>অপেক্ষমাণ পেমেন্ট</h2>
-      ${!data?.length?"<p>কোনো পেমেন্ট অপেক্ষমাণ নেই।":data.map(p=>`
-      <div class="tile">
-        <p>ইউজার: ${esc(p.user_id)}</p>
-        <p>মাধ্যম: ${esc(p.method)}</p>
-        <p>প্রেরকের নম্বর: ${esc(p.sender)}</p>
-        <p>পরিমাণ: ৳ ${Number(p.amount).toFixed(2)}</p>
-        <p>TrxID: ${esc(p.trxid)}</p>
-        <button onclick="review('${esc(p.id)}','approved')">অনুমোদন</button>
-        <button class="danger" onclick="review('${esc(p.id)}','rejected')">বাতিল</button>
-      </div><br>`).join("")}
-    </div>`;
-  }
+  results.forEach(service => grid.appendChild(createServiceCard(service)));
+  $("noResults").classList.toggle("hidden", results.length > 0);
 }
 
-function receiver(){
-  $("receiverText").textContent=RECEIVERS[$("method").value];
+function renderFavorites() {
+  const grid = $("favoriteList");
+  grid.replaceChildren();
+
+  const ids = getList("favorites");
+  const results = services.filter(service => ids.includes(service.id));
+
+  results.forEach(service => grid.appendChild(createServiceCard(service)));
+  $("noFavorites").classList.toggle("hidden", results.length > 0);
 }
 
-async function submitPayment(){
-  const method=$("method").value;
-  const sender=$("sender").value.trim();
-  const amount=Number($("amount").value);
-  const trxid=$("trxid").value.trim();
+function renderHistory() {
+  const list = $("historyList");
+  list.replaceChildren();
 
-  if(!sender||!trxid||!Number.isFinite(amount)||amount<1||amount>100000){
-    msg("paymentMsg","সঠিক নম্বর, পরিমাণ ও TrxID দিন।");
+  const results = getList("history")
+    .map(id => services.find(service => service.id === id))
+    .filter(Boolean);
+
+  if (!results.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "এখনো কোনো সেবা খোলা হয়নি।";
+    list.appendChild(empty);
     return;
   }
 
-  const {error}=await db.from("payment_requests").insert({
-    user_id:user.id,method,sender,amount,trxid,status:"pending"
+  results.forEach(service => {
+    const row = document.createElement("div");
+    row.className = "history-item";
+
+    const link = document.createElement("a");
+    link.href = service.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = service.icon + " " + service.name + " ↗";
+
+    row.appendChild(link);
+    list.appendChild(row);
   });
-
-  if(error){msg("paymentMsg","জমা হয়নি: "+error.message);return}
-  msg("paymentMsg","পেমেন্ট অনুরোধ জমা হয়েছে। যাচাইয়ের জন্য অপেক্ষা করুন।");
-  $("sender").value="";
-  $("amount").value="";
-  $("trxid").value="";
 }
 
-async function review(id,status){
-  if(!admin)return;
-  if(!confirm(status==="approved"?"পেমেন্ট অনুমোদন করবেন?":"পেমেন্ট বাতিল করবেন?"))return;
-
-  const {error}=await db.from("payment_requests")
-    .update({status}).eq("id",id).eq("status","pending");
-
-  if(error){alert("ব্যর্থ: "+error.message);return}
-  alert("অনুরোধ আপডেট হয়েছে।");
-  await page("admin");
-}
-
-db.auth.onAuthStateChange((_event,session)=>{
-  setTimeout(()=>initialize(session),0);
+document.querySelectorAll("#userDashboard [data-page]").forEach(button => {
+  button.addEventListener("click", () => setPage(button.dataset.page));
 });
 
-(async()=>{
-  const {data}=await db.auth.getSession();
-  await initialize(data.session);
-})();
+$("searchInput").addEventListener("input", renderServices);
+
+$("profileBtn").addEventListener("click", () => setPage("profile"));
+$("backHome").addEventListener("click", () => setPage("home"));
+
+$("clearHistory").addEventListener("click", () => {
+  if (confirm("সাম্প্রতিক ইতিহাস মুছে ফেলবেন?")) {
+    saveList("history", []);
+    renderHistory();
+  }
+});
+
+/* SIGN IN */
+$("authForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  $("loginBtn").disabled = true;
+  $("signupBtn").disabled = true;
+  $("loginMessage").textContent = "লগইন হচ্ছে...";
+
+  try {
+    const { data, error } = await client.auth.signInWithPassword({
+      email: $("email").value.trim(),
+      password: $("password").value
+    });
+
+    if (error) throw error;
+    showDashboard(data.user);
+  } catch (error) {
+    $("loginMessage").textContent = "লগইন করা যায়নি: " + error.message;
+  } finally {
+    $("loginBtn").disabled = false;
+    $("signupBtn").disabled = false;
+  }
+});
+
+/* CREATE ACCOUNT */
+$("signupBtn").addEventListener("click", async () => {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!email || !password) {
+    $("loginMessage").textContent = "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
+    return;
+  }
+
+  if (password.length < 6) {
+    $("loginMessage").textContent = "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
+    return;
+  }
+
+  $("signupBtn").disabled = true;
+  $("loginMessage").textContent = "অ্যাকাউন্ট তৈরি হচ্ছে...";
+
+  try {
+    const { data, error } = await client.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin + window.location.pathname
+      }
+    });
+
+    if (error) throw error;
+
+    if (data.session && data.user) {
+      showDashboard(data.user);
+    } else {
+      $("loginMessage").textContent =
+        "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
+    }
+  } catch (error) {
+    $("loginMessage").textContent = "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
+  } finally {
+    $("signupBtn").disabled = false;
+  }
+});
+
+/* LOGOUT */
+$("logoutBtn").addEventListener("click", async () => {
+  const { error } = await client.auth.signOut();
+
+  if (error) {
+    alert("লগআউট করা যায়নি: " + error.message);
+    return;
+  }
+
+  showLogin("আপনি সফলভাবে Logout করেছেন।");
+});
+
+/* EXISTING SESSION */
+async function initialize() {
+  const { data, error } = await client.auth.getSession();
+
+  if (error) {
+    showLogin("সেশন যাচাই করা যায়নি। আবার লগইন করুন।");
+    return;
+  }
+
+  if (data.session && data.session.user) {
+    showDashboard(data.session.user);
+  } else {
+    showLogin();
+  }
+}
+
+client.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT") {
+    showLogin();
+  } else if (event === "SIGNED_IN" && session && session.user) {
+    showDashboard(session.user);
+  }
+});
+
+initialize();
 </script>
 </body>
 </html>
