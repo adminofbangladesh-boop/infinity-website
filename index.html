@@ -85,7 +85,7 @@
       overflow-wrap: anywhere;
     }
 
-    /* LOGIN: আগের ডিজাইন অপরিবর্তিত */
+    /* LOGIN */
     #loginCard {
       position: fixed;
       top: 50%;
@@ -115,6 +115,31 @@
     }
 
     #loginCard button { display: block; width: 100%; }
+
+    /* FORGOT PASSWORD ROW */
+    .password-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 17px;
+    }
+
+    .password-row label {
+      margin: 0 0 8px;
+    }
+
+    .forgot-password {
+      color: #60a5fa;
+      font-size: 13px;
+      text-decoration: none;
+      white-space: nowrap;
+      margin-bottom: 8px;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
 
     /* USER DASHBOARD */
     #userDashboard .topbar {
@@ -282,7 +307,13 @@
         required
       >
 
-      <label for="password">পাসওয়ার্ড</label>
+      <div class="password-row">
+        <label for="password">পাসওয়ার্ড</label>
+        <a href="#" id="forgotPassword" class="forgot-password">
+          Forgot Password?
+        </a>
+      </div>
+
       <input
         id="password"
         type="password"
@@ -328,7 +359,6 @@
       <button data-page="support">💬 সহায়তা</button>
     </nav>
 
-    <!-- HOME -->
     <section id="page-home">
       <input
         id="searchInput"
@@ -344,21 +374,18 @@
       </div>
     </section>
 
-    <!-- FAVORITES -->
     <section id="page-favorites" class="hidden card">
       <h2 class="section-heading">⭐ পছন্দের সেবা</h2>
       <div id="favoriteList" class="service-grid"></div>
       <p id="noFavorites" class="empty">এখনো কোনো সেবা পছন্দের তালিকায় যোগ করা হয়নি।</p>
     </section>
 
-    <!-- HISTORY -->
     <section id="page-history" class="hidden card">
       <h2 class="section-heading">🕘 সাম্প্রতিক ইতিহাস</h2>
       <div id="historyList"></div>
       <button id="clearHistory" class="secondary">ইতিহাস মুছুন</button>
     </section>
 
-    <!-- SUPPORT -->
     <section id="page-support" class="hidden card">
       <h2 class="section-heading">💬 সহায়তা কেন্দ্র</h2>
       <p class="muted">
@@ -366,7 +393,6 @@
       </p>
     </section>
 
-    <!-- PROFILE -->
     <section id="page-profile" class="hidden card">
       <h2 class="section-heading">👤 প্রোফাইল</h2>
       <p class="muted">লগইন ইমেইল</p>
@@ -414,7 +440,8 @@ const services = [
 ];
 
 function storageKey(type) {
-  return "infinity_" + type + "_" + (currentUser ? currentUser.id : "guest");
+  return "infinity_" + type + "_" +
+    (currentUser ? currentUser.id : "guest");
 }
 
 function getList(type) {
@@ -466,6 +493,7 @@ function openService(service) {
   history.unshift(service.id);
   saveList("history", history.slice(0, 20));
   renderHistory();
+
   window.open(service.url, "_blank", "noopener,noreferrer");
 }
 
@@ -481,7 +509,10 @@ function createServiceCard(service) {
     const active = getList("favorites").includes(service.id);
     fav.textContent = active ? "♥" : "♡";
     fav.classList.toggle("is-favorite", active);
-    fav.setAttribute("aria-label", active ? "পছন্দ থেকে বাদ দিন" : "পছন্দে যোগ করুন");
+    fav.setAttribute(
+      "aria-label",
+      active ? "পছন্দ থেকে বাদ দিন" : "পছন্দে যোগ করুন"
+    );
   }
 
   updateFavoriteButton();
@@ -577,7 +608,6 @@ document.querySelectorAll("#userDashboard [data-page]").forEach(button => {
 });
 
 $("searchInput").addEventListener("input", renderServices);
-
 $("profileBtn").addEventListener("click", () => setPage("profile"));
 $("backHome").addEventListener("click", () => setPage("home"));
 
@@ -605,7 +635,8 @@ $("authForm").addEventListener("submit", async event => {
     if (error) throw error;
     showDashboard(data.user);
   } catch (error) {
-    $("loginMessage").textContent = "লগইন করা যায়নি: " + error.message;
+    $("loginMessage").textContent =
+      "লগইন করা যায়নি: " + error.message;
   } finally {
     $("loginBtn").disabled = false;
     $("signupBtn").disabled = false;
@@ -618,12 +649,14 @@ $("signupBtn").addEventListener("click", async () => {
   const password = $("password").value;
 
   if (!email || !password) {
-    $("loginMessage").textContent = "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
+    $("loginMessage").textContent =
+      "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
     return;
   }
 
   if (password.length < 6) {
-    $("loginMessage").textContent = "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
+    $("loginMessage").textContent =
+      "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
     return;
   }
 
@@ -635,7 +668,8 @@ $("signupBtn").addEventListener("click", async () => {
       email,
       password,
       options: {
-        emailRedirectTo: window.location.origin + window.location.pathname
+        emailRedirectTo:
+          window.location.origin + window.location.pathname
       }
     });
 
@@ -648,9 +682,46 @@ $("signupBtn").addEventListener("click", async () => {
         "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
     }
   } catch (error) {
-    $("loginMessage").textContent = "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
+    $("loginMessage").textContent =
+      "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
   } finally {
     $("signupBtn").disabled = false;
+  }
+});
+
+/* FORGOT PASSWORD */
+$("forgotPassword").addEventListener("click", async event => {
+  event.preventDefault();
+
+  const email = $("email").value.trim();
+
+  if (!email) {
+    $("loginMessage").textContent =
+      "আগে ইমেইল ঠিকানা লিখুন, তারপর Forgot Password চাপুন।";
+    $("email").focus();
+    return;
+  }
+
+  const button = $("forgotPassword");
+  button.style.pointerEvents = "none";
+  $("loginMessage").textContent =
+    "পাসওয়ার্ড রিসেট ইমেইল পাঠানো হচ্ছে...";
+
+  try {
+    const { error } = await client.auth.resetPasswordForEmail(email, {
+      redirectTo:
+        window.location.origin + window.location.pathname
+    });
+
+    if (error) throw error;
+
+    $("loginMessage").textContent =
+      "পাসওয়ার্ড রিসেটের নির্দেশনা আপনার ইমেইলে পাঠানো হলে ইনবক্স ও স্প্যাম ফোল্ডার দেখুন।";
+  } catch (error) {
+    $("loginMessage").textContent =
+      "রিসেট ইমেইল পাঠানো যায়নি: " + error.message;
+  } finally {
+    button.style.pointerEvents = "";
   }
 });
 
@@ -687,10 +758,9 @@ client.auth.onAuthStateChange((event, session) => {
     showLogin();
   } else if (event === "SIGNED_IN" && session && session.user) {
     showDashboard(session.user);
-  }
-});
+  } else if (event === "PASSWORD_RECOVERY" && session?.user) {
+    const newPassword = prompt("আপনার নতুন পাসওয়ার্ড লিখুন:");
 
-initialize();
-</script>
-</body>
-</html>
+    if (newPassword && newPassword.length >= 6) {
+      client.auth.updateUser({ password: newPassword })
+        .then(({ error }) => {
