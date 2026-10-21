@@ -1,208 +1,381 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Infinity Account</title>
+  <title>INFINITY Admin Panel</title>
+
   <style>
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 20px;
       background: #080d18;
-      color: #f8fafc;
+      color: #f1f5f9;
       font-family: Arial, sans-serif;
     }
 
-    .card {
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .wrap {
       width: 100%;
-      max-width: 380px;
-      padding: 28px;
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
       background: #111827;
       border: 1px solid #30394a;
-      border-radius: 16px;
+      border-radius: 15px;
+      padding: 22px;
+      margin-bottom: 18px;
     }
 
-    h1 {
-      margin: 0 0 8px;
-      text-align: center;
-      color: #60a5fa;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #aab4c5;
-      margin-bottom: 25px;
-    }
+    h1, h2, h3 { margin-top: 0; }
+    h1 { color: #60a5fa; }
+    .muted { color: #aab4c5; line-height: 1.7; }
 
     label {
       display: block;
-      margin: 17px 0 8px;
+      margin: 14px 0 7px;
     }
 
     input {
       width: 100%;
-      padding: 13px;
+      padding: 12px;
       border: 1px solid #414c60;
       border-radius: 8px;
       background: #080d18;
       color: white;
-      font-size: 16px;
     }
 
     button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 14px;
       border: 0;
       border-radius: 8px;
       background: #2563eb;
       color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
+      padding: 12px 15px;
+      margin-top: 12px;
     }
 
-    .secondary {
-      background: #263449;
+    button:disabled { opacity: .6; }
+
+    .secondary { background: #263449; }
+    .danger { background: #b91c1c; }
+    .hidden { display: none !important; }
+    .message { overflow-wrap: anywhere; line-height: 1.6; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
     }
 
-    #message {
-      font-size: 14px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
+    .topbar h1 { margin: 0; }
+
+    .badge {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 6px 11px;
+      background: #123b2a;
+      color: #86efac;
+      font-size: 13px;
     }
 
-    .hidden { display: none; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
 
-    .email-text {
-      overflow-wrap: anywhere;
-      color: #93c5fd;
+    .stat {
+      background: #0b1424;
+      border: 1px solid #30394a;
+      border-radius: 12px;
+      padding: 17px;
+    }
+
+    .stat strong {
+      display: block;
+      color: #60a5fa;
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .nav button { margin: 0; }
+    .nav button.active { background: #2563eb; }
+
+    .panel { min-width: 0; }
+    .email { color: #93c5fd; overflow-wrap: anywhere; }
+
+    @media (max-width: 520px) {
+      .wrap { padding: 12px; }
+      .card { padding: 17px; }
+      .grid { grid-template-columns: 1fr; }
+      .topbar button { width: 100%; }
+      .nav button { flex: 1 1 40%; }
     }
   </style>
 </head>
+
 <body>
-  <main class="card">
-    <h1>INFINITY</h1>
-    <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+  <main class="wrap">
 
-    <form id="authForm">
-      <label for="email">ইমেইল ঠিকানা</label>
-      <input
-        id="email"
-        type="email"
-        placeholder="আপনার ইমেইল লিখুন"
-        autocomplete="email"
-        required
-      >
+    <!-- LOGIN -->
+    <section id="loginCard" class="card">
+      <h1>INFINITY</h1>
+      <p class="muted">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
 
-      <label for="password">পাসওয়ার্ড</label>
-      <input
-        id="password"
-        type="password"
-        placeholder="কমপক্ষে ৬ অক্ষর"
-        autocomplete="current-password"
-        minlength="6"
-        required
-      >
+      <form id="authForm">
+        <label for="email">ইমেইল ঠিকানা</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          placeholder="আপনার ইমেইল লিখুন"
+          required
+        >
 
-      <button id="loginBtn" type="submit">
-        Sign In
-      </button>
+        <label for="password">পাসওয়ার্ড</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="আপনার পাসওয়ার্ড"
+          required
+        >
 
-      <button
-        id="signupBtn"
-        class="secondary"
-        type="button"
-      >
-        Create Account
-      </button>
-    </form>
+        <button id="loginBtn" type="submit">Sign In</button>
+        <button id="signupBtn" class="secondary" type="button">
+          Create Account
+        </button>
+      </form>
 
-    <section id="account" class="hidden">
-      <p>আপনি লগইন করেছেন:</p>
-      <p id="userEmail" class="email-text"></p>
-      <button id="logoutBtn" type="button">
-        Sign Out
-      </button>
+      <p id="loginMessage" class="message" role="status"></p>
     </section>
 
-    <p id="message" role="status" aria-live="polite"></p>
+    <!-- SIGNED-IN NON-ADMIN -->
+    <section id="userCard" class="card hidden">
+      <h1>INFINITY</h1>
+      <h2>আপনি লগইন করেছেন</h2>
+      <p id="userEmail" class="email"></p>
+      <p id="userMessage" class="muted">
+        এই অ্যাকাউন্টে Admin অনুমতি পাওয়া যায়নি।
+      </p>
+      <button id="userLogout" class="danger">Sign Out</button>
+    </section>
+
+    <!-- ADMIN PANEL -->
+    <section id="adminPanel" class="hidden">
+      <header class="topbar">
+        <div>
+          <h1>INFINITY</h1>
+          <p class="muted">Administration Panel</p>
+        </div>
+        <span class="badge">ADMIN VERIFIED</span>
+      </header>
+
+      <nav class="nav">
+        <button class="active" data-page="dashboard">Dashboard</button>
+        <button data-page="users">ব্যবহারকারী</button>
+        <button data-page="settings">সেটিংস</button>
+        <button data-page="profile">প্রোফাইল</button>
+      </nav>
+
+      <section id="page-dashboard" class="panel">
+        <div class="card">
+          <h2>স্বাগতম, Admin!</h2>
+          <p class="muted">
+            আপনার INFINITY Admin Panel-এ প্রবেশ সফল হয়েছে।
+          </p>
+
+          <div class="grid">
+            <div class="stat">
+              <strong>সক্রিয়</strong>
+              Admin যাচাই
+            </div>
+            <div class="stat">
+              <strong>Supabase</strong>
+              Authentication
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>সিস্টেমের অবস্থা</h3>
+          <p id="systemStatus" class="muted">
+            Admin অনুমতি যাচাই করা হয়েছে।
+          </p>
+          <p class="muted">
+            ব্যবহারকারীর প্রকৃত সংখ্যা এখনো সংযুক্ত করা হয়নি।
+            অনুমানভিত্তিক সংখ্যা দেখানো হচ্ছে না।
+          </p>
+        </div>
+      </section>
+
+      <section id="page-users" class="panel hidden">
+        <div class="card">
+          <h2>ব্যবহারকারী ব্যবস্থাপনা</h2>
+          <p class="muted">
+            এই সংস্করণে ব্যবহারকারীদের তালিকা, অ্যাকাউন্ট পরিবর্তন
+            বা মুছে ফেলার সুবিধা এখনো সংযুক্ত করা হয়নি।
+          </p>
+          <p class="muted">
+            এসব সুবিধা নিরাপদভাবে চালু করতে আলাদা profiles table
+            এবং প্রয়োজন অনুযায়ী server-side ব্যবস্থা তৈরি করতে হবে।
+          </p>
+        </div>
+      </section>
+
+      <section id="page-settings" class="panel hidden">
+        <div class="card">
+          <h2>ওয়েবসাইট সেটিংস</h2>
+          <p class="muted">
+            ওয়েবসাইট: INFINITY
+          </p>
+          <p class="muted">
+            হোস্টিং: GitHub Pages
+          </p>
+          <p class="muted">
+            লগইন ও Admin অনুমতি: Supabase
+          </p>
+          <p class="muted">
+            এই পেজে এখনো সংরক্ষণযোগ্য সেটিংস যোগ করা হয়নি।
+          </p>
+        </div>
+      </section>
+
+      <section id="page-profile" class="panel hidden">
+        <div class="card">
+          <h2>Admin প্রোফাইল</h2>
+          <p>ইমেইল:</p>
+          <p id="adminEmail" class="email"></p>
+          <p>Admin UID:</p>
+          <p id="adminUid" class="muted"></p>
+          <p class="muted">
+            আপনার Admin অনুমতি Supabase ডেটাবেস থেকে যাচাই করা হয়েছে।
+          </p>
+        </div>
+      </section>
+
+      <div class="card">
+        <button id="adminLogout" class="danger">Logout</button>
+        <p id="adminMessage" class="message" role="status"></p>
+      </div>
+    </section>
+
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
     const SUPABASE_URL =
       "https://ozjmdxufgugemtggkuvp.supabase.co";
 
     const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
+      "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
 
     const client = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
 
-    const form = document.getElementById("authForm");
+    const loginCard = document.getElementById("loginCard");
+    const userCard = document.getElementById("userCard");
+    const adminPanel = document.getElementById("adminPanel");
+    const authForm = document.getElementById("authForm");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
     const loginBtn = document.getElementById("loginBtn");
     const signupBtn = document.getElementById("signupBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const account = document.getElementById("account");
-    const userEmail = document.getElementById("userEmail");
-    const message = document.getElementById("message");
+    const loginMessage = document.getElementById("loginMessage");
+    const userMessage = document.getElementById("userMessage");
+    const adminMessage = document.getElementById("adminMessage");
 
-    function showMessage(text) {
-      message.textContent = text;
+    let checkingSession = false;
+
+    function showOnly(section) {
+      loginCard.classList.add("hidden");
+      userCard.classList.add("hidden");
+      adminPanel.classList.add("hidden");
+      section.classList.remove("hidden");
     }
 
-    function setBusy(busy) {
-      loginBtn.disabled = busy;
-      signupBtn.disabled = busy;
-      loginBtn.textContent = busy ? "অপেক্ষা করুন..." : "Sign In";
+    function showSignedOut(message = "") {
+      showOnly(loginCard);
+      loginMessage.textContent = message;
     }
 
-    function showSignedIn(user) {
-      form.classList.add("hidden");
-      account.classList.remove("hidden");
-      userEmail.textContent = user.email || "";
-    }
+    async function showSignedIn(user) {
+      if (!user || checkingSession) return;
 
-    function showSignedOut() {
-      form.classList.remove("hidden");
-      account.classList.add("hidden");
-      userEmail.textContent = "";
-    }
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      setBusy(true);
-      showMessage("");
-
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
+      checkingSession = true;
+      showOnly(userCard);
+      document.getElementById("userEmail").textContent = user.email || "";
+      userMessage.textContent = "Admin অনুমতি যাচাই হচ্ছে...";
 
       try {
-        const { data, error } =
-          await client.auth.signInWithPassword({
-            email,
-            password
-          });
+        const { data, error } = await client
+          .from("admin_users")
+          .select("role")
+          .eq("user_id", user.id)
+          .maybeSingle();
 
         if (error) throw error;
 
-        showSignedIn(data.user);
-        showMessage("লগইন সফল হয়েছে!");
+        if (data && data.role === "admin") {
+          showOnly(adminPanel);
+          document.getElementById("adminEmail").textContent =
+            user.email || "";
+          document.getElementById("adminUid").textContent = user.id;
+          adminMessage.textContent = "";
+        } else {
+          showOnly(userCard);
+          userMessage.textContent =
+            "এই অ্যাকাউন্টে Admin অনুমতি নেই।";
+        }
       } catch (error) {
-        showMessage("লগইন করা যায়নি: " + error.message);
+        showOnly(userCard);
+        userMessage.textContent =
+          "Admin যাচাই করা যায়নি। Supabase নীতি ও সংযোগ পরীক্ষা করুন।";
+        console.error("Admin verification error:", error.message);
       } finally {
-        setBusy(false);
+        checkingSession = false;
+      }
+    }
+
+    authForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      loginBtn.disabled = true;
+      signupBtn.disabled = true;
+      loginMessage.textContent = "লগইন হচ্ছে...";
+
+      try {
+        const { data, error } = await client.auth.signInWithPassword({
+          email: emailInput.value.trim(),
+          password: passwordInput.value
+        });
+
+        if (error) throw error;
+
+        await showSignedIn(data.user);
+      } catch (error) {
+        loginMessage.textContent = "লগইন ব্যর্থ: " + error.message;
+      } finally {
+        loginBtn.disabled = false;
+        signupBtn.disabled = false;
       }
     });
 
@@ -211,17 +384,18 @@
       const password = passwordInput.value;
 
       if (!email || !password) {
-        showMessage("আগে ইমেইল ও পাসওয়ার্ড লিখুন।");
+        loginMessage.textContent = "ইমেইল ও পাসওয়ার্ড লিখুন।";
         return;
       }
 
       if (password.length < 6) {
-        showMessage("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।");
+        loginMessage.textContent =
+          "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।";
         return;
       }
 
-      setBusy(true);
-      showMessage("");
+      signupBtn.disabled = true;
+      loginMessage.textContent = "অ্যাকাউন্ট তৈরি হচ্ছে...";
 
       try {
         const { data, error } = await client.auth.signUp({
@@ -236,51 +410,83 @@
         if (error) throw error;
 
         if (data.session && data.user) {
-          showSignedIn(data.user);
-          showMessage("অ্যাকাউন্ট তৈরি হয়েছে!");
+          await showSignedIn(data.user);
         } else {
-          showMessage(
-            "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাইয়ের বার্তা পেলে সেটি খুলুন।"
-          );
+          loginMessage.textContent =
+            "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
         }
       } catch (error) {
-        showMessage("অ্যাকাউন্ট তৈরি হয়নি: " + error.message);
+        loginMessage.textContent =
+          "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
       } finally {
-        setBusy(false);
+        signupBtn.disabled = false;
       }
     });
 
-    logoutBtn.addEventListener("click", async () => {
-      logoutBtn.disabled = true;
-      try {
-        const { error } = await client.auth.signOut();
-        if (error) throw error;
-        showSignedOut();
-        showMessage("আপনি লগআউট করেছেন।");
-      } catch (error) {
-        showMessage("লগআউট করা যায়নি: " + error.message);
-      } finally {
-        logoutBtn.disabled = false;
+    async function logout() {
+      const { error } = await client.auth.signOut();
+
+      if (error) {
+        adminMessage.textContent = "Logout ব্যর্থ: " + error.message;
+        return;
       }
+
+      checkingSession = false;
+      showSignedOut("আপনি সফলভাবে Logout করেছেন।");
+    }
+
+    document.getElementById("adminLogout")
+      .addEventListener("click", logout);
+
+    document.getElementById("userLogout")
+      .addEventListener("click", logout);
+
+    document.querySelectorAll("[data-page]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const page = button.dataset.page;
+
+        document.querySelectorAll(".panel").forEach((section) => {
+          section.classList.add("hidden");
+        });
+
+        document.getElementById("page-" + page)
+          .classList.remove("hidden");
+
+        document.querySelectorAll("[data-page]").forEach((item) => {
+          item.classList.toggle("active", item === button);
+        });
+      });
     });
 
-    client.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        showSignedIn(session.user);
+    async function initialize() {
+      const { data, error } = await client.auth.getSession();
+
+      if (error) {
+        showSignedOut("সেশন যাচাই করা যায়নি। আবার লগইন করুন।");
+        return;
+      }
+
+      if (data.session && data.session.user) {
+        await showSignedIn(data.session.user);
       } else {
         showSignedOut();
       }
+    }
+
+    client.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        checkingSession = false;
+        showSignedOut();
+      } else if (
+        session &&
+        session.user &&
+        event === "SIGNED_IN"
+      ) {
+        showSignedIn(session.user);
+      }
     });
 
-    client.auth.getSession().then(({ data, error }) => {
-      if (error) {
-        showMessage("সেশন যাচাই করা যায়নি।");
-        return;
-      }
-      if (data.session?.user) {
-        showSignedIn(data.session.user);
-      }
-    });
+    initialize();
   </script>
 </body>
 </html>
