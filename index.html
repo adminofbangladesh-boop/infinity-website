@@ -2,765 +2,436 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INFINITY</title>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #080d18;
-      color: #f8fafc;
-      font-family: Arial, sans-serif;
-    }
-
-    button, input { font: inherit; }
-    button { cursor: pointer; }
-
-    .wrap {
-      width: 100%;
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .card {
-      background: #111827;
-      border: 1px solid #30394a;
-      border-radius: 16px;
-      padding: 28px;
-      margin-bottom: 18px;
-    }
-
-    h1, h2, h3 { margin-top: 0; }
-    h1 { color: #60a5fa; }
-
-    .muted {
-      color: #aab4c5;
-      line-height: 1.7;
-    }
-
-    label {
-      display: block;
-      margin: 17px 0 8px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #414c60;
-      border-radius: 8px;
-      background: #080d18;
-      color: white;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 14px;
-      border: 0;
-      border-radius: 8px;
-      background: #2563eb;
-      color: white;
-      font-weight: bold;
-    }
-
-    button:disabled { opacity: .6; cursor: wait; }
-    .secondary { background: #263449; }
-    .danger { background: #b91c1c; }
-    .hidden { display: none !important; }
-
-    .message {
-      font-size: 14px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .email {
-      color: #93c5fd;
-      overflow-wrap: anywhere;
-    }
-
-    /* LOGIN */
-    #loginCard {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: calc(100% - 32px);
-      max-width: 380px;
-      max-height: calc(100vh - 32px);
-      overflow-y: auto;
-      margin: 0;
-      padding: 28px;
-      background: #111827;
-      border: 1px solid #30394a;
-      border-radius: 16px;
-      z-index: 10;
-    }
-
-    #loginCard h1 {
-      text-align: center;
-      margin: 0 0 8px;
-    }
-
-    #loginCard .subtitle {
-      text-align: center;
-      color: #aab4c5;
-      margin-bottom: 25px;
-    }
-
-    #loginCard button { display: block; width: 100%; }
-
-    /* FORGOT PASSWORD ROW */
-    .password-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-top: 17px;
-    }
-
-    .password-row label {
-      margin: 0 0 8px;
-    }
-
-    .forgot-password {
-      color: #60a5fa;
-      font-size: 13px;
-      text-decoration: none;
-      white-space: nowrap;
-      margin-bottom: 8px;
-    }
-
-    .forgot-password:hover {
-      text-decoration: underline;
-    }
-
-    /* USER DASHBOARD */
-    #userDashboard .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    #userDashboard .topbar h1 { margin: 0; }
-
-    #userDashboard .actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    #userDashboard .actions button {
-      width: auto;
-      margin: 0;
-    }
-
-    #userDashboard .welcome {
-      background: #111827;
-      border: 1px solid #30394a;
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 18px;
-    }
-
-    #userDashboard .welcome h2 {
-      color: #60a5fa;
-      margin-bottom: 8px;
-    }
-
-    #userDashboard .welcome p { margin-bottom: 0; }
-
-    #userDashboard .nav {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    #userDashboard .nav button {
-      width: auto;
-      flex: 1 1 100px;
-      margin: 0;
-      background: #263449;
-    }
-
-    #userDashboard .nav button.active { background: #2563eb; }
-
-    #userDashboard .service-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    #userDashboard .service-card {
-      position: relative;
-      min-width: 0;
-      padding: 17px 10px;
-      text-align: center;
-      background: #0b1424;
-      border: 1px solid #30394a;
-      border-radius: 13px;
-      cursor: pointer;
-    }
-
-    #userDashboard .service-card:hover { border-color: #60a5fa; }
-
-    #userDashboard .service-icon {
-      display: block;
-      font-size: 29px;
-      margin-bottom: 10px;
-    }
-
-    #userDashboard .service-name {
-      display: block;
-      font-size: 14px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    #userDashboard .service-category {
-      display: block;
-      margin-top: 6px;
-      color: #93c5fd;
-      font-size: 12px;
-    }
-
-    #userDashboard .favorite-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 30px;
-      height: 30px;
-      padding: 0;
-      margin: 0;
-      border-radius: 50%;
-      background: #263449;
-      color: #93c5fd;
-      font-size: 19px;
-    }
-
-    #userDashboard .favorite-btn.is-favorite { color: #f87171; }
-
-    #userDashboard .section-heading {
-      margin-bottom: 16px;
-      color: #60a5fa;
-    }
-
-    #userDashboard .history-item {
-      padding: 13px 0;
-      border-bottom: 1px solid #30394a;
-      overflow-wrap: anywhere;
-    }
-
-    #userDashboard .history-item a { color: #93c5fd; }
-
-    #userDashboard .empty {
-      color: #aab4c5;
-      line-height: 1.7;
-    }
-
-    #userDashboard footer {
-      text-align: center;
-      padding: 20px 0 30px;
-      color: #aab4c5;
-      font-size: 12px;
-    }
-
-    @media (max-width: 600px) {
-      .wrap { padding: 12px; }
-      .card { padding: 18px; }
-      #loginCard { padding: 26px 22px; }
-
-      #userDashboard .service-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      #userDashboard .welcome { padding: 18px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INFINITY | Digital Services</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080d18;color:#f8fafc;font-family:Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer;border:0;border-radius:9px;padding:13px;background:#2563eb;color:white;font-weight:bold}
+button:disabled{opacity:.6}
+input{width:100%;padding:13px;background:#080d18;color:white;border:1px solid #414c60;border-radius:9px}
+label{display:block;margin:16px 0 8px}
+a{color:#60a5fa}
+.hidden{display:none!important}
+.wrap{max-width:1100px;margin:auto;padding:18px}
+.card{background:#111827;border:1px solid #30394a;border-radius:16px;padding:22px;margin-bottom:18px}
+.muted{color:#aab4c5;line-height:1.7}
+.message{font-size:14px;line-height:1.7;overflow-wrap:anywhere}
+#authScreen{position:fixed;z-index:5;top:50%;left:50%;transform:translate(-50%,-50%);width:calc(100% - 30px);max-width:390px;max-height:94vh;overflow:auto}
+.brand{text-align:center;color:#60a5fa;margin:0 0 8px}
+.subtitle{text-align:center;color:#aab4c5}
+.password-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:16px}
+.password-row label{margin:0 0 8px}
+.forgot{font-size:13px;text-decoration:none;white-space:nowrap;margin-bottom:8px}
+.full{width:100%;margin-top:13px}
+.secondary{background:#263449}
+.danger{background:#b91c1c}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar h1{color:#60a5fa;margin:0}
+.actions{display:flex;gap:8px}
+.actions button{width:auto}
+.welcome{margin-top:18px;background:#111827;border:1px solid #30394a;border-radius:16px;padding:20px}
+.welcome h2{color:#60a5fa;margin-top:0}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.nav button{flex:1 1 100px;background:#263449}
+.nav button.active{background:#2563eb}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.service{position:relative;text-align:center;padding:20px 9px;background:#0b1424;border:1px solid #30394a;border-radius:12px;cursor:pointer;overflow-wrap:anywhere}
+.service:hover{border-color:#60a5fa}
+.service-icon{display:block;font-size:28px;margin-bottom:9px}
+.service small{display:block;color:#93c5fd;margin-top:8px}
+.heart{position:absolute;top:5px;right:5px;background:#263449;padding:4px 8px;font-size:18px}
+.heart.on{color:#f87171}
+.heading{color:#60a5fa}
+.history-item{padding:12px 0;border-bottom:1px solid #30394a;overflow-wrap:anywhere}
+.empty{color:#aab4c5;line-height:1.7}
+footer{text-align:center;color:#aab4c5;padding:22px;font-size:12px}
+@media(max-width:600px){.wrap{padding:12px}.card{padding:18px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome{padding:17px}}
+</style>
 </head>
-
 <body>
 <main class="wrap">
 
-  <!-- LOGIN PAGE -->
-  <section id="loginCard" class="card">
-    <h1>INFINITY</h1>
-    <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+<section id="authScreen" class="card">
+  <h1 class="brand">INFINITY</h1>
+  <p class="subtitle">আপনার ডিজিটাল সেবা কেন্দ্র</p>
 
-    <form id="authForm">
+  <div id="loginPanel">
+    <form id="loginForm">
       <label for="email">ইমেইল ঠিকানা</label>
-      <input
-        id="email"
-        type="email"
-        placeholder="আপনার ইমেইল লিখুন"
-        autocomplete="email"
-        required
-      >
+      <input id="email" type="email" placeholder="আপনার ইমেইল লিখুন" autocomplete="email" required>
 
       <div class="password-row">
         <label for="password">পাসওয়ার্ড</label>
-        <a href="#" id="forgotPassword" class="forgot-password">
-          Forgot Password?
-        </a>
+        <a href="#" id="forgotPassword" class="forgot">Forgot Password?</a>
       </div>
+      <input id="password" type="password" placeholder="পাসওয়ার্ড লিখুন" autocomplete="current-password" required>
 
-      <input
-        id="password"
-        type="password"
-        placeholder="আপনার পাসওয়ার্ড লিখুন"
-        autocomplete="current-password"
-        required
-      >
-
-      <button id="loginBtn" type="submit">Sign In</button>
-      <button id="signupBtn" class="secondary" type="button">Create Account</button>
+      <button id="loginBtn" class="full" type="submit">Sign In</button>
+      <button id="signupBtn" class="full secondary" type="button">Create Account</button>
     </form>
+  </div>
 
-    <p id="loginMessage" class="message" role="status"></p>
+  <div id="recoveryPanel" class="hidden">
+    <h3>পাসওয়ার্ড রিসেট</h3>
+    <p class="muted">আপনার অ্যাকাউন্টের ইমেইল লিখুন। রিসেট লিংক পাঠানোর চেষ্টা করা হবে।</p>
+    <form id="recoveryForm">
+      <label for="recoveryEmail">ইমেইল ঠিকানা</label>
+      <input id="recoveryEmail" type="email" placeholder="আপনার ইমেইল লিখুন" required>
+      <button id="sendRecoveryBtn" class="full" type="submit">রিসেট ইমেইল পাঠান</button>
+      <button id="backLogin1" class="full secondary" type="button">লগইনে ফিরে যান</button>
+    </form>
+  </div>
+
+  <div id="newPasswordPanel" class="hidden">
+    <h3>নতুন পাসওয়ার্ড দিন</h3>
+    <form id="newPasswordForm">
+      <label for="newPassword">নতুন পাসওয়ার্ড</label>
+      <input id="newPassword" type="password" minlength="6" autocomplete="new-password" required>
+      <label for="confirmPassword">পাসওয়ার্ড আবার লিখুন</label>
+      <input id="confirmPassword" type="password" minlength="6" autocomplete="new-password" required>
+      <button class="full" type="submit">পাসওয়ার্ড পরিবর্তন করুন</button>
+    </form>
+  </div>
+
+  <p id="authMessage" class="message" role="status" aria-live="polite"></p>
+</section>
+
+<section id="dashboard" class="hidden">
+  <header class="topbar">
+    <div><h1>INFINITY</h1><p class="muted">ডিজিটাল সেবা কেন্দ্র</p></div>
+    <div class="actions">
+      <button id="profileBtn" class="secondary">প্রোফাইল</button>
+      <button id="logoutBtn" class="danger">Logout</button>
+    </div>
+  </header>
+
+  <div class="welcome">
+    <h2>স্বাগতম!</h2>
+    <p class="muted">আপনার প্রয়োজনীয় সেবা বেছে নিন।</p>
+    <p id="userEmail" class="muted"></p>
+  </div>
+
+  <nav class="nav">
+    <button data-page="home" class="active">🏠 হোম</button>
+    <button data-page="favorites">⭐ পছন্দের সেবা</button>
+    <button data-page="history">🕘 ইতিহাস</button>
+    <button data-page="support">💬 সহায়তা</button>
+  </nav>
+
+  <section id="page-home">
+    <input id="search" type="search" placeholder="🔎 সেবা খুঁজুন...">
+    <div class="card" style="margin-top:16px">
+      <h2 class="heading">সরকারি ও নাগরিক সেবা</h2>
+      <div id="serviceGrid" class="grid"></div>
+      <p id="noResults" class="empty hidden">কোনো সেবা পাওয়া যায়নি।</p>
+    </div>
   </section>
 
-  <!-- USER DASHBOARD -->
-  <section id="userDashboard" class="hidden">
-
-    <header class="topbar">
-      <div>
-        <h1>INFINITY</h1>
-        <p class="muted">আপনার ডিজিটাল সেবা কেন্দ্র</p>
-      </div>
-
-      <div class="actions">
-        <button id="profileBtn" class="secondary">প্রোফাইল</button>
-        <button id="logoutBtn" class="danger">Logout</button>
-      </div>
-    </header>
-
-    <section class="welcome">
-      <h2>স্বাগতম!</h2>
-      <p class="muted">
-        প্রয়োজনীয় সেবা বেছে নিন। সেবার কার্ডে চাপ দিলে সংশ্লিষ্ট ওয়েবসাইট খুলবে।
-      </p>
-      <p id="signedInEmail" class="email"></p>
-    </section>
-
-    <nav class="nav">
-      <button class="active" data-page="home">🏠 হোম</button>
-      <button data-page="favorites">⭐ পছন্দের সেবা</button>
-      <button data-page="history">🕘 ইতিহাস</button>
-      <button data-page="support">💬 সহায়তা</button>
-    </nav>
-
-    <section id="page-home">
-      <input
-        id="searchInput"
-        type="search"
-        placeholder="🔎 সেবার নাম লিখে খুঁজুন..."
-        aria-label="সেবা খুঁজুন"
-      >
-
-      <div class="card" style="margin-top:16px">
-        <h2 class="section-heading">সরকারি ও নাগরিক সেবা</h2>
-        <div id="serviceGrid" class="service-grid"></div>
-        <p id="noResults" class="empty hidden">কোনো সেবা পাওয়া যায়নি।</p>
-      </div>
-    </section>
-
-    <section id="page-favorites" class="hidden card">
-      <h2 class="section-heading">⭐ পছন্দের সেবা</h2>
-      <div id="favoriteList" class="service-grid"></div>
-      <p id="noFavorites" class="empty">এখনো কোনো সেবা পছন্দের তালিকায় যোগ করা হয়নি।</p>
-    </section>
-
-    <section id="page-history" class="hidden card">
-      <h2 class="section-heading">🕘 সাম্প্রতিক ইতিহাস</h2>
-      <div id="historyList"></div>
-      <button id="clearHistory" class="secondary">ইতিহাস মুছুন</button>
-    </section>
-
-    <section id="page-support" class="hidden card">
-      <h2 class="section-heading">💬 সহায়তা কেন্দ্র</h2>
-      <p class="muted">
-        সরকারি সেবা ব্যবহারে সমস্যা হলে সংশ্লিষ্ট সরকারি ওয়েবসাইটের সহায়তা বিভাগ ব্যবহার করুন।
-      </p>
-    </section>
-
-    <section id="page-profile" class="hidden card">
-      <h2 class="section-heading">👤 প্রোফাইল</h2>
-      <p class="muted">লগইন ইমেইল</p>
-      <p id="profileEmail" class="email"></p>
-      <p class="muted">অ্যাকাউন্ট UID</p>
-      <p id="profileUid" class="email"></p>
-      <button id="backHome" class="secondary">ড্যাশবোর্ডে ফিরুন</button>
-    </section>
-
-    <footer>INFINITY · ডিজিটাল সেবা কেন্দ্র</footer>
+  <section id="page-favorites" class="card hidden">
+    <h2 class="heading">⭐ পছন্দের সেবা</h2>
+    <div id="favoriteGrid" class="grid"></div>
+    <p id="noFavorites" class="empty">এখনো কোনো সেবা পছন্দ করেননি।</p>
   </section>
+
+  <section id="page-history" class="card hidden">
+    <h2 class="heading">🕘 সাম্প্রতিক ইতিহাস</h2>
+    <div id="historyList"></div>
+    <button id="clearHistory" class="secondary full">ইতিহাস মুছুন</button>
+  </section>
+
+  <section id="page-support" class="card hidden">
+    <h2 class="heading">💬 সহায়তা</h2>
+    <p class="muted">সরকারি সেবা সংক্রান্ত সহায়তার জন্য সংশ্লিষ্ট সরকারি ওয়েবসাইট দেখুন।</p>
+  </section>
+
+  <section id="page-profile" class="card hidden">
+    <h2 class="heading">👤 প্রোফাইল</h2>
+    <p class="muted">ইমেইল</p><p id="profileEmail"></p>
+    <p class="muted">অ্যাকাউন্ট ID</p><p id="profileId" style="overflow-wrap:anywhere"></p>
+    <button id="backHome" class="secondary full">হোমে ফিরুন</button>
+  </section>
+  <footer>INFINITY · Digital Services</footer>
+</section>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
+"use strict";
+
 const SUPABASE_URL = "https://ozjmdxufgugemtggkuvp.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
-
-const client = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
+const SUPABASE_KEY = "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
+const REDIRECT_URL = "https://adminofbangladesh-boop.github.io/infinity-website/";
 let currentUser = null;
+let recoveryMode = false;
 
 const services = [
-  {id:"nid",name:"জাতীয় পরিচয়পত্র (NID)",icon:"🪪",category:"পরিচয়",url:"https://services.nidw.gov.bd/nid-pub/"},
-  {id:"birth",name:"জন্ম ও মৃত্যু নিবন্ধন",icon:"👶",category:"নিবন্ধন",url:"https://www.bdris.gov.bd/"},
-  {id:"mygov",name:"মাইগভ সেবা",icon:"🇧🇩",category:"নাগরিক",url:"https://www.mygov.bd/"},
-  {id:"citizen",name:"বাংলাদেশ সরকারি পোর্টাল",icon:"🏛️",category:"নাগরিক",url:"https://bangladesh.gov.bd/"},
-  {id:"etin",name:"ই-টিন নিবন্ধন",icon:"📄",category:"কর",url:"https://secure.incometax.gov.bd/TINHome"},
-  {id:"return",name:"আয়কর ই-রিটার্ন",icon:"🧾",category:"কর",url:"https://etaxnbr.gov.bd/"},
-  {id:"challan",name:"ই-চালান",icon:"💳",category:"কর",url:"https://ibas.finance.gov.bd/acs"},
-  {id:"education",name:"শিক্ষার ফলাফল",icon:"🎓",category:"শিক্ষা",url:"https://educationboardresults.gov.bd/"},
-  {id:"allowance",name:"সরকারি ভাতা",icon:"🤝",category:"ভাতা",url:"https://dss.gov.bd/"},
-  {id:"passport",name:"ই-পাসপোর্ট",icon:"🛂",category:"পরিচয়",url:"https://www.epassport.gov.bd/"},
-  {id:"police",name:"পুলিশ ক্লিয়ারেন্স",icon:"👮",category:"নাগরিক",url:"https://pcc.police.gov.bd/"},
-  {id:"land",name:"ভূমি মন্ত্রণালয়",icon:"🌾",category:"ভূমি",url:"https://land.gov.bd/"},
-  {id:"mutation",name:"নামজারি",icon:"📑",category:"ভূমি",url:"https://mutation.land.gov.bd/"},
-  {id:"porcha",name:"ই-পর্চা",icon:"📜",category:"ভূমি",url:"https://eporcha.gov.bd/"},
-  {id:"brta",name:"বিআরটিএ সেবা",icon:"🚗",category:"পরিবহন",url:"https://bsp.brta.gov.bd/"},
-  {id:"bpsc",name:"সরকারি চাকরি ও পরীক্ষা",icon:"💼",category:"চাকরি",url:"https://bpsc.gov.bd/"}
+{id:"nid",name:"জাতীয় পরিচয়পত্র (NID)",icon:"🪪",category:"পরিচয়",url:"https://services.nidw.gov.bd/nid-pub/"},
+{id:"birth",name:"জন্ম নিবন্ধন",icon:"👶",category:"নিবন্ধন",url:"https://www.bdris.gov.bd/"},
+{id:"mygov",name:"মাইগভ",icon:"🇧🇩",category:"নাগরিক",url:"https://www.mygov.bd/"},
+{id:"gov",name:"বাংলাদেশ সরকারি পোর্টাল",icon:"🏛️",category:"নাগরিক",url:"https://bangladesh.gov.bd/"},
+{id:"etin",name:"ই-টিন নিবন্ধন",icon:"📄",category:"কর",url:"https://secure.incometax.gov.bd/TINHome"},
+{id:"return",name:"আয়কর ই-রিটার্ন",icon:"🧾",category:"কর",url:"https://etaxnbr.gov.bd/"},
+{id:"education",name:"শিক্ষার ফলাফল",icon:"🎓",category:"শিক্ষা",url:"https://educationboardresults.gov.bd/"},
+{id:"allowance",name:"সরকারি ভাতা",icon:"🤝",category:"ভাতা",url:"https://dss.gov.bd/"},
+{id:"passport",name:"ই-পাসপোর্ট",icon:"🛂",category:"পরিচয়",url:"https://www.epassport.gov.bd/"},
+{id:"police",name:"পুলিশ ক্লিয়ারেন্স",icon:"👮",category:"নাগরিক",url:"https://pcc.police.gov.bd/"},
+{id:"land",name:"ভূমি মন্ত্রণালয়",icon:"🌾",category:"ভূমি",url:"https://land.gov.bd/"},
+{id:"mutation",name:"নামজারি",icon:"📑",category:"ভূমি",url:"https://mutation.land.gov.bd/"},
+{id:"porcha",name:"ই-পর্চা",icon:"📜",category:"ভূমি",url:"https://eporcha.gov.bd/"},
+{id:"brta",name:"বিআরটিএ সেবা",icon:"🚗",category:"পরিবহন",url:"https://bsp.brta.gov.bd/"},
+{id:"bpsc",name:"সরকারি চাকরি ও পরীক্ষা",icon:"💼",category:"চাকরি",url:"https://bpsc.gov.bd/"}
 ];
 
-function storageKey(type) {
-  return "infinity_" + type + "_" +
-    (currentUser ? currentUser.id : "guest");
+function message(text){ $("authMessage").textContent = text; }
+function showAuthPanel(panel){
+  ["loginPanel","recoveryPanel","newPasswordPanel"].forEach(id=>{
+    $(id).classList.toggle("hidden",id!==panel);
+  });
 }
-
-function getList(type) {
-  try {
-    return JSON.parse(localStorage.getItem(storageKey(type)) || "[]");
-  } catch {
-    return [];
-  }
+function storageKey(type){return "infinity_"+type+"_"+(currentUser?.id||"guest");}
+function getList(type){
+  try{return JSON.parse(localStorage.getItem(storageKey(type))||"[]");}
+  catch{return [];}
 }
+function saveList(type,list){localStorage.setItem(storageKey(type),JSON.stringify(list));}
 
-function saveList(type, list) {
-  localStorage.setItem(storageKey(type), JSON.stringify(list));
-}
-
-function showLogin(message = "") {
-  currentUser = null;
-  $("loginCard").classList.remove("hidden");
-  $("userDashboard").classList.add("hidden");
-  $("loginMessage").textContent = message;
-}
-
-function showDashboard(user) {
-  currentUser = user;
-  $("loginCard").classList.add("hidden");
-  $("userDashboard").classList.remove("hidden");
-
-  $("signedInEmail").textContent = user.email || "";
-  $("profileEmail").textContent = user.email || "";
-  $("profileUid").textContent = user.id;
-
+function showDashboard(user){
+  if(!user)return;
+  currentUser=user;
+  recoveryMode=false;
+  $("authScreen").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+  $("userEmail").textContent=user.email||"";
+  $("profileEmail").textContent=user.email||"";
+  $("profileId").textContent=user.id;
   renderServices();
   renderFavorites();
   renderHistory();
   setPage("home");
 }
 
-function setPage(page) {
-  ["home", "favorites", "history", "support", "profile"].forEach(name => {
-    $("page-" + name).classList.toggle("hidden", name !== page);
-  });
+function showLogin(text=""){
+  currentUser=null;
+  $("dashboard").classList.add("hidden");
+  $("authScreen").classList.remove("hidden");
+  showAuthPanel("loginPanel");
+  message(text);
+}
 
-  document.querySelectorAll("#userDashboard [data-page]").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.page === page);
+function setPage(page){
+  ["home","favorites","history","support","profile"].forEach(name=>{
+    $("page-"+name).classList.toggle("hidden",name!==page);
+  });
+  document.querySelectorAll("[data-page]").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.page===page);
   });
 }
 
-function openService(service) {
-  const history = getList("history").filter(id => id !== service.id);
-  history.unshift(service.id);
-  saveList("history", history.slice(0, 20));
-  renderHistory();
-
-  window.open(service.url, "_blank", "noopener,noreferrer");
-}
-
-function createServiceCard(service) {
-  const card = document.createElement("div");
-  card.className = "service-card";
-
-  const fav = document.createElement("button");
-  fav.className = "favorite-btn";
-  fav.type = "button";
-
-  function updateFavoriteButton() {
-    const active = getList("favorites").includes(service.id);
-    fav.textContent = active ? "♥" : "♡";
-    fav.classList.toggle("is-favorite", active);
-    fav.setAttribute(
-      "aria-label",
-      active ? "পছন্দ থেকে বাদ দিন" : "পছন্দে যোগ করুন"
-    );
+function createServiceCard(service){
+  const card=document.createElement("div");
+  card.className="service";
+  const heart=document.createElement("button");
+  heart.className="heart";
+  heart.type="button";
+  function updateHeart(){
+    const active=getList("favorites").includes(service.id);
+    heart.textContent=active?"♥":"♡";
+    heart.classList.toggle("on",active);
+    heart.setAttribute("aria-label",active?"পছন্দ থেকে বাদ দিন":"পছন্দে যোগ করুন");
   }
-
-  updateFavoriteButton();
-
-  fav.addEventListener("click", event => {
+  updateHeart();
+  heart.addEventListener("click",event=>{
     event.stopPropagation();
-
-    let list = getList("favorites");
-    list = list.includes(service.id)
-      ? list.filter(id => id !== service.id)
-      : [service.id, ...list];
-
-    saveList("favorites", list);
+    let list=getList("favorites");
+    list=list.includes(service.id)?list.filter(id=>id!==service.id):[service.id,...list];
+    saveList("favorites",list);
     renderServices();
     renderFavorites();
   });
-
-  const icon = document.createElement("span");
-  icon.className = "service-icon";
-  icon.textContent = service.icon;
-
-  const name = document.createElement("strong");
-  name.className = "service-name";
-  name.textContent = service.name;
-
-  const category = document.createElement("small");
-  category.className = "service-category";
-  category.textContent = service.category + " · খুলুন ↗";
-
-  card.append(fav, icon, name, category);
-  card.addEventListener("click", () => openService(service));
-
+  const icon=document.createElement("span");
+  icon.className="service-icon";
+  icon.textContent=service.icon;
+  const name=document.createElement("strong");
+  name.textContent=service.name;
+  const small=document.createElement("small");
+  small.textContent=service.category+" · খুলুন ↗";
+  card.append(heart,icon,name,small);
+  card.addEventListener("click",()=>{
+    const history=getList("history").filter(id=>id!==service.id);
+    history.unshift(service.id);
+    saveList("history",history.slice(0,20));
+    renderHistory();
+    window.open(service.url,"_blank","noopener,noreferrer");
+  });
   return card;
 }
 
-function renderServices() {
-  const grid = $("serviceGrid");
-  grid.replaceChildren();
-
-  const query = $("searchInput").value.trim().toLowerCase();
-  const results = services.filter(service =>
-    (service.name + " " + service.category).toLowerCase().includes(query)
-  );
-
-  results.forEach(service => grid.appendChild(createServiceCard(service)));
-  $("noResults").classList.toggle("hidden", results.length > 0);
+function renderServices(){
+  const query=$("search").value.trim().toLowerCase();
+  const found=services.filter(s=>(s.name+" "+s.category).toLowerCase().includes(query));
+  $("serviceGrid").replaceChildren(...found.map(createServiceCard));
+  $("noResults").classList.toggle("hidden",found.length>0);
 }
-
-function renderFavorites() {
-  const grid = $("favoriteList");
-  grid.replaceChildren();
-
-  const ids = getList("favorites");
-  const results = services.filter(service => ids.includes(service.id));
-
-  results.forEach(service => grid.appendChild(createServiceCard(service)));
-  $("noFavorites").classList.toggle("hidden", results.length > 0);
+function renderFavorites(){
+  const found=services.filter(s=>getList("favorites").includes(s.id));
+  $("favoriteGrid").replaceChildren(...found.map(createServiceCard));
+  $("noFavorites").classList.toggle("hidden",found.length>0);
 }
-
-function renderHistory() {
-  const list = $("historyList");
+function renderHistory(){
+  const list=$("historyList");
   list.replaceChildren();
-
-  const results = getList("history")
-    .map(id => services.find(service => service.id === id))
-    .filter(Boolean);
-
-  if (!results.length) {
-    const empty = document.createElement("p");
-    empty.className = "empty";
-    empty.textContent = "এখনো কোনো সেবা খোলা হয়নি।";
-    list.appendChild(empty);
+  const found=getList("history").map(id=>services.find(s=>s.id===id)).filter(Boolean);
+  if(!found.length){
+    const p=document.createElement("p");
+    p.className="empty";
+    p.textContent="এখনো কোনো সেবা খোলা হয়নি।";
+    list.appendChild(p);
     return;
   }
-
-  results.forEach(service => {
-    const row = document.createElement("div");
-    row.className = "history-item";
-
-    const link = document.createElement("a");
-    link.href = service.url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.textContent = service.icon + " " + service.name + " ↗";
-
-    row.appendChild(link);
-    list.appendChild(row);
+  found.forEach(s=>{
+    const row=document.createElement("div");
+    row.className="history-item";
+    const a=document.createElement("a");
+    a.href=s.url;a.target="_blank";a.rel="noopener noreferrer";
+    a.textContent=s.icon+" "+s.name+" ↗";
+    row.appendChild(a);list.appendChild(row);
   });
 }
 
-document.querySelectorAll("#userDashboard [data-page]").forEach(button => {
-  button.addEventListener("click", () => setPage(button.dataset.page));
+document.querySelectorAll("[data-page]").forEach(btn=>btn.addEventListener("click",()=>setPage(btn.dataset.page)));
+$("search").addEventListener("input",renderServices);
+$("profileBtn").addEventListener("click",()=>setPage("profile"));
+$("backHome").addEventListener("click",()=>setPage("home"));
+$("clearHistory").addEventListener("click",()=>{
+  if(confirm("ইতিহাস মুছে ফেলবেন?")){saveList("history",[]);renderHistory();}
 });
 
-$("searchInput").addEventListener("input", renderServices);
-$("profileBtn").addEventListener("click", () => setPage("profile"));
-$("backHome").addEventListener("click", () => setPage("home"));
-
-$("clearHistory").addEventListener("click", () => {
-  if (confirm("সাম্প্রতিক ইতিহাস মুছে ফেলবেন?")) {
-    saveList("history", []);
-    renderHistory();
-  }
-});
-
-/* SIGN IN */
-$("authForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  $("loginBtn").disabled = true;
-  $("signupBtn").disabled = true;
-  $("loginMessage").textContent = "লগইন হচ্ছে...";
-
-  try {
-    const { data, error } = await client.auth.signInWithPassword({
-      email: $("email").value.trim(),
-      password: $("password").value
+/* LOGIN */
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=$("loginBtn");
+  btn.disabled=true;
+  message("লগইন হচ্ছে...");
+  try{
+    const {data,error}=await client.auth.signInWithPassword({
+      email:$("email").value.trim(),
+      password:$("password").value
     });
-
-    if (error) throw error;
+    if(error)throw error;
     showDashboard(data.user);
-  } catch (error) {
-    $("loginMessage").textContent =
-      "লগইন করা যায়নি: " + error.message;
-  } finally {
-    $("loginBtn").disabled = false;
-    $("signupBtn").disabled = false;
-  }
+  }catch(err){message("লগইন করা যায়নি: "+err.message);}
+  finally{btn.disabled=false;}
 });
 
-/* CREATE ACCOUNT */
-$("signupBtn").addEventListener("click", async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value;
-
-  if (!email || !password) {
-    $("loginMessage").textContent =
-      "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
-    return;
-  }
-
-  if (password.length < 6) {
-    $("loginMessage").textContent =
-      "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
-    return;
-  }
-
-  $("signupBtn").disabled = true;
-  $("loginMessage").textContent = "অ্যাকাউন্ট তৈরি হচ্ছে...";
-
-  try {
-    const { data, error } = await client.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo:
-          window.location.origin + window.location.pathname
-      }
+/* SIGN UP */
+$("signupBtn").addEventListener("click",async()=>{
+  const email=$("email").value.trim();
+  const password=$("password").value;
+  if(!email||!password){message("আগে ইমেইল ও পাসওয়ার্ড লিখুন।");return;}
+  if(password.length<6){message("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।");return;}
+  const btn=$("signupBtn");btn.disabled=true;
+  message("অ্যাকাউন্ট তৈরি হচ্ছে...");
+  try{
+    const {data,error}=await client.auth.signUp({
+      email,password,
+      options:{emailRedirectTo:REDIRECT_URL}
     });
-
-    if (error) throw error;
-
-    if (data.session && data.user) {
-      showDashboard(data.user);
-    } else {
-      $("loginMessage").textContent =
-        "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
-    }
-  } catch (error) {
-    $("loginMessage").textContent =
-      "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
-  } finally {
-    $("signupBtn").disabled = false;
-  }
+    if(error)throw error;
+    if(data.session&&data.user)showDashboard(data.user);
+    else message("অ্যাকাউন্ট তৈরির অনুরোধ হয়েছে। ইমেইল যাচাই করে লগইন করুন।");
+  }catch(err){message("অ্যাকাউন্ট তৈরি হয়নি: "+err.message);}
+  finally{btn.disabled=false;}
 });
 
-/* FORGOT PASSWORD */
-$("forgotPassword").addEventListener("click", async event => {
-  event.preventDefault();
+/* OPEN FORGOT PASSWORD PANEL */
+$("forgotPassword").addEventListener("click",e=>{
+  e.preventDefault();
+  $("recoveryEmail").value=$("email").value.trim();
+  showAuthPanel("recoveryPanel");
+  message("আপনার অ্যাকাউন্টের ইমেইল লিখুন।");
+});
 
-  const email = $("email").value.trim();
-
-  if (!email) {
-    $("loginMessage").textContent =
-      "আগে ইমেইল ঠিকানা লিখুন, তারপর Forgot Password চাপুন।";
-    $("email").focus();
-    return;
-  }
-
-  const button = $("forgotPassword");
-  button.style.pointerEvents = "none";
-  $("loginMessage").textContent =
-    "পাসওয়ার্ড রিসেট ইমেইল পাঠানো হচ্ছে...";
-
-  try {
-    const { error } = await client.auth.resetPasswordForEmail(email, {
-      redirectTo:
-        window.location.origin + window.location.pathname
+/* SEND RESET EMAIL */
+$("recoveryForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const email=$("recoveryEmail").value.trim();
+  const btn=$("sendRecoveryBtn");
+  btn.disabled=true;
+  message("রিসেট ইমেইল পাঠানোর চেষ্টা হচ্ছে...");
+  try{
+    const {error}=await client.auth.resetPasswordForEmail(email,{
+      redirectTo:REDIRECT_URL
     });
+    if(error)throw error;
+    message("অনুরোধ সফল হয়েছে। আপনার ইমেইল ইনবক্স ও Spam ফোল্ডার দেখুন।");
+  }catch(err){
+    message("ইমেইল পাঠানো যায়নি: "+err.message);
+  }finally{btn.disabled=false;}
+});
 
-    if (error) throw error;
+$("backLogin1").addEventListener("click",()=>{
+  showAuthPanel("loginPanel");
+  message("");
+});
 
-    $("loginMessage").textContent =
-      "পাসওয়ার্ড রিসেটের নির্দেশনা আপনার ইমেইলে পাঠানো হলে ইনবক্স ও স্প্যাম ফোল্ডার দেখুন।";
-  } catch (error) {
-    $("loginMessage").textContent =
-      "রিসেট ইমেইল পাঠানো যায়নি: " + error.message;
-  } finally {
-    button.style.pointerEvents = "";
-  }
+/* HANDLE PASSWORD RESET LINK */
+$("newPasswordForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const password=$("newPassword").value;
+  const confirmPassword=$("confirmPassword").value;
+  if(password.length<6){message("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");return;}
+  if(password!==confirmPassword){message("দুটি পাসওয়ার্ড মিলছে না।");return;}
+  try{
+    const {error}=await client.auth.updateUser({password});
+    if(error)throw error;
+    recoveryMode=false;
+    showLogin("পাসওয়ার্ড পরিবর্তন হয়েছে। নতুন পাসওয়ার্ড দিয়ে লগইন করুন।");
+    $("password").value="";
+  }catch(err){message("পাসওয়ার্ড পরিবর্তন হয়নি: "+err.message);}
 });
 
 /* LOGOUT */
-$("logoutBtn").addEventListener("click", async () => {
-  const { error } = await client.auth.signOut();
-
-  if (error) {
-    alert("লগআউট করা যায়নি: " + error.message);
-    return;
-  }
-
+$("logoutBtn").addEventListener("click",async()=>{
+  const {error}=await client.auth.signOut();
+  if(error){alert("Logout করা যায়নি: "+error.message);return;}
   showLogin("আপনি সফলভাবে Logout করেছেন।");
 });
 
-/* EXISTING SESSION */
-async function initialize() {
-  const { data, error } = await client.auth.getSession();
+/* AUTH STATE */
+client.auth.onAuthStateChange((event,session)=>{
+  if(event==="PASSWORD_RECOVERY"){
+    recoveryMode=true;
+    $("authScreen").classList.remove("hidden");
+    $("dashboard").classList.add("hidden");
+    showAuthPanel("newPasswordPanel");
+    message("নতুন পাসওয়ার্ড দিন।");
+  }else if(event==="SIGNED_OUT"){
+    showLogin();
+  }else if(event==="SIGNED_IN"&&session?.user&&!recoveryMode){
+    showDashboard(session.user);
+  }
+});
 
-  if (error) {
-    showLogin("সেশন যাচাই করা যায়নি। আবার লগইন করুন।");
+/* INITIAL SESSION */
+async function initialize(){
+  const params=new URLSearchParams(window.location.hash.substring(1));
+  const hashError=params.get("error_description");
+  if(hashError){
+    showLogin("রিসেট লিংক সমস্যা: "+hashError);
     return;
   }
-
-  if (data.session && data.session.user) {
-    showDashboard(data.session.user);
-  } else {
-    showLogin();
-  }
+  const {data,error}=await client.auth.getSession();
+  if(error){showLogin("সেশন যাচাই করা যায়নি: "+error.message);return;}
+  if(data.session?.user&&!recoveryMode)showDashboard(data.session.user);
+  else showLogin();
 }
 
-client.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_OUT") {
-    showLogin();
-  } else if (event === "SIGNED_IN" && session && session.user) {
-    showDashboard(session.user);
-  } else if (event === "PASSWORD_RECOVERY" && session?.user) {
-    const newPassword = prompt("আপনার নতুন পাসওয়ার্ড লিখুন:");
-
-    if (newPassword && newPassword.length >= 6) {
-      client.auth.updateUser({ password: newPassword })
-        .then(({ error }) => {
+initialize();
+</script>
+</body>
+</html>
