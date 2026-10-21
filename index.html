@@ -3,19 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INFINITY</title>
+  <meta name="theme-color" content="#2563eb">
+  <title>INFINITY | User Dashboard</title>
 
   <style>
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-light: #eff6ff;
+      --bg: #f4f8ff;
+      --white: #ffffff;
+      --text: #172554;
+      --muted: #64748b;
+      --border: #dbeafe;
+      --shadow: 0 8px 28px rgba(37, 99, 235, .08);
+    }
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, "Noto Sans Bengali", sans-serif;
       min-height: 100vh;
-      background: #080d18;
-      color: #f8fafc;
-      font-family: Arial, sans-serif;
     }
 
     button, input {
@@ -26,91 +39,19 @@
       cursor: pointer;
     }
 
-    .wrap {
-      width: 100%;
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .card {
-      background: #111827;
-      border: 1px solid #30394a;
-      border-radius: 16px;
-      padding: 28px;
-      margin-bottom: 18px;
-    }
-
-    h1, h2, h3 {
-      margin-top: 0;
-    }
-
-    h1 {
-      color: #60a5fa;
-    }
-
-    .muted {
-      color: #aab4c5;
-      line-height: 1.7;
-    }
-
-    label {
-      display: block;
-      margin: 17px 0 8px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #414c60;
-      border-radius: 8px;
-      background: #080d18;
-      color: white;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 14px;
-      border: 0;
-      border-radius: 8px;
-      background: #2563eb;
-      color: white;
-      font-weight: bold;
-    }
-
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    .secondary {
-      background: #263449;
-    }
-
-    .danger {
-      background: #b91c1c;
+    button:focus-visible, input:focus-visible, a:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 2px;
     }
 
     .hidden {
       display: none !important;
     }
 
-    .message {
-      font-size: 14px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .email {
-      color: #93c5fd;
-      overflow-wrap: anywhere;
-    }
-
-    /* LOGIN BOX: স্ক্রিনের মাঝখানে */
+    /* আগের মাঝখানের লগইন বক্স */
     #loginCard {
       position: fixed;
+      z-index: 100;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -118,503 +59,828 @@
       max-width: 380px;
       max-height: calc(100vh - 32px);
       overflow-y: auto;
-      margin: 0;
       padding: 28px;
-      background: #111827;
-      border: 1px solid #30394a;
+      background: var(--white);
+      border: 1px solid var(--border);
       border-radius: 16px;
-      z-index: 10;
+      box-shadow: 0 16px 50px rgba(15, 23, 42, .13);
     }
 
-    #loginCard h1 {
-      text-align: center;
-      margin: 0 0 8px;
+    .brand {
+      color: var(--blue);
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin: 0;
     }
 
-    #loginCard .subtitle {
+    .login-title {
       text-align: center;
-      color: #aab4c5;
       margin-bottom: 25px;
     }
 
-    #loginCard button {
+    .login-title p {
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 17px 0 8px;
+    }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      padding: 13px;
+      background: #fff;
+      color: var(--text);
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--blue);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 16px;
+      font-weight: 700;
+      background: var(--blue);
+      color: white;
+    }
+
+    .btn:hover {
+      background: var(--blue-dark);
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .btn-full {
       display: block;
       width: 100%;
+      margin-top: 14px;
+    }
+
+    .btn-light {
+      color: var(--blue);
+      background: var(--blue-light);
+      border: 1px solid var(--border);
+    }
+
+    .btn-light:hover {
+      background: #dbeafe;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+    }
+
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    .message {
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+      color: #b91c1c;
+    }
+
+    /* Dashboard layout */
+    #dashboard {
+      min-height: 100vh;
+      padding-bottom: 88px;
     }
 
     .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
+      padding: 14px max(16px, calc((100% - 1150px) / 2));
+      background: rgba(255, 255, 255, .96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
     }
 
-    .topbar h1 {
+    .brand-small {
+      font-size: 23px;
+      color: var(--blue);
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #dbeafe;
+      color: var(--blue-dark);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--blue);
+      border-radius: 10px;
+      padding: 9px 12px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1150px;
+      margin: auto;
+      padding: 22px 18px;
+    }
+
+    .welcome {
+      padding: 24px;
+      border-radius: 18px;
+      background: linear-gradient(120deg, #2563eb, #60a5fa);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .welcome h1 {
+      font-size: clamp(23px, 4vw, 32px);
+      margin: 0 0 9px;
+    }
+
+    .welcome p {
+      margin: 0;
+      line-height: 1.7;
+      color: #eff6ff;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 26px 0 14px;
+    }
+
+    .section-heading h2 {
+      font-size: 20px;
       margin: 0;
     }
 
-    .badge {
-      display: inline-block;
-      border-radius: 20px;
-      padding: 7px 12px;
-      background: #123b2a;
-      color: #86efac;
+    .section-heading p {
+      margin: 5px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .search {
+      position: relative;
+      margin: 20px 0;
+    }
+
+    .search input {
+      padding: 15px 16px;
+      border-radius: 12px;
+      border-color: var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .category-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 0 12px;
+      scrollbar-width: thin;
+    }
+
+    .category-btn {
+      white-space: nowrap;
+      padding: 9px 14px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      color: #334155;
       font-size: 13px;
     }
 
-    .grid {
+    .category-btn.active {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .service-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 15px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 13px;
     }
 
-    .stat {
-      background: #0b1424;
-      border: 1px solid #30394a;
-      border-radius: 12px;
-      padding: 17px;
-    }
-
-    .stat strong {
-      display: block;
-      color: #60a5fa;
-      font-size: 19px;
-      margin-bottom: 8px;
-    }
-
-    .nav {
+    .service-card {
+      position: relative;
+      min-width: 0;
+      min-height: 154px;
+      padding: 17px 13px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, .04);
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: flex-start;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .service-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      background: var(--blue-light);
+      margin-bottom: 13px;
+    }
+
+    .service-card strong {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .service-card small {
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .favorite-btn {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 1px solid var(--border);
+      background: white;
+      color: #64748b;
+      border-radius: 50%;
+      font-size: 18px;
+    }
+
+    .favorite-btn.is-favorite {
+      color: #e11d48;
+      background: #fff1f2;
+    }
+
+    .content-card {
+      padding: 19px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      margin-top: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .content-card h2, .content-card h3 {
+      margin-top: 0;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .notice-item, .history-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #eff6ff;
+    }
+
+    .notice-item:last-child, .history-item:last-child {
+      border-bottom: 0;
+    }
+
+    .notice-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--blue-light);
+    }
+
+    .notice-item strong, .history-item strong {
+      font-size: 14px;
+    }
+
+    .notice-item p, .history-item p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .text-link {
+      display: inline-block;
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: none;
+      margin-top: 8px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .empty {
+      padding: 25px 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      background: white;
+      border: 1px dashed #bfdbfe;
+      border-radius: 14px;
+    }
+
+    .profile-row {
+      padding: 13px 0;
+      border-bottom: 1px solid #eff6ff;
+      overflow-wrap: anywhere;
+    }
+
+    .profile-row:last-child {
+      border-bottom: 0;
+    }
+
+    .profile-row span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .profile-row strong {
+      font-size: 14px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: space-around;
+      gap: 3px;
+      padding: 9px 5px calc(9px + env(safe-area-inset-bottom));
+      background: rgba(255, 255, 255, .97);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-btn {
+      flex: 1;
+      min-width: 0;
+      padding: 7px 2px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .nav-btn span {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 4px;
+    }
+
+    .nav-btn.active {
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+
+    .profile-head {
+      display: flex;
+      align-items: center;
+      gap: 13px;
       margin-bottom: 18px;
     }
 
-    .nav button {
-      width: auto;
-      flex: 1 1 100px;
-      margin: 0;
+    .profile-head .avatar {
+      width: 56px;
+      height: 56px;
+      font-size: 22px;
     }
 
-    .nav button.active {
-      background: #2563eb;
+    .profile-head h2 {
+      font-size: 19px;
+      margin: 0 0 5px;
+      overflow-wrap: anywhere;
     }
 
-    .panel {
-      min-width: 0;
+    @media (max-width: 800px) {
+      .service-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .container {
+        padding: 17px 13px;
+      }
+
+      .topbar {
+        padding: 12px 14px;
+      }
     }
 
     @media (max-width: 520px) {
-      .wrap {
-        padding: 12px;
-      }
-
-      .card {
-        padding: 18px;
-      }
-
       #loginCard {
         padding: 26px 22px;
       }
 
-      .grid {
-        grid-template-columns: 1fr;
+      .service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .service-card {
+        min-height: 145px;
+        padding: 15px 11px;
+      }
+
+      .welcome {
+        padding: 20px;
+      }
+
+      .brand-small {
+        font-size: 21px;
+      }
+
+      .topbar .icon-btn {
+        padding: 9px;
       }
     }
   </style>
 </head>
 
 <body>
-  <main class="wrap">
 
-    <!-- LOGIN -->
-    <section id="loginCard" class="card">
-      <h1>INFINITY</h1>
-      <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+  <!-- LOGIN SCREEN -->
+  <section id="loginCard">
+    <div class="login-title">
+      <h1 class="brand">INFINITY</h1>
+      <p>আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
+    </div>
 
-      <form id="authForm">
-        <label for="email">ইমেইল ঠিকানা</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="আপনার ইমেইল লিখুন"
-          autocomplete="email"
-          required
-        >
+    <form id="loginForm">
+      <label for="email">ইমেইল ঠিকানা</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="আপনার ইমেইল লিখুন"
+        autocomplete="email"
+        required
+      >
 
-        <label for="password">পাসওয়ার্ড</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="আপনার পাসওয়ার্ড লিখুন"
-          autocomplete="current-password"
-          required
-        >
+      <label for="password">পাসওয়ার্ড</label>
+      <input
+        id="password"
+        type="password"
+        placeholder="আপনার পাসওয়ার্ড লিখুন"
+        autocomplete="current-password"
+        required
+      >
 
-        <button id="loginBtn" type="submit">Sign In</button>
+      <button id="loginBtn" class="btn btn-full" type="submit">
+        Sign In
+      </button>
 
-        <button
-          id="signupBtn"
-          class="secondary"
-          type="button"
-        >Create Account</button>
-      </form>
+      <button id="signupBtn" class="btn btn-light btn-full" type="button">
+        Create Account
+      </button>
+    </form>
 
-      <p id="loginMessage" class="message" role="status"></p>
-    </section>
+    <p id="loginMessage" class="message" role="status"></p>
+  </section>
 
-    <!-- LOGGED-IN USER WITHOUT ADMIN ACCESS -->
-    <section id="userCard" class="card hidden">
-      <h1>INFINITY</h1>
-      <h2>আপনি লগইন করেছেন</h2>
-      <p id="userEmail" class="email"></p>
-      <p id="userMessage" class="muted">
-        Admin অনুমতি যাচাই হচ্ছে...
-      </p>
-      <button id="userLogout" class="danger">Sign Out</button>
-    </section>
+  <!-- USER DASHBOARD; ADMIN PANEL IS NOT INCLUDED -->
+  <div id="dashboard" class="hidden">
 
-    <!-- ADMIN PANEL -->
-    <section id="adminPanel" class="hidden">
+    <header class="topbar">
+      <div class="brand-small">INFINITY</div>
 
-      <header class="topbar">
-        <div>
-          <h1>INFINITY</h1>
-          <p class="muted">Administration Panel</p>
+      <div class="topbar-right">
+        <button class="icon-btn" id="noticeTopBtn" aria-label="নোটিশ">
+          🔔
+        </button>
+        <div class="avatar" id="topAvatar">U</div>
+      </div>
+    </header>
+
+    <main class="container">
+
+      <!-- HOME -->
+      <section id="page-home" class="page active">
+        <div class="welcome">
+          <h1>স্বাগতম, INFINITY-তে!</h1>
+          <p id="welcomeEmail">আপনার ড্যাশবোর্ডে স্বাগতম।</p>
+          <p>প্রয়োজনীয় সেবা সহজে খুঁজে নিন।</p>
         </div>
-        <span class="badge">ADMIN VERIFIED</span>
-      </header>
 
-      <nav class="nav">
-        <button class="active" data-page="dashboard">Dashboard</button>
-        <button data-page="users">ব্যবহারকারী</button>
-        <button data-page="settings">সেটিংস</button>
-        <button data-page="profile">প্রোফাইল</button>
-      </nav>
+        <div class="search">
+          <input
+            type="search"
+            id="serviceSearch"
+            placeholder="🔍 সার্ভিস খুঁজুন..."
+            aria-label="সার্ভিস খুঁজুন"
+          >
+        </div>
 
-      <!-- DASHBOARD -->
-      <section id="page-dashboard" class="panel">
-        <div class="card">
-          <h2>স্বাগতম, Admin!</h2>
-          <p class="muted">
-            আপনার INFINITY Admin Panel-এ স্বাগতম।
-          </p>
-
-          <div class="grid">
-            <div class="stat">
-              <strong>সক্রিয়</strong>
-              Admin অনুমতি
-            </div>
-
-            <div class="stat">
-              <strong>Supabase</strong>
-              Authentication
-            </div>
+        <div class="section-heading">
+          <div>
+            <h2>সকল সার্ভিস</h2>
+            <p>প্রয়োজনীয় সার্ভিস বেছে নিন</p>
           </div>
         </div>
 
-        <div class="card">
-          <h3>সিস্টেমের অবস্থা</h3>
+        <div id="categoryFilters" class="category-row"></div>
+        <div id="serviceGrid" class="service-grid"></div>
+
+        <div class="section-heading">
+          <div>
+            <h2>সাম্প্রতিক সার্ভিস</h2>
+            <p>আপনি সর্বশেষ যেগুলো খুলেছেন</p>
+          </div>
+          <button class="icon-btn" data-goto="history">সব দেখুন</button>
+        </div>
+
+        <div id="homeHistory" class="content-card"></div>
+
+        <div class="section-heading">
+          <div>
+            <h2>গুরুত্বপূর্ণ নোটিশ</h2>
+            <p>সরকারি সেবার তথ্য ও সতর্কতা</p>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="notice-item">
+            <div class="notice-icon">ℹ️</div>
+            <div>
+              <strong>সরকারি ওয়েবসাইট ব্যবহার করুন</strong>
+              <p>আবেদন করার আগে সংশ্লিষ্ট সরকারি পোর্টালে তথ্য যাচাই করুন।</p>
+            </div>
+          </div>
+
+          <div class="notice-item">
+            <div class="notice-icon">🔐</div>
+            <div>
+              <strong>আপনার তথ্য সুরক্ষিত রাখুন</strong>
+              <p>পাসওয়ার্ড বা OTP অন্য কারও সঙ্গে শেয়ার করবেন না।</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAVORITES -->
+      <section id="page-favorites" class="page">
+        <div class="section-heading">
+          <div>
+            <h2>⭐ পছন্দের সার্ভিস</h2>
+            <p>আপনার সংরক্ষণ করা সার্ভিস</p>
+          </div>
+        </div>
+        <div id="favoriteGrid" class="service-grid"></div>
+      </section>
+
+      <!-- HISTORY -->
+      <section id="page-history" class="page">
+        <div class="section-heading">
+          <div>
+            <h2>🕒 সাম্প্রতিক ইতিহাস</h2>
+            <p>এই ডিভাইসে দেখা সার্ভিসের তালিকা</p>
+          </div>
+          <button id="clearHistoryBtn" class="icon-btn">মুছুন</button>
+        </div>
+        <div id="historyList" class="content-card"></div>
+      </section>
+
+      <!-- NOTICES -->
+      <section id="page-notices" class="page">
+        <div class="section-heading">
+          <div>
+            <h2>🔔 নোটিশ ও তথ্য</h2>
+            <p>ব্যবহারকারীর জন্য গুরুত্বপূর্ণ নির্দেশনা</p>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="notice-item">
+            <div class="notice-icon">🏛️</div>
+            <div>
+              <strong>সরকারি সেবা</strong>
+              <p>সরকারি ফি ও আবেদনের নিয়ম সংশ্লিষ্ট সরকারি ওয়েবসাইটে যাচাই করুন।</p>
+            </div>
+          </div>
+
+          <div class="notice-item">
+            <div class="notice-icon">⚠️</div>
+            <div>
+              <strong>প্রতারণা থেকে সতর্ক থাকুন</strong>
+              <p>অপরিচিত কাউকে NID, পাসওয়ার্ড, OTP বা ব্যাংকিং তথ্য দেবেন না।</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUPPORT -->
+      <section id="page-support" class="page">
+        <div class="section-heading">
+          <div>
+            <h2>🎧 সাপোর্ট</h2>
+            <p>সাহায্যের জন্য দরকারি লিংক</p>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h3>সরকারি তথ্য ও সহায়তা</h3>
           <p class="muted">
-            আপনার Admin অনুমতি ডেটাবেস থেকে যাচাই করা হয়েছে।
+            সরকারি তথ্য ও সেবা সম্পর্কে জানতে জাতীয় তথ্য বাতায়ন
+            অথবা সরকারি সেবা সহায়তা পোর্টাল ব্যবহার করুন।
           </p>
+          <a
+            class="text-link"
+            href="https://bangladesh.gov.bd/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >বাংলাদেশ জাতীয় তথ্য বাতায়ন ↗</a>
+          <br>
+          <a
+            class="text-link"
+            href="https://333.gov.bd/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >জাতীয় সেবা ৩৩৩ ↗</a>
+        </div>
+
+        <div class="content-card">
+          <h3>INFINITY অ্যাকাউন্ট</h3>
           <p class="muted">
-            প্রকৃত ব্যবহারকারীর সংখ্যা এখনো সংযুক্ত করা হয়নি।
+            লগইন বা অ্যাকাউন্টে সমস্যা হলে আপনার Supabase Authentication
+            সেটিংস ও ইমেইল যাচাই করুন।
           </p>
         </div>
       </section>
 
-      <!-- USERS -->
-      <section id="page-users" class="panel hidden">
-        <div class="card">
-          <h2>ব্যবহারকারী ব্যবস্থাপনা</h2>
+      <!-- PROFILE -->
+      <section id="page-profile" class="page">
+        <div class="section-heading">
+          <div>
+            <h2>👤 আমার প্রোফাইল</h2>
+            <p>আপনার অ্যাকাউন্টের তথ্য</p>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="profile-head">
+            <div class="avatar" id="profileAvatar">U</div>
+            <div>
+              <h2>INFINITY User</h2>
+              <p class="muted" id="profileEmail"></p>
+            </div>
+          </div>
+
+          <div class="profile-row">
+            <span>ইমেইল</span>
+            <strong id="profileEmailDetail"></strong>
+          </div>
+
+          <div class="profile-row">
+            <span>অ্যাকাউন্ট আইডি</span>
+            <strong id="profileUid"></strong>
+          </div>
+
+          <div class="profile-row">
+            <span>লগইন ব্যবস্থা</span>
+            <strong>Supabase Authentication</strong>
+          </div>
+
           <p class="muted">
-            ব্যবহারকারীদের তালিকা, অ্যাকাউন্ট পরিবর্তন ও মুছে ফেলার
-            সুবিধা এখনো তৈরি করা হয়নি।
+            পাসওয়ার্ড পরিবর্তন করতে Supabase-এর অনুমোদিত
+            অ্যাকাউন্ট রিকভারি ব্যবস্থা ব্যবহার করুন।
           </p>
-          <p class="muted">
-            এই সুবিধার জন্য নিরাপদ ডেটাবেস ও সার্ভার ব্যবস্থা
-            তৈরি করতে হবে।
-          </p>
+
+          <button id="logoutBtn" class="btn btn-danger btn-full">
+            Sign Out
+          </button>
         </div>
       </section>
 
-      <!-- SETTINGS -->
-      <section id="page-settings" class="panel hidden">
-        <div class="card">
-          <h2>ওয়েবসাইট সেটিংস</h2>
-          <p class="muted">ওয়েবসাইট: INFINITY</p>
-          <p class="muted">হোস্টিং: GitHub Pages</p>
-          <p class="muted">Authentication: Supabase</p>
-          <p class="muted">
-            সেটিংস পরিবর্তন ও সংরক্ষণের সুবিধা এখনো যোগ করা হয়নি।
-          </p>
-        </div>
-      </section>
+    </main>
 
-      <!-- ADMIN PROFILE -->
-      <section id="page-profile" class="panel hidden">
-        <div class="card">
-          <h2>Admin প্রোফাইল</h2>
-          <p>ইমেইল:</p>
-          <p id="adminEmail" class="email"></p>
-          <p>Admin UID:</p>
-          <p id="adminUid" class="muted"></p>
-        </div>
-      </section>
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="bottom-nav" aria-label="প্রধান নেভিগেশন">
+      <button class="nav-btn active" data-page="home">
+        <span>🏠</span>হোম
+      </button>
+      <button class="nav-btn" data-page="favorites">
+        <span>⭐</span>পছন্দ
+      </button>
+      <button class="nav-btn" data-page="history">
+        <span>🕒</span>ইতিহাস
+      </button>
+      <button class="nav-btn" data-page="notices">
+        <span>🔔</span>নোটিশ
+      </button>
+      <button class="nav-btn" data-page="profile">
+        <span>👤</span>প্রোফাইল
+      </button>
+    </nav>
 
-      <div class="card">
-        <button id="adminLogout" class="danger">Logout</button>
-        <p id="adminMessage" class="message" role="status"></p>
-      </div>
-
-    </section>
-  </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
+    /* SUPABASE CONFIGURATION */
     const SUPABASE_URL =
       "https://ozjmdxufgugemtggkuvp.supabase.co";
 
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
 
-    const client = window.supabase.createClient(
+    const supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
 
+    /* PAGE ELEMENTS */
     const loginCard = document.getElementById("loginCard");
-    const userCard = document.getElementById("userCard");
-    const adminPanel = document.getElementById("adminPanel");
-
-    const authForm = document.getElementById("authForm");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-
+    const dashboard = document.getElementById("dashboard");
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
     const loginBtn = document.getElementById("loginBtn");
     const signupBtn = document.getElementById("signupBtn");
 
-    const loginMessage = document.getElementById("loginMessage");
-    const userMessage = document.getElementById("userMessage");
-    const adminMessage = document.getElementById("adminMessage");
+    let currentUser = null;
+    let activeCategory = "সব";
+    let activePage = "home";
 
-    let checkingUserId = null;
-
-    function showOnly(section) {
-      loginCard.classList.add("hidden");
-      userCard.classList.add("hidden");
-      adminPanel.classList.add("hidden");
-
-      section.classList.remove("hidden");
-    }
-
-    function showSignedOut(message = "") {
-      checkingUserId = null;
-      showOnly(loginCard);
-      loginMessage.textContent = message;
-    }
-
-    async function showSignedIn(user) {
-      if (!user) {
-        showSignedOut();
-        return;
+    /* SERVICES: LINKS TO EXTERNAL GOVERNMENT PORTALS */
+    const services = [
+      {
+        id: "nid",
+        title: "জাতীয় পরিচয়পত্র (NID)",
+        short: "NID সেবা",
+        category: "পরিচয় ও নাগরিক",
+        icon: "🪪",
+        url: "https://services.nidw.gov.bd/nid-pub/",
+        description: "NID সংক্রান্ত সরকারি সেবা"
+      },
+      {
+        id: "birth",
+        title: "জন্ম নিবন্ধন",
+        short: "জন্ম নিবন্ধন",
+        category: "পরিচয় ও নাগরিক",
+        icon: "👶",
+        url: "https://www.bdris.gov.bd/",
+        description: "জন্ম নিবন্ধন পোর্টাল"
       }
-
-      if (checkingUserId === user.id) {
-        return;
-      }
-
-      checkingUserId = user.id;
-
-      showOnly(userCard);
-
-      document.getElementById("userEmail").textContent =
-        user.email || "";
-
-      userMessage.textContent = "Admin অনুমতি যাচাই হচ্ছে...";
-
-      try {
-        const { data, error } = await client
-          .from("admin_users")
-          .select("role")
-          .eq("user_id", user.id)
-          .maybeSingle();
-
-        if (error) {
-          throw error;
-        }
-
-        if (data && data.role === "admin") {
-          showOnly(adminPanel);
-
-          document.getElementById("adminEmail").textContent =
-            user.email || "";
-
-          document.getElementById("adminUid").textContent =
-            user.id;
-
-          adminMessage.textContent = "";
-        } else {
-          showOnly(userCard);
-
-          userMessage.textContent =
-            "এই অ্যাকাউন্টে Admin অনুমতি পাওয়া যায়নি।";
-        }
-      } catch (error) {
-        showOnly(userCard);
-
-        userMessage.textContent =
-          "Admin যাচাই করা যায়নি। ইন্টারনেট ও Supabase সেটিংস পরীক্ষা করুন।";
-
-        console.error("Admin verification error:", error);
-      } finally {
-        if (checkingUserId === user.id) {
-          checkingUserId = null;
-        }
-      }
-    }
-
-    // SIGN IN
-    authForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      loginBtn.disabled = true;
-      signupBtn.disabled = true;
-      loginMessage.textContent = "লগইন হচ্ছে...";
-
-      try {
-        const { data, error } = await client.auth.signInWithPassword({
-          email: emailInput.value.trim(),
-          password: passwordInput.value
-        });
-
-        if (error) {
-          throw error;
-        }
-
-        await showSignedIn(data.user);
-      } catch (error) {
-        loginMessage.textContent =
-          "লগইন করা যায়নি: " + error.message;
-      } finally {
-        loginBtn.disabled = false;
-        signupBtn.disabled = false;
-      }
-    });
-
-    // CREATE ACCOUNT
-    signupBtn.addEventListener("click", async () => {
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
-
-      if (!email || !password) {
-        loginMessage.textContent =
-          "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
-        return;
-      }
-
-      if (password.length < 6) {
-        loginMessage.textContent =
-          "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
-        return;
-      }
-
-      signupBtn.disabled = true;
-      loginMessage.textContent = "অ্যাকাউন্ট তৈরি হচ্ছে...";
-
-      try {
-        const { data, error } = await client.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo:
-              window.location.origin + window.location.pathname
-          }
-        });
-
-        if (error) {
-          throw error;
-        }
-
-        if (data.session && data.user) {
-          await showSignedIn(data.user);
-        } else {
-          loginMessage.textContent =
-            "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
-        }
-      } catch (error) {
-        loginMessage.textContent =
-          "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
-      } finally {
-        signupBtn.disabled = false;
-      }
-    });
-
-    // LOG OUT
-    async function logout() {
-      const { error } = await client.auth.signOut();
-
-      if (error) {
-        adminMessage.textContent =
-          "Logout করা যায়নি: " + error.message;
-        return;
-      }
-
-      showSignedOut("আপনি সফলভাবে Logout করেছেন।");
-    }
-
-    document.getElementById("adminLogout")
-      .addEventListener("click", logout);
-
-    document.getElementById("userLogout")
-      .addEventListener("click", logout);
-
-    // ADMIN MENU
-    document.querySelectorAll("[data-page]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const page = button.dataset.page;
-
-        document.querySelectorAll(".panel").forEach((section) => {
-          section.classList.add("hidden");
-        });
-
-        document.getElementById("page-" + page)
-          .classList.remove("hidden");
-
-        document.querySelectorAll("[data-page]").forEach((item) => {
-          item.classList.toggle("active", item === button);
-        });
-      });
-    });
-
-    // CHECK EXISTING SESSION
-    async function initialize() {
-      const { data, error } = await client.auth.getSession();
-
-      if (error) {
-        showSignedOut("সেশন যাচাই করা যায়নি। আবার লগইন করুন।");
-        return;
-      }
-
-      if (data.session && data.session.user) {
-        await showSignedIn(data.session.user);
-      } else {
-        showSignedOut();
-      }
-    }
-
-    client.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT") {
-        showSignedOut();
-      } else if (event === "SIGNED_IN" && session?.user) {
-        showSignedIn(session.user);
-      }
-    });
-
-    initialize();
-  </script>
-</body>
-</html>
