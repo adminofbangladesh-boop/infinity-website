@@ -1,696 +1,374 @@
 
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account Not Found</title>
+<style>
+#infinityDashboard{
+  --bg:#050b19;--panel:#0c172b;--card:#0e192d;
+  --line:#20324b;--text:#edf4ff;--muted:#93a5bf;--accent:#00d1b2;
+  background:var(--bg);color:var(--text);font-family:Arial,sans-serif;
+  min-height:100vh;box-sizing:border-box
+}
+#infinityDashboard *{box-sizing:border-box}
+#infinityDashboard button,#infinityDashboard input,#infinityDashboard select{font:inherit}
+#infinityDashboard button{cursor:pointer}
+#infinityDashboard .id-layout{display:flex;min-height:100vh}
+#infinityDashboard .id-side{
+  width:245px;flex-shrink:0;background:#091326;border-right:1px solid var(--line);
+  padding:18px 12px;overflow-y:auto
+}
+#infinityDashboard .id-logo{font-size:23px;font-weight:bold;color:var(--accent);padding:5px 10px}
+#infinityDashboard .id-sub{font-size:11px;color:var(--muted);padding:0 10px 18px}
+#infinityDashboard .id-label{font-size:10px;color:#70839e;padding:16px 10px 7px;letter-spacing:1px}
+#infinityDashboard .id-menu{
+  width:100%;display:flex;align-items:center;gap:10px;text-align:left;
+  padding:12px 10px;border:0;border-radius:8px;color:#a9bad0;background:transparent;
+  margin:3px 0;font-size:13px
+}
+#infinityDashboard .id-menu:hover,
+#infinityDashboard .id-menu.active{background:#103b3c;color:var(--accent)}
+#infinityDashboard .id-main{flex:1;min-width:0}
+#infinityDashboard .id-top{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:15px 22px;background:var(--panel);border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:5
+}
+#infinityDashboard .id-topright{display:flex;align-items:center;gap:10px}
+#infinityDashboard .id-content{padding:22px;max-width:1500px;margin:auto}
+#infinityDashboard .id-page{display:none}
+#infinityDashboard .id-page.active{display:block}
+#infinityDashboard .id-card{
+  background:var(--card);border:1px solid var(--line);border-radius:13px;padding:17px;
+  min-width:0
+}
+#infinityDashboard .id-hero{
+  background:linear-gradient(120deg,#111d36,#10403f);
+  padding:25px;border-radius:16px;margin-bottom:18px
+}
+#infinityDashboard h1{font-size:25px;margin:0 0 12px}
+#infinityDashboard h2{font-size:18px;margin:0 0 12px}
+#infinityDashboard h3{font-size:15px;margin:0 0 10px}
+#infinityDashboard p{line-height:1.6}
+#infinityDashboard .id-muted{font-size:12px;color:var(--muted);line-height:1.7}
+#infinityDashboard .id-green{color:var(--accent)}
+#infinityDashboard .id-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0 24px}
+#infinityDashboard .id-services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#infinityDashboard .id-stat{font-size:23px;font-weight:bold;margin-top:8px}
+#infinityDashboard .id-icon{font-size:25px;margin-bottom:12px}
+#infinityDashboard .id-btn{
+  border:0;border-radius:8px;padding:11px 14px;background:var(--accent);
+  color:#05221e;font-weight:bold
+}
+#infinityDashboard .id-btn.secondary{background:#192a43;color:var(--text);border:1px solid var(--line)}
+#infinityDashboard .id-btn.danger{background:#4a202c;color:#ffd9df}
+#infinityDashboard .id-full{width:100%}
+#infinityDashboard .id-search{
+  width:100%;background:#071124;color:white;border:1px solid #263953;
+  border-radius:8px;padding:13px;margin:10px 0 18px
+}
+#infinityDashboard .id-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#infinityDashboard .id-row>*{min-width:0}
+#infinityDashboard .id-form{margin:12px 0}
+#infinityDashboard .id-form label{display:block;font-size:13px;margin-bottom:6px;color:#b8c8dc}
+#infinityDashboard .id-form input,
+#infinityDashboard .id-form select,
+#infinityDashboard .id-form textarea{
+  width:100%;padding:12px;background:#071124;border:1px solid #263953;
+  border-radius:8px;color:white
+}
+#infinityDashboard .id-tablewrap{overflow:auto}
+#infinityDashboard table{width:100%;border-collapse:collapse;min-width:480px}
+#infinityDashboard th,#infinityDashboard td{
+  padding:12px;text-align:left;font-size:12px;border-bottom:1px solid var(--line)
+}
+#infinityDashboard .id-badge{font-size:11px;color:var(--accent);background:#103b3c;padding:5px 8px;border-radius:20px}
+#infinityDashboard .id-notice{padding:12px;background:#102b35;border:1px solid #20504e;border-radius:9px;margin:12px 0}
+#infinityDashboard .id-menu-toggle{display:none}
+#infinityDashboard .id-empty{padding:20px;text-align:center;color:var(--muted)}
+@media(max-width:1000px){
+ #infinityDashboard .id-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #infinityDashboard .id-services{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #infinityDashboard .id-side{width:205px}
+}
+@media(max-width:650px){
+ #infinityDashboard .id-layout{display:block}
+ #infinityDashboard .id-side{width:100%;display:none;border-right:0;border-bottom:1px solid var(--line)}
+ #infinityDashboard .id-side.open{display:block}
+ #infinityDashboard .id-menu-toggle{display:inline-block}
+ #infinityDashboard .id-top{padding:12px;position:sticky}
+ #infinityDashboard .id-content{padding:12px}
+ #infinityDashboard .id-services{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #infinityDashboard .id-card{padding:12px}
+ #infinityDashboard .id-hero{padding:18px}
+ #infinityDashboard h1{font-size:21px}
+ #infinityDashboard .id-topright .id-muted{display:none}
+}
+@media(max-width:370px){
+ #infinityDashboard .id-services{grid-template-columns:1fr}
+}
+</style>
 
-  <style>
-    * { box-sizing: border-box; }
+<div id="infinityDashboard">
+<div class="id-layout">
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #080d18;
-      color: #f8fafc;
-      font-family: Arial, sans-serif;
-    }
+  <aside class="id-side" id="idSidebar">
+    <div class="id-logo">∞ INFINITY</div>
+    <div class="id-sub">DIGITAL SERVICE CENTER</div>
 
-    button, input { font: inherit; }
-    button { cursor: pointer; }
+    <div class="id-label">মূল মেনু</div>
+    <button class="id-menu active" data-page="home">⌂ ড্যাশবোর্ড</button>
+    <button class="id-menu" data-page="services">▤ সকল সার্ভিস</button>
+    <button class="id-menu" data-page="favorites">☆ পছন্দের সার্ভিস</button>
+    <button class="id-menu" data-page="recent">◷ সাম্প্রতিক কার্যক্রম</button>
 
-    .wrap {
-      width: 100%;
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
+    <div class="id-label">অ্যাকাউন্ট ও টাকা</div>
+    <button class="id-menu" data-page="wallet">▣ আমার ওয়ালেট</button>
+    <button class="id-menu" data-page="transactions">⇄ লেনদেনের ইতিহাস</button>
+    <button class="id-menu" data-page="recharge">＋ রিচার্জের অনুরোধ</button>
+    <button class="id-menu" data-page="profile">♙ আমার প্রোফাইল</button>
 
-    .card {
-      background: #111827;
-      border: 1px solid #30394a;
-      border-radius: 16px;
-      padding: 28px;
-      margin-bottom: 18px;
-    }
+    <div class="id-label">অন্যান্য</div>
+    <button class="id-menu" data-page="reports">▥ রিপোর্ট</button>
+    <button class="id-menu" data-page="notifications">♧ নোটিফিকেশন</button>
+    <button class="id-menu" data-page="support">✉ সাপোর্ট সেন্টার</button>
+    <button class="id-menu" data-page="settings">⚙ সেটিংস</button>
+    <button class="id-menu" data-page="admin">♜ অ্যাডমিন টুলস</button>
 
-    h1, h2, h3 { margin-top: 0; }
-    h1 { color: #60a5fa; }
+    <div class="id-card" style="margin-top:18px">
+      <div class="id-muted">সহায়তা প্রয়োজন?</div>
+      <p style="font-size:13px">সাপোর্ট সেন্টারে আপনার প্রশ্ন জানান।</p>
+      <button class="id-btn id-full" data-goto="support">সাপোর্ট নিন</button>
+    </div>
+  </aside>
 
-    .muted {
-      color: #aab4c5;
-      line-height: 1.7;
-    }
-
-    label {
-      display: block;
-      margin: 17px 0 8px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #414c60;
-      border-radius: 8px;
-      background: #080d18;
-      color: white;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 14px;
-      border: 0;
-      border-radius: 8px;
-      background: #2563eb;
-      color: white;
-      font-weight: bold;
-    }
-
-    button:disabled { opacity: .6; cursor: wait; }
-    .secondary { background: #263449; }
-    .danger { background: #b91c1c; }
-    .hidden { display: none !important; }
-
-    .message {
-      font-size: 14px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .email {
-      color: #93c5fd;
-      overflow-wrap: anywhere;
-    }
-
-    /* LOGIN: আগের ডিজাইন অপরিবর্তিত */
-    #loginCard {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: calc(100% - 32px);
-      max-width: 380px;
-      max-height: calc(100vh - 32px);
-      overflow-y: auto;
-      margin: 0;
-      padding: 28px;
-      background: #111827;
-      border: 1px solid #30394a;
-      border-radius: 16px;
-      z-index: 10;
-    }
-
-    #loginCard h1 {
-      text-align: center;
-      margin: 0 0 8px;
-    }
-
-    #loginCard .subtitle {
-      text-align: center;
-      color: #aab4c5;
-      margin-bottom: 25px;
-    }
-
-    #loginCard button { display: block; width: 100%; }
-
-    /* USER DASHBOARD */
-    #userDashboard .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    #userDashboard .topbar h1 { margin: 0; }
-
-    #userDashboard .actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    #userDashboard .actions button {
-      width: auto;
-      margin: 0;
-    }
-
-    #userDashboard .welcome {
-      background: #111827;
-      border: 1px solid #30394a;
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 18px;
-    }
-
-    #userDashboard .welcome h2 {
-      color: #60a5fa;
-      margin-bottom: 8px;
-    }
-
-    #userDashboard .welcome p { margin-bottom: 0; }
-
-    #userDashboard .nav {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    #userDashboard .nav button {
-      width: auto;
-      flex: 1 1 100px;
-      margin: 0;
-      background: #263449;
-    }
-
-    #userDashboard .nav button.active { background: #2563eb; }
-
-    #userDashboard .service-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    #userDashboard .service-card {
-      position: relative;
-      min-width: 0;
-      padding: 17px 10px;
-      text-align: center;
-      background: #0b1424;
-      border: 1px solid #30394a;
-      border-radius: 13px;
-      cursor: pointer;
-    }
-
-    #userDashboard .service-card:hover { border-color: #60a5fa; }
-
-    #userDashboard .service-icon {
-      display: block;
-      font-size: 29px;
-      margin-bottom: 10px;
-    }
-
-    #userDashboard .service-name {
-      display: block;
-      font-size: 14px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    #userDashboard .service-category {
-      display: block;
-      margin-top: 6px;
-      color: #93c5fd;
-      font-size: 12px;
-    }
-
-    #userDashboard .favorite-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 30px;
-      height: 30px;
-      padding: 0;
-      margin: 0;
-      border-radius: 50%;
-      background: #263449;
-      color: #93c5fd;
-      font-size: 19px;
-    }
-
-    #userDashboard .favorite-btn.is-favorite { color: #f87171; }
-
-    #userDashboard .section-heading {
-      margin-bottom: 16px;
-      color: #60a5fa;
-    }
-
-    #userDashboard .history-item {
-      padding: 13px 0;
-      border-bottom: 1px solid #30394a;
-      overflow-wrap: anywhere;
-    }
-
-    #userDashboard .history-item a { color: #93c5fd; }
-
-    #userDashboard .empty {
-      color: #aab4c5;
-      line-height: 1.7;
-    }
-
-    #userDashboard footer {
-      text-align: center;
-      padding: 20px 0 30px;
-      color: #aab4c5;
-      font-size: 12px;
-    }
-
-    @media (max-width: 600px) {
-      .wrap { padding: 12px; }
-      .card { padding: 18px; }
-      #loginCard { padding: 26px 22px; }
-
-      #userDashboard .service-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      #userDashboard .welcome { padding: 18px; }
-    }
-  </style>
-</head>
-
-<body>
-<main class="wrap">
-
-  <!-- LOGIN PAGE -->
-  <section id="loginCard" class="card">
-    <h1>INFINITY</h1>
-    <p class="subtitle">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
-
-    <form id="authForm">
-      <label for="email">ইমেইল ঠিকানা</label>
-      <input
-        id="email"
-        type="email"
-        placeholder="আপনার ইমেইল লিখুন"
-        autocomplete="email"
-        required
-      >
-
-      <label for="password">পাসওয়ার্ড</label>
-      <input
-        id="password"
-        type="password"
-        placeholder="আপনার পাসওয়ার্ড লিখুন"
-        autocomplete="current-password"
-        required
-      >
-
-      <button id="loginBtn" type="submit">Sign In</button>
-      <button id="signupBtn" class="secondary" type="button">Create Account</button>
-    </form>
-
-    <p id="loginMessage" class="message" role="status"></p>
-  </section>
-
-  <!-- USER DASHBOARD -->
-  <section id="userDashboard" class="hidden">
-
-    <header class="topbar">
-      <div>
-        <h1>INFINITY</h1>
-        <p class="muted">আপনার ডিজিটাল সেবা কেন্দ্র</p>
+  <div class="id-main">
+    <header class="id-top">
+      <div class="id-row">
+        <button class="id-btn secondary id-menu-toggle" id="idMenuToggle">☰</button>
+        <div>
+          <strong id="idTopTitle">ড্যাশবোর্ড</strong>
+          <div class="id-muted">INFINITY Service Center</div>
+        </div>
       </div>
-
-      <div class="actions">
-        <button id="profileBtn" class="secondary">প্রোফাইল</button>
-        <button id="logoutBtn" class="danger">Logout</button>
+      <div class="id-topright">
+        <button class="id-btn secondary" data-goto="notifications">♧</button>
+        <div>
+          <strong id="idTopUser">ব্যবহারকারী</strong>
+          <div class="id-muted">ইউজার ড্যাশবোর্ড</div>
+        </div>
       </div>
     </header>
 
-    <section class="welcome">
-      <h2>স্বাগতম!</h2>
-      <p class="muted">
-        প্রয়োজনীয় সেবা বেছে নিন। সেবার কার্ডে চাপ দিলে সংশ্লিষ্ট ওয়েবসাইট খুলবে।
-      </p>
-      <p id="signedInEmail" class="email"></p>
-    </section>
+    <main class="id-content">
 
-    <nav class="nav">
-      <button class="active" data-page="home">🏠 হোম</button>
-      <button data-page="favorites">⭐ পছন্দের সেবা</button>
-      <button data-page="history">🕘 ইতিহাস</button>
-      <button data-page="support">💬 সহায়তা</button>
-    </nav>
+      <section class="id-page active" id="idPage-home">
+        <div class="id-hero">
+          <div class="id-muted">আপনার ডিজিটাল সেবা কেন্দ্র</div>
+          <h1>স্বাগতম, <span class="id-green" id="idWelcome">ব্যবহারকারী</span>!</h1>
+          <p class="id-muted">আপনার সার্ভিস, হিসাব ও কার্যক্রম এক জায়গায় দেখুন।</p>
+          <div class="id-muted">বর্তমান ডেমো ব্যালেন্স</div>
+          <h1 class="id-green">৳ <span data-balance>0.00</span></h1>
+          <button class="id-btn" data-goto="services">সার্ভিস দেখুন →</button>
+          <button class="id-btn secondary" data-goto="wallet">ওয়ালেট</button>
+        </div>
 
-    <!-- HOME -->
-    <section id="page-home">
-      <input
-        id="searchInput"
-        type="search"
-        placeholder="🔎 সেবার নাম লিখে খুঁজুন..."
-        aria-label="সেবা খুঁজুন"
-      >
+        <div class="id-grid">
+          <div class="id-card"><div class="id-muted">বর্তমান ব্যালেন্স</div><div class="id-stat id-green">৳<span data-balance>0.00</span></div></div>
+          <div class="id-card"><div class="id-muted">মোট ডেমো রিচার্জ</div><div class="id-stat">৳<span id="idTotalRecharge">0.00</span></div></div>
+          <div class="id-card"><div class="id-muted">মোট ডেমো খরচ</div><div class="id-stat">৳<span id="idTotalSpent">0.00</span></div></div>
+          <div class="id-card"><div class="id-muted">মোট লেনদেন</div><div class="id-stat" id="idTransactionCount">0</div></div>
+        </div>
 
-      <div class="card" style="margin-top:16px">
-        <h2 class="section-heading">সরকারি ও নাগরিক সেবা</h2>
-        <div id="serviceGrid" class="service-grid"></div>
-        <p id="noResults" class="empty hidden">কোনো সেবা পাওয়া যায়নি।</p>
-      </div>
-    </section>
+        <div class="id-row" style="justify-content:space-between">
+          <h2>জনপ্রিয় সার্ভিস</h2>
+          <button class="id-btn secondary" data-goto="services">সব দেখুন →</button>
+        </div>
+        <div class="id-services" id="idFeatured"></div>
 
-    <!-- FAVORITES -->
-    <section id="page-favorites" class="hidden card">
-      <h2 class="section-heading">⭐ পছন্দের সেবা</h2>
-      <div id="favoriteList" class="service-grid"></div>
-      <p id="noFavorites" class="empty">এখনো কোনো সেবা পছন্দের তালিকায় যোগ করা হয়নি।</p>
-    </section>
+        <h2 style="margin-top:25px">সাম্প্রতিক লেনদেন</h2>
+        <div class="id-card id-tablewrap">
+          <table><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>পরিমাণ</th></tr></thead>
+          <tbody id="idRecentRows"></tbody></table>
+        </div>
+      </section>
 
-    <!-- HISTORY -->
-    <section id="page-history" class="hidden card">
-      <h2 class="section-heading">🕘 সাম্প্রতিক ইতিহাস</h2>
-      <div id="historyList"></div>
-      <button id="clearHistory" class="secondary">ইতিহাস মুছুন</button>
-    </section>
+      <section class="id-page" id="idPage-services">
+        <h1>সকল ডিজিটাল সার্ভিস</h1>
+        <p class="id-muted">নাম লিখে সার্ভিস খুঁজুন। মূল্যগুলো ডেমো মূল্য।</p>
+        <input class="id-search" id="idServiceSearch" placeholder="🔎 সার্ভিস খুঁজুন..." />
+        <div class="id-services" id="idAllServices"></div>
+      </section>
 
-    <!-- SUPPORT -->
-    <section id="page-support" class="hidden card">
-      <h2 class="section-heading">💬 সহায়তা কেন্দ্র</h2>
-      <p class="muted">
-        সরকারি সেবা ব্যবহারে সমস্যা হলে সংশ্লিষ্ট সরকারি ওয়েবসাইটের সহায়তা বিভাগ ব্যবহার করুন।
-      </p>
-    </section>
+      <section class="id-page" id="idPage-favorites">
+        <h1>পছন্দের সার্ভিস</h1>
+        <p class="id-muted">আপনার পছন্দ হিসেবে চিহ্নিত করা সার্ভিসগুলো।</p>
+        <div class="id-services" id="idFavoriteServices"></div>
+      </section>
 
-    <!-- PROFILE -->
-    <section id="page-profile" class="hidden card">
-      <h2 class="section-heading">👤 প্রোফাইল</h2>
-      <p class="muted">লগইন ইমেইল</p>
-      <p id="profileEmail" class="email"></p>
-      <p class="muted">অ্যাকাউন্ট UID</p>
-      <p id="profileUid" class="email"></p>
-      <button id="backHome" class="secondary">ড্যাশবোর্ডে ফিরুন</button>
-    </section>
+      <section class="id-page" id="idPage-recent">
+        <h1>সাম্প্রতিক কার্যক্রম</h1>
+        <div class="id-card id-tablewrap">
+          <table><thead><tr><th>তারিখ</th><th>কার্যক্রম</th><th>পরিমাণ</th></tr></thead>
+          <tbody id="idActivityRows"></tbody></table>
+        </div>
+      </section>
 
-    <footer>INFINITY · ডিজিটাল সেবা কেন্দ্র</footer>
-  </section>
-</main>
+      <section class="id-page" id="idPage-wallet">
+        <h1>আমার ওয়ালেট</h1>
+        <div class="id-card">
+          <div class="id-muted">বর্তমান ডেমো ব্যালেন্স</div>
+          <h1 class="id-green">৳ <span data-balance>0.00</span></h1>
+          <div class="id-notice">এটি শুধু ব্রাউজারে সংরক্ষিত ডেমো ব্যালেন্স। প্রকৃত টাকা জমা বা উত্তোলন হবে না।</div>
+          <button class="id-btn" data-goto="recharge">রিচার্জের অনুরোধ →</button>
+        </div>
+        <div class="id-grid">
+          <div class="id-card"><div class="id-muted">মোট ডেমো রিচার্জ</div><h2>৳<span id="idWalletRecharge">0.00</span></h2></div>
+          <div class="id-card"><div class="id-muted">মোট ডেমো খরচ</div><h2>৳<span id="idWalletSpent">0.00</span></h2></div>
+        </div>
+      </section>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      <section class="id-page" id="idPage-transactions">
+        <h1>লেনদেনের ইতিহাস</h1>
+        <div class="id-card id-tablewrap">
+          <table><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>ধরন</th><th>পরিমাণ</th></tr></thead>
+          <tbody id="idTransactionRows"></tbody></table>
+        </div>
+      </section>
+
+      <section class="id-page" id="idPage-recharge">
+        <h1>রিচার্জের অনুরোধ</h1>
+        <div class="id-card">
+          <div class="id-notice">এই ফর্মটি নমুনা হিসেবে কাজ করে। কোনো টাকা পাঠাবেন না। প্রকৃত পেমেন্ট চালু করতে নিরাপদ সার্ভার ও পেমেন্ট গেটওয়ে যুক্ত করতে হবে।</div>
+          <div class="id-form"><label>পরিমাণ (৳)</label><input type="number" id="idRechargeAmount" min="1" max="100000" placeholder="যেমন: 500"></div>
+          <div class="id-form"><label>পেমেন্ট পদ্ধতি (ডেমো)</label>
+            <select id="idPaymentMethod"><option value="bKash">bKash</option><option value="Nagad">Nagad</option><option value="Rocket">Rocket</option><option value="Other">অন্যান্য</option></select>
+          </div>
+          <button class="id-btn" id="idSendRecharge">ডেমো অনুরোধ তৈরি করুন</button>
+          <p class="id-muted" id="idRechargeMessage"></p>
+        </div>
+        <h2 style="margin-top:20px">আমার রিচার্জ অনুরোধ</h2>
+        <div class="id-card id-tablewrap">
+          <table><thead><tr><th>তারিখ</th><th>পদ্ধতি</th><th>পরিমাণ</th><th>অবস্থা</th></tr></thead>
+          <tbody id="idRechargeRows"></tbody></table>
+        </div>
+      </section>
+
+      <section class="id-page" id="idPage-profile">
+        <h1>আমার প্রোফাইল</h1>
+        <div class="id-card">
+          <div class="id-form"><label>প্রদর্শিত নাম</label><input id="idProfileName" placeholder="আপনার নাম"></div>
+          <div class="id-form"><label>ইমেইল</label><input id="idProfileEmail" placeholder="লগইন করা ইমেইল" readonly></div>
+          <div class="id-form"><label>মোবাইল নম্বর</label><input id="idProfilePhone" placeholder="মোবাইল নম্বর"></div>
+          <button class="id-btn" id="idSaveProfile">প্রোফাইল সংরক্ষণ করুন</button>
+          <p class="id-muted">এখানে নাম ও ফোন নম্বর শুধু এই ব্রাউজারে সংরক্ষিত হবে। এটি Supabase প্রোফাইল আপডেট করে না।</p>
+        </div>
+      </section>
+
+      <section class="id-page" id="idPage-reports">
+        <h1>রিপোর্ট ও সারাংশ</h1>
+        <div class="id-grid">
+          <div class="id-card"><div class="id-muted">সার্ভিস সংখ্যা</div><div class="id-stat" id="idReportServices">0</div></div>
+          <div class="id-card"><div class="id-muted">লেনদেন সংখ্যা</div><div class="id-stat" id="idReportTransactions">0</div></div>
+          <div class="id-card"><div class="id-muted">মোট ডেমো রিচার্জ</div><div class="id-stat">৳<span id="idReportRecharge">0</span></div></div>
+          <div class="id-card"><div class="id-muted">মোট ডেমো খরচ</div><div class="id-stat">৳<span id="idReportSpent">0</span></div></div>
+        </div>
+        <button class="id-btn" id="idExportReport">লেনদেন CSV ডাউনলোড</button>
+      </section>
+
+      <section class="id-page" id="idPage-notifications">
+        <h1>নোটিফিকেশন</h1>
+        <div class="id-card">
+          <h3>∞ INFINITY</h3>
+          <p class="id-muted">আপনার ডিজিটাল সার্ভিস ড্যাশবোর্ড প্রস্তুত। সার্ভিস ব্যবহার করার আগে সংশ্লিষ্ট সরকারি ওয়েবসাইটের নির্দেশনা যাচাই করুন।</p>
+        </div>
+        <div class="id-card">
+          <h3>নিরাপত্তা পরামর্শ</h3>
+          <p class="id-muted">আপনার পাসওয়ার্ড, OTP বা ইমেইল ভেরিফিকেশন কোড কারও সঙ্গে শেয়ার করবেন না।</p>
+        </div>
+      </section>
+
+      <section class="id-page" id="idPage-support">
+        <h1>সাপোর্ট সেন্টার</h1>
+        <div class="id-card">
+          <div class="id-form"><label>বিষয়</label><input id="idSupportSubject" placeholder="কী বিষয়ে সাহায্য চান?"></div>
+          <div class="id-form"><label>বিস্তারিত</label><textarea id="idSupportMessage" rows="5" placeholder="আপনার সমস্যা লিখুন"></textarea></div>
+          <button class="id-btn" id="idSubmitSupport">ডেমো সাপোর্ট অনুরোধ সংরক্ষণ</button>
+          <p class="id-muted" id="idSupportStatus"></p>
+          <p class="id-muted">এটি স্থানীয় ডেমো ফর্ম। বাস্তব সাপোর্টের জন্য ব্যাকএন্ড বা টিকিটিং ব্যবস্থা দরকার।</p>
+        </div>
+        <h2 style="margin-top:20px">সাধারণ প্রশ্ন</h2>
+        <div class="id-card"><strong>সার্ভিসের মূল্য কি আসল?</strong><p class="id-muted">না। এগুলো কেবল প্রদর্শনের জন্য নির্ধারিত ডেমো মূল্য।</p></div>
+        <div class="id-card"><strong>সরকারি আবেদন কি এখানে জমা হয়?</strong><p class="id-muted">না। সার্ভিস কার্ড ব্যবহার করলে নির্দেশনা দেখা যাবে বা সংশ্লিষ্ট সরকারি ওয়েবসাইট খোলা হবে।</p></div>
+      </section>
+
+      <section class="id-page" id="idPage-settings">
+        <h1>সেটিংস</h1>
+        <div class="id-card">
+          <h3>ড্যাশবোর্ড সেটিংস</h3>
+          <p class="id-muted">ড্যাশবোর্ডের স্থানীয় ডেমো ডেটা মুছে ফেলতে নিচের বোতাম ব্যবহার করুন। এটি আপনার Supabase অ্যাকাউন্ট মুছবে না।</p>
+          <button class="id-btn danger" id="idResetDemo">ডেমো ডেটা রিসেট করুন</button>
+        </div>
+      </section>
+
+      <section class="id-page" id="idPage-admin">
+        <h1>অ্যাডমিন টুলস</h1>
+        <div class="id-notice">নিরাপত্তা: এই অংশটি কেবল ডেমো। শুধু এই পেজ লুকিয়ে রাখা বা JavaScript দিয়ে বাধা দেওয়া প্রকৃত অ্যাডমিন নিরাপত্তা নয়। সার্ভার-সাইড অনুমতি ছাড়া বাস্তব অ্যাডমিন কাজ করবেন না।</div>
+        <div class="id-card">
+          <h3>সার্ভিস মূল্য পরিবর্তন (শুধু ডেমো)</h3>
+          <div class="id-form"><label>সার্ভিস</label><select id="idAdminService"></select></div>
+          <div class="id-form"><label>নতুন মূল্য (৳)</label><input type="number" min="0" id="idAdminPrice"></div>
+          <button class="id-btn" id="idUpdatePrice">ডেমো মূল্য আপডেট</button>
+          <p class="id-muted">এই পরিবর্তন শুধু বর্তমান ব্রাউজারে সংরক্ষিত হবে।</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+</div>
 
 <script>
-const SUPABASE_URL = "https://ozjmdxufgugemtggkuvp.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_gvxxNZqQAzaJagj34FgjRA_kUW6Y-Xg";
+(function(){
+"use strict";
+const root=document.getElementById("infinityDashboard");
+if(!root || root.dataset.initialized==="yes") return;
+root.dataset.initialized="yes";
 
-const client = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-const $ = id => document.getElementById(id);
-let currentUser = null;
-
-const services = [
-  {id:"nid",name:"জাতীয় পরিচয়পত্র (NID)",icon:"🪪",category:"পরিচয়",url:"https://services.nidw.gov.bd/nid-pub/"},
-  {id:"birth",name:"জন্ম ও মৃত্যু নিবন্ধন",icon:"👶",category:"নিবন্ধন",url:"https://www.bdris.gov.bd/"},
-  {id:"mygov",name:"মাইগভ সেবা",icon:"🇧🇩",category:"নাগরিক",url:"https://www.mygov.bd/"},
-  {id:"citizen",name:"বাংলাদেশ সরকারি পোর্টাল",icon:"🏛️",category:"নাগরিক",url:"https://bangladesh.gov.bd/"},
-  {id:"etin",name:"ই-টিন নিবন্ধন",icon:"📄",category:"কর",url:"https://secure.incometax.gov.bd/TINHome"},
-  {id:"return",name:"আয়কর ই-রিটার্ন",icon:"🧾",category:"কর",url:"https://etaxnbr.gov.bd/"},
-  {id:"challan",name:"ই-চালান",icon:"💳",category:"কর",url:"https://ibas.finance.gov.bd/acs"},
-  {id:"education",name:"শিক্ষার ফলাফল",icon:"🎓",category:"শিক্ষা",url:"https://educationboardresults.gov.bd/"},
-  {id:"allowance",name:"সরকারি ভাতা",icon:"🤝",category:"ভাতা",url:"https://dss.gov.bd/"},
-  {id:"passport",name:"ই-পাসপোর্ট",icon:"🛂",category:"পরিচয়",url:"https://www.epassport.gov.bd/"},
-  {id:"police",name:"পুলিশ ক্লিয়ারেন্স",icon:"👮",category:"নাগরিক",url:"https://pcc.police.gov.bd/"},
-  {id:"land",name:"ভূমি মন্ত্রণালয়",icon:"🌾",category:"ভূমি",url:"https://land.gov.bd/"},
-  {id:"mutation",name:"নামজারি",icon:"📑",category:"ভূমি",url:"https://mutation.land.gov.bd/"},
-  {id:"porcha",name:"ই-পর্চা",icon:"📜",category:"ভূমি",url:"https://eporcha.gov.bd/"},
-  {id:"brta",name:"বিআরটিএ সেবা",icon:"🚗",category:"পরিবহন",url:"https://bsp.brta.gov.bd/"},
-  {id:"bpsc",name:"সরকারি চাকরি ও পরীক্ষা",icon:"💼",category:"চাকরি",url:"https://bpsc.gov.bd/"}
+const defaults=[
+ {name:"জন্ম নিবন্ধন যাচাই",price:2,desc:"জন্ম নিবন্ধনের তথ্য যাচাই",icon:"📄",url:"https://everify.bdris.gov.bd/"},
+ {name:"জন্ম নিবন্ধন আবেদন",price:10,desc:"জন্ম নিবন্ধন আবেদনের নির্দেশনা",icon:"📝",url:"https://bdris.gov.bd/"},
+ {name:"জন্ম তথ্য সংশোধন",price:100,desc:"সংশোধন সংক্রান্ত নির্দেশনা",icon:"✍️",url:"https://bdris.gov.bd/"},
+ {name:"NID সেবা",price:2,desc:"জাতীয় পরিচয়পত্রের সরকারি সেবা",icon:"🪪",url:"https://services.nidw.gov.bd/nid-pub/"},
+ {name:"ভূমি সেবা",price:20,desc:"ভূমি বিষয়ক সরকারি সেবা",icon:"🏡",url:"https://land.gov.bd/"},
+ {name:"ই-পর্চা",price:20,desc:"ভূমি রেকর্ডের তথ্য",icon:"📚",url:"https://eporcha.gov.bd/"},
+ {name:"নামজারি",price:30,desc:"নামজারি সংক্রান্ত নির্দেশনা",icon:"📋",url:"https://mutation.land.gov.bd/"},
+ {name:"ই-পাসপোর্ট",price:30,desc:"পাসপোর্ট আবেদনের সরকারি পোর্টাল",icon:"🛂",url:"https://www.epassport.gov.bd/"},
+ {name:"পুলিশ ক্লিয়ারেন্স",price:20,desc:"পুলিশ ক্লিয়ারেন্স সেবা",icon:"👮",url:"https://pcc.police.gov.bd/"},
+ {name:"ই-টিআইএন",price:20,desc:"করদাতা শনাক্তকরণ তথ্য",icon:"🧾",url:"https://secure.incometax.gov.bd/TINHome"},
+ {name:"ই-রিটার্ন",price:30,desc:"আয়কর রিটার্নের সরকারি পোর্টাল",icon:"💰",url:"https://etaxnbr.gov.bd/"},
+ {name:"শিক্ষা বোর্ডের ফলাফল",price:10,desc:"পরীক্ষার ফলাফল দেখুন",icon:"🎓",url:"https://educationboardresults.gov.bd/"},
+ {name:"সরকারি ভাতা",price:10,desc:"সামাজিক সুরক্ষা ও ভাতার তথ্য",icon:"🤝",url:"https://dss.gov.bd/"},
+ {name:"নাগরিক সেবা",price:5,desc:"বাংলাদেশের সরকারি সেবা পোর্টাল",icon:"🇧🇩",url:"https://bangladesh.gov.bd/"},
+ {name:"মাইগভ",price:5,desc:"ডিজিটাল সরকারি সেবা",icon:"🌐",url:"https://www.mygov.bd/"},
+ {name:"ই-চালান",price:10,desc:"সরকারি চালান সংক্রান্ত সেবা",icon:"💳",url:"https://ibas.finance.gov.bd/acs"},
+ {name:"BRTA সেবা",price:20,desc:"যানবাহন ও ড্রাইভিং লাইসেন্স",icon:"🚘",url:"https://bsp.brta.gov.bd/"},
+ {name:"সরকারি চাকরি",price:10,desc:"সরকারি নিয়োগ সংক্রান্ত তথ্য",icon:"💼",url:"https://bpsc.gov.bd/"},
+ {name:"পাসপোর্ট তথ্য",price:5,desc:"পাসপোর্ট সেবা সংক্রান্ত তথ্য",icon:"📘",url:"https://www.epassport.gov.bd/"},
+ {name:"জরুরি সরকারি তথ্য",price:0,desc:"বাংলাদেশের সরকারি তথ্য পোর্টাল",icon:"ℹ️",url:"https://bangladesh.gov.bd/"}
 ];
 
-function storageKey(type) {
-  return "infinity_" + type + "_" + (currentUser ? currentUser.id : "guest");
+function read(key,fallback){
+ try{const v=JSON.parse(localStorage.getItem("infdash_"+key));return v==null?fallback:v}catch(e){return fallback}
 }
+function write(key,value){try{localStorage.setItem("infdash_"+key,JSON.stringify(value))}catch(e){}}
+let services=read("services",defaults);
+let balance=read("balance",0);
+let totalRecharge=read("recharge",0);
+let totalSpent=read("spent",0);
+let history=read("history",[]);
+let favorites=read("favorites",[]);
+let rechargeRequests=read("requests",[]);
+let activities=read("activities",[]);
+let profile=read("profile",{name:"ব্যবহারকারী",phone:"",email:""});
+let activePage="home";
 
-function getList(type) {
-  try {
-    return JSON.parse(localStorage.getItem(storageKey(type)) || "[]");
-  } catch {
-    return [];
-  }
-}
-
-function saveList(type, list) {
-  localStorage.setItem(storageKey(type), JSON.stringify(list));
-}
-
-function showLogin(message = "") {
-  currentUser = null;
-  $("loginCard").classList.remove("hidden");
-  $("userDashboard").classList.add("hidden");
-  $("loginMessage").textContent = message;
-}
-
-function showDashboard(user) {
-  currentUser = user;
-  $("loginCard").classList.add("hidden");
-  $("userDashboard").classList.remove("hidden");
-
-  $("signedInEmail").textContent = user.email || "";
-  $("profileEmail").textContent = user.email || "";
-  $("profileUid").textContent = user.id;
-
-  renderServices();
-  renderFavorites();
-  renderHistory();
-  setPage("home");
-}
-
-function setPage(page) {
-  ["home", "favorites", "history", "support", "profile"].forEach(name => {
-    $("page-" + name).classList.toggle("hidden", name !== page);
-  });
-
-  document.querySelectorAll("#userDashboard [data-page]").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.page === page);
-  });
-}
-
-function openService(service) {
-  const history = getList("history").filter(id => id !== service.id);
-  history.unshift(service.id);
-  saveList("history", history.slice(0, 20));
-  renderHistory();
-  window.open(service.url, "_blank", "noopener,noreferrer");
-}
-
-function createServiceCard(service) {
-  const card = document.createElement("div");
-  card.className = "service-card";
-
-  const fav = document.createElement("button");
-  fav.className = "favorite-btn";
-  fav.type = "button";
-
-  function updateFavoriteButton() {
-    const active = getList("favorites").includes(service.id);
-    fav.textContent = active ? "♥" : "♡";
-    fav.classList.toggle("is-favorite", active);
-    fav.setAttribute("aria-label", active ? "পছন্দ থেকে বাদ দিন" : "পছন্দে যোগ করুন");
-  }
-
-  updateFavoriteButton();
-
-  fav.addEventListener("click", event => {
-    event.stopPropagation();
-
-    let list = getList("favorites");
-    list = list.includes(service.id)
-      ? list.filter(id => id !== service.id)
-      : [service.id, ...list];
-
-    saveList("favorites", list);
-    renderServices();
-    renderFavorites();
-  });
-
-  const icon = document.createElement("span");
-  icon.className = "service-icon";
-  icon.textContent = service.icon;
-
-  const name = document.createElement("strong");
-  name.className = "service-name";
-  name.textContent = service.name;
-
-  const category = document.createElement("small");
-  category.className = "service-category";
-  category.textContent = service.category + " · খুলুন ↗";
-
-  card.append(fav, icon, name, category);
-  card.addEventListener("click", () => openService(service));
-
-  return card;
-}
-
-function renderServices() {
-  const grid = $("serviceGrid");
-  grid.replaceChildren();
-
-  const query = $("searchInput").value.trim().toLowerCase();
-  const results = services.filter(service =>
-    (service.name + " " + service.category).toLowerCase().includes(query)
-  );
-
-  results.forEach(service => grid.appendChild(createServiceCard(service)));
-  $("noResults").classList.toggle("hidden", results.length > 0);
-}
-
-function renderFavorites() {
-  const grid = $("favoriteList");
-  grid.replaceChildren();
-
-  const ids = getList("favorites");
-  const results = services.filter(service => ids.includes(service.id));
-
-  results.forEach(service => grid.appendChild(createServiceCard(service)));
-  $("noFavorites").classList.toggle("hidden", results.length > 0);
-}
-
-function renderHistory() {
-  const list = $("historyList");
-  list.replaceChildren();
-
-  const results = getList("history")
-    .map(id => services.find(service => service.id === id))
-    .filter(Boolean);
-
-  if (!results.length) {
-    const empty = document.createElement("p");
-    empty.className = "empty";
-    empty.textContent = "এখনো কোনো সেবা খোলা হয়নি।";
-    list.appendChild(empty);
-    return;
-  }
-
-  results.forEach(service => {
-    const row = document.createElement("div");
-    row.className = "history-item";
-
-    const link = document.createElement("a");
-    link.href = service.url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.textContent = service.icon + " " + service.name + " ↗";
-
-    row.appendChild(link);
-    list.appendChild(row);
-  });
-}
-
-document.querySelectorAll("#userDashboard [data-page]").forEach(button => {
-  button.addEventListener("click", () => setPage(button.dataset.page));
-});
-
-$("searchInput").addEventListener("input", renderServices);
-
-$("profileBtn").addEventListener("click", () => setPage("profile"));
-$("backHome").addEventListener("click", () => setPage("home"));
-
-$("clearHistory").addEventListener("click", () => {
-  if (confirm("সাম্প্রতিক ইতিহাস মুছে ফেলবেন?")) {
-    saveList("history", []);
-    renderHistory();
-  }
-});
-
-/* SIGN IN */
-$("authForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  $("loginBtn").disabled = true;
-  $("signupBtn").disabled = true;
-  $("loginMessage").textContent = "লগইন হচ্ছে...";
-
-  try {
-    const { data, error } = await client.auth.signInWithPassword({
-      email: $("email").value.trim(),
-      password: $("password").value
-    });
-
-    if (error) throw error;
-    showDashboard(data.user);
-  } catch (error) {
-    $("loginMessage").textContent = "লগইন করা যায়নি: " + error.message;
-  } finally {
-    $("loginBtn").disabled = false;
-    $("signupBtn").disabled = false;
-  }
-});
-
-/* CREATE ACCOUNT */
-$("signupBtn").addEventListener("click", async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value;
-
-  if (!email || !password) {
-    $("loginMessage").textContent = "আগে ইমেইল ও পাসওয়ার্ড লিখুন।";
-    return;
-  }
-
-  if (password.length < 6) {
-    $("loginMessage").textContent = "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের দিন।";
-    return;
-  }
-
-  $("signupBtn").disabled = true;
-  $("loginMessage").textContent = "অ্যাকাউন্ট তৈরি হচ্ছে...";
-
-  try {
-    const { data, error } = await client.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin + window.location.pathname
-      }
-    });
-
-    if (error) throw error;
-
-    if (data.session && data.user) {
-      showDashboard(data.user);
-    } else {
-      $("loginMessage").textContent =
-        "অ্যাকাউন্ট তৈরির অনুরোধ সফল। ইমেইল যাচাই করে তারপর লগইন করুন।";
-    }
-  } catch (error) {
-    $("loginMessage").textContent = "অ্যাকাউন্ট তৈরি হয়নি: " + error.message;
-  } finally {
-    $("signupBtn").disabled = false;
-  }
-});
-
-/* LOGOUT */
-$("logoutBtn").addEventListener("click", async () => {
-  const { error } = await client.auth.signOut();
-
-  if (error) {
-    alert("লগআউট করা যায়নি: " + error.message);
-    return;
-  }
-
-  showLogin("আপনি সফলভাবে Logout করেছেন।");
-});
-
-/* EXISTING SESSION */
-async function initialize() {
-  const { data, error } = await client.auth.getSession();
-
-  if (error) {
-    showLogin("সেশন যাচাই করা যায়নি। আবার লগইন করুন।");
-    return;
-  }
-
-  if (data.session && data.session.user) {
-    showDashboard(data.session.user);
-  } else {
-    showLogin();
-  }
-}
-
-client.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_OUT") {
-    showLogin();
-  } else if (event === "SIGNED_IN" && session && session.user) {
-    showDashboard(session.user);
-  }
-});
-
-initialize();
-</script>
-</body>
-</html>
+const $=id=>root.querySelector("#"+id);
+const money=n=>(Number(n)||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"'
